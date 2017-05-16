@@ -1,0 +1,31 @@
+{
+  "name": "web-boilerplate",
+  "version": "0.0.1",
+  "description": "A boilerplate to start building websites, which was written in ReactJS",
+  "main": "index.js",
+  "author": "Nghia Mai <nghia.mai@everymatrix.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "prod": "node scripts/prod.js"
+  },
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mvtnghia/web-boilerplate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mvtnghia/web-boilerplate/issues"
+  },
+  "homepage": "https://github.com/mvtnghia/web-boilerplate#readme",
+  "dependencies": {
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  },
+  "devDependencies": {
+    "babel-loader": "^7.0.0",
+    "object-assign": "^4.1.1",
+    "webpack": "^2.5.1",
+    "whatwg-fetch": "^2.0.3"
+  }
+}
