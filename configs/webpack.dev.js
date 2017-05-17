@@ -3,6 +3,7 @@ const fs = require('fs');
 const webpack = require('webpack');
 const paths = require('./paths');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const progressBarPlugin = require('progress-bar-webpack-plugin');
 
 module.exports = {
     devtool: "source-map",
@@ -58,11 +59,12 @@ module.exports = {
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
+        new progressBarPlugin(),
         (() => {
             try {
                 return new webpack.DllReferencePlugin({
                     context: '.',
-                    manifest: JSON.parse(fs.readFileSync(path.join(paths.appCache, 'vendors-manifest.json'), 'utf-8')),
+                    manifest: JSON.parse(fs.readFileSync(path.join(paths.appCache, paths.manifestJSON), 'utf-8')),
                 });
             } catch (e) {
                 // handle no vendors

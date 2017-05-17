@@ -11,15 +11,16 @@ module.exports = {
     appTemplate: resolveApp('configs/index.html'), // TODO: move index, favicon.icon to another directory
     appFavicon: resolveApp('configs/favicon.ico'),
     packageJSON: resolveApp('package.json'),
-    manifestJSON: resolveApp('dll/[name]_manifest.json'),
 
-    vendorsEntryName: resolveApp('vendors'),
-    vendorsHashFile: resolveApp('.vendors_hash'), // TODO: move to another directory
+    manifestJSON: '[name]_manifest.json',
+    vendorEntryName: 'vendor',
+    vendorHashFileName: 'vendor_hash',
 
     // directories
     appRoot: resolveApp(''),
     appSrc: resolveApp('app'),
     appBuild: resolveApp('build'),
+    appCache: resolveApp('.cache'),
 
     WEBPACK_CONFIG_VENDOR: resolveApp('configs/webpack.vendor'),
     WEBPACK_CONFIG_DEV: resolveApp('configs/webpack.dev'),

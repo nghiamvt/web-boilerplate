@@ -59,12 +59,14 @@ function buildVendors({ packageJSON, webpackConfigDev, webpackConfigVendor }) {
     ).digest('hex');
 
     // Check vendor bundle hash if changed
+    const vendorHashFilePath = path.join(paths.appCache, paths.vendorHashFileName);
     try {
-        const prevVendorsHash = fs.readFileSync(paths.vendorsHashFile, 'utf8');
-        if (prevVendorsHash === currentVendorsHash) {
-            shouldBuildVendors = false;
+        if (fs.existsSync(vendorHashFilePath)) {
+            const prevVendorsHash = fs.readFileSync(vendorHashFilePath, 'utf8');
+            shouldBuildVendors = (prevVendorsHash === currentVendorsHash);
         }
     } catch (e) {
+        console.error(e);
         shouldBuildVendors = true;
     }
 
@@ -78,11 +80,8 @@ function buildVendors({ packageJSON, webpackConfigDev, webpackConfigVendor }) {
                 reject(err);
             }
 
-            console.log('11111: ', 11111);
-            process.exit(0);
-
             // save hash
-            fs.writeFileSync(path.join(paths.vendorsHashFile), currentVendorsHash, 'utf-8');
+            fs.writeFileSync(vendorHashFilePath, currentVendorsHash, 'utf-8');
 
             // done
             resolve({ webpackConfigDev });
