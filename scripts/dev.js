@@ -1,11 +1,17 @@
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const webpackConfigDev = require('../configs/webpack.config.dev.js');
+const paths = require('../configs/paths');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const clearConsole = require('react-dev-utils/clearConsole');
-const chalk = require('chalk');
 
-buildClient()
+const chalk = require('chalk');
+const crypto = require('crypto');
+const fs = require('fs');
+const path = require('path');
+
+prepareToBuild()
+    .then(buildVendors)
+    .then(buildClient)
     .then(startDevServer)
     .catch((err) => {
         console.log(new Error(err));
@@ -20,23 +26,67 @@ buildClient()
  */
 function prepareToBuild() {
     return new Promise((resolve) => {
-        resolve();
+        const packageJSON = require(paths.packageJSON);
+        const webpackConfigDev = require(paths.WEBPACK_CONFIG_DEV);
+        const webpackConfigVendor = require(paths.WEBPACK_CONFIG_VENDOR)(paths, packageJSON, webpack);
+        resolve({ packageJSON, webpackConfigDev, webpackConfigVendor });
     });
 }
 // ==========================================================
 /**
  * Build webpack DLL bundle (contain common libs)
- * @param buildConfig
  * @param packageJSON
+ * @param webpackConfigDev
+ * @param webpackConfigVendor
  * @returns {Promise}
  * Reference:
  * - http://engineering.invisionapp.com/post/optimizing-webpack/
  * - https://robertknight.github.io/posts/webpack-dll-plugins/
  */
 
-function buildVendors() {
+function buildVendors({ packageJSON, webpackConfigDev, webpackConfigVendor }) {
+    // build current vendors hash
+    let shouldBuildVendors = true;
+    // https://nodejs.org/api/crypto.html
+    // crypto.createHash(algorithm): Creates and returns a Hash object.
+    // hash.update(data[, input_encoding]): Updates the hash content with the given data
+    // JSON.stringify: convert to a JSON string
+    const currentVendorsHash = crypto.createHash('md5').update(
+        JSON.stringify({
+            dependencies: packageJSON.dependencies ? packageJSON.dependencies : null,
+            devDependencies: packageJSON.devDependencies ? packageJSON.devDependencies : null,
+        })
+    ).digest('hex');
+
+    // Check vendor bundle hash if changed
+    try {
+        const prevVendorsHash = fs.readFileSync(paths.vendorsHashFile, 'utf8');
+        if (prevVendorsHash === currentVendorsHash) {
+            shouldBuildVendors = false;
+        }
+    } catch (e) {
+        shouldBuildVendors = true;
+    }
+
     return new Promise((resolve, reject) => {
-        resolve();
+        if (!shouldBuildVendors || !packageJSON.dependencies) {
+            return resolve({ webpackConfigDev });
+        }
+
+        return webpack(webpackConfigVendor).run((err) => {
+            if (err) {
+                reject(err);
+            }
+
+            console.log('11111: ', 11111);
+            process.exit(0);
+
+            // save hash
+            fs.writeFileSync(path.join(paths.vendorsHashFile), currentVendorsHash, 'utf-8');
+
+            // done
+            resolve({ webpackConfigDev });
+        });
     });
 }
 // ==========================================================
@@ -47,7 +97,7 @@ function buildVendors() {
  * @param webpackConfig
  * @returns {Promise}
  */
-function buildClient() {
+function buildClient({ webpackConfigDev }) {
     return new Promise((resolve, reject) => {
         // "Compiler" is a low-level interface to Webpack.
         // It lets us listen to some events and provide our own custom messages.
@@ -57,9 +107,9 @@ function buildClient() {
         // recompiling a bundle. WebpackDevServer takes care to pause serving the
         // bundle, so if you refresh, it'll wait instead of serving the old one.
         // "invalid" is short for "bundle invalidated", it doesn't imply any errors.
-        compiler.plugin('invalid', function() {
+        compiler.plugin('invalid', function(fileName) {
             clearConsole();
-            console.log('Compiling...');
+            console.log('Compiling...', fileName);
         });
 
         // "done" event fires when Webpack has finished recompiling the bundle.
@@ -74,7 +124,7 @@ function buildClient() {
             if (!messages.errors.length && !messages.warnings.length) {
                 console.log(chalk.green('Compiled successfully!'));
                 console.log();
-                console.log('The app is running at: ' + chalk.cyan('http://localhost:3000/'));
+                console.log('The app is running at: ' + chalk.cyan('http://' + paths.host + ':' + paths.port + '/'));
                 console.log();
             }
 
@@ -82,11 +132,10 @@ function buildClient() {
             if (messages.errors.length) {
                 console.log(chalk.red('Failed to compile.'));
                 console.log();
-                messages.errors.forEach(message => {
-                    console.log(message);
-                    console.log();
-                });
-                return;
+                // messages.errors.forEach(message => {
+                //     console.log(message);
+                //     console.log();
+                // });
                 reject(messages.errors);
             }
 
@@ -94,21 +143,24 @@ function buildClient() {
             if (messages.warnings.length) {
                 console.log(chalk.yellow('Compiled with warnings.'));
                 console.log();
-                messages.warnings.forEach(message => {
-                    console.log(message);
-                    console.log();
-                });
-                reject(messages.warnings);
+                // messages.warnings.forEach(message => {
+                //     console.log(message);
+                //     console.log();
+                // });
+                // Teach some ESLint tricks.
+                console.log('You may use special comments to disable some warnings.');
+                console.log('Use ' + chalk.yellow('// eslint-disable-next-line') + ' to ignore the next line.');
+                console.log('Use ' + chalk.yellow('/* eslint-disable */') + ' to ignore all warnings in a file.');
             }
         });
 
-        resolve({ compiler });
+        resolve({ compiler, webpackConfigDev });
     });
 }
 // ==========================================================
-function startDevServer({ compiler }) {
+function startDevServer({ compiler, webpackConfigDev }) {
     return new Promise((resolve, reject) => {
-        const devServer = new WebpackDevServer(compiler, {
+        const server = new WebpackDevServer(compiler, {
             // contentBase: webpackConfigDev.output.outputPath,
             // Enable hot reloading server. It will provide /sockjs-node/ endpoint
             // for the WebpackDevServer client so it can learn when the files were
@@ -119,7 +171,7 @@ function startDevServer({ compiler }) {
             // Terminal configurations
             // https://webpack.github.io/docs/node.js-api.html#stats
             stats: {
-                assets: false,
+                assets: true,
                 assetsSort: false,
                 colors: true,
                 version: true,
@@ -131,21 +183,15 @@ function startDevServer({ compiler }) {
             // It is important to tell WebpackDevServer to use the same "root" path
             // as we specified in the config. In development, we always serve from /.
             publicPath: webpackConfigDev.output.publicPath,
-            // Reportedly, this avoids CPU overload on some systems.
-            // https://github.com/facebookincubator/create-react-app/issues/293
-            watchOptions: {
-                ignored: /node_modules/
-            },
         });
 
         // We fire up the development server and give notice in the terminal
         // that we are starting the initial bundle
-        devServer.listen('localhost', '3000', (err, result) => {
+        server.listen(paths.port, paths.host, (err) => {
             if (err) {
-                console.log(err);
                 reject(err);
             }
-            resolve(result);
+            resolve();
         });
     });
 }

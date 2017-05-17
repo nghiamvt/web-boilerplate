@@ -1,21 +1,19 @@
 const path = require('path');
+const fs = require('fs');
 const webpack = require('webpack');
 const paths = require('./paths');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+    devtool: "source-map",
+    // the environment in which the bundle should run
+    // changes chunk loading behavior and available modules
+    target: "web",
     entry: [
         // activate HMR for React
         'react-hot-loader/patch',
-
-        // bundle the client for webpack-dev-server
-        // and connect to the provided endpoint
         'webpack-dev-server/client?http://localhost:3000',
-
-        // bundle the client for hot reloading
-        // only- means to only hot reload for successful updates
         'webpack/hot/only-dev-server',
-
         require.resolve('./polyfills'),
         paths.mainEntry
     ],
@@ -38,22 +36,8 @@ module.exports = {
         // Add /* filename */ comments to generated require()s in the output.
         pathinfo: true,
     },
-    devtool: "source-map",
     module: {
         rules: [
-            // PreLoaders
-            // {
-            //     test: /\.js$/,
-            //     enforce: "pre",
-            //     loader: "eslint-loader",
-            //     include: paths.appSrc,
-            // },
-            // {
-            //     test: /\.scss$/,
-            //     enforce: "pre",
-            //     loader: 'sasslint',
-            //     include: paths.appSrc,
-            // }
             {
                 test: /\.js?$/,
                 loaders: "babel-loader",
@@ -73,8 +57,24 @@ module.exports = {
         ],
     },
     plugins: [
-        // enable HMR globally
         new webpack.HotModuleReplacementPlugin(),
-        new HtmlWebpackPlugin()
+        (() => {
+            try {
+                return new webpack.DllReferencePlugin({
+                    context: '.',
+                    manifest: JSON.parse(fs.readFileSync(path.join(paths.appCache, 'vendors-manifest.json'), 'utf-8')),
+                });
+            } catch (e) {
+                // handle no vendors
+                return { apply: () => null };
+            }
+        })(),
+        // https://github.com/jantimon/html-webpack-plugin
+        new HtmlWebpackPlugin({
+            inject: true,
+            title: 'React Web Boilerplate',
+            template: paths.appTemplate,
+            favicon: paths.appFavicon,
+        }),
     ]
 };
