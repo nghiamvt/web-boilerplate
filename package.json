@@ -6,7 +6,7 @@
   "author": "Nghia Mai <nghia.mai@everymatrix.com>",
   "license": "MIT",
   "scripts": {
-    "dev3": "node_modules/.bin/webpack --config ./configs/webpack.config.dev.js",
+    "dev3": "node_modules/.bin/webpack --config ./configs/webpack.dev.js",
     "dev": "node scripts/dev.js",
     "prod": "node scripts/prod.js"
   },

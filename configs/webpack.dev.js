@@ -1,9 +1,11 @@
 const path = require('path');
 const fs = require('fs');
+
 const webpack = require('webpack');
-const paths = require('./paths');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const progressBarPlugin = require('progress-bar-webpack-plugin');
+
+const paths = require('./paths');
 
 module.exports = {
     devtool: "source-map",
@@ -13,7 +15,7 @@ module.exports = {
     entry: [
         // activate HMR for React
         'react-hot-loader/patch',
-        'webpack-dev-server/client?http://localhost:3000',
+        'webpack-dev-server/client?http://' + paths.host + ':' + paths.port,
         'webpack/hot/only-dev-server',
         require.resolve('./polyfills'),
         paths.mainEntry

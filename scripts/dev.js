@@ -63,7 +63,7 @@ function buildVendors({ packageJSON, webpackConfigDev, webpackConfigVendor }) {
     try {
         if (fs.existsSync(vendorHashFilePath)) {
             const prevVendorsHash = fs.readFileSync(vendorHashFilePath, 'utf8');
-            shouldBuildVendors = (prevVendorsHash === currentVendorsHash);
+            shouldBuildVendors = (prevVendorsHash !== currentVendorsHash);
         }
     } catch (e) {
         console.error(e);
@@ -160,7 +160,6 @@ function buildClient({ webpackConfigDev }) {
 function startDevServer({ compiler, webpackConfigDev }) {
     return new Promise((resolve, reject) => {
         const server = new WebpackDevServer(compiler, {
-            // contentBase: webpackConfigDev.output.outputPath,
             // Enable hot reloading server. It will provide /sockjs-node/ endpoint
             // for the WebpackDevServer client so it can learn when the files were
             // updated. The WebpackDevServer client is included as an entry point
@@ -179,6 +178,7 @@ function startDevServer({ compiler, webpackConfigDev }) {
                 chunks: false,
                 children: false, // Child html-webpack-plugin for "index.html"
             },
+            contentBase: webpackConfigDev.output.outputPath,
             // It is important to tell WebpackDevServer to use the same "root" path
             // as we specified in the config. In development, we always serve from /.
             publicPath: webpackConfigDev.output.publicPath,
