@@ -12,7 +12,7 @@ module.exports = {
     appFavicon: resolveApp('configs/favicon.ico'),
     packageJSON: resolveApp('package.json'),
 
-    manifestJSON: '[name]_manifest.json',
+    manifestJSON: 'manifest.json',
     vendorEntryName: 'vendor',
     vendorHashFileName: 'vendor_hash',
 
