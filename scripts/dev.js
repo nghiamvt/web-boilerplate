@@ -92,8 +92,7 @@ function buildVendors({ packageJSON, webpackConfigDev, webpackConfigVendor }) {
 /**
  * The Compiler module of webpack is the main engine that creates a compilation instance
  * with all the options passed through webpack CLI or webpack api or webpack configuration file.
- * @param paths
- * @param webpackConfig
+ * @param webpackConfigDev
  * @returns {Promise}
  */
 function buildClient({ webpackConfigDev }) {
