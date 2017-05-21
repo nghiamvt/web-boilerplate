@@ -21,6 +21,7 @@ module.exports = {
     appSrc: resolveApp('app'),
     appBuild: resolveApp('build'),
     appCache: resolveApp('.cache'),
+    appPublicPath: "/",
 
     WEBPACK_CONFIG_VENDOR: resolveApp('configs/webpack.vendor'),
     WEBPACK_CONFIG_DEV: resolveApp('configs/webpack.dev'),

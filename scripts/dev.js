@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const paths = require('../configs/paths');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const clearConsole = require('react-dev-utils/clearConsole');
 
@@ -9,12 +8,14 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
+const paths = require('../configs/paths');
+
 prepareToBuild()
     .then(buildVendors)
     .then(buildClient)
     .then(startDevServer)
     .catch((err) => {
-        console.log(new Error(err));
+        console.error(new Error(err));
         process.exit(1);
     });
 
@@ -27,16 +28,14 @@ prepareToBuild()
 function prepareToBuild() {
     return new Promise((resolve) => {
         const packageJSON = require(paths.packageJSON);
-        const webpackConfigDev = require(paths.WEBPACK_CONFIG_DEV);
         const webpackConfigVendor = require(paths.WEBPACK_CONFIG_VENDOR)(paths, packageJSON, webpack);
-        resolve({ packageJSON, webpackConfigDev, webpackConfigVendor });
+        resolve({ packageJSON, webpackConfigVendor });
     });
 }
 // ==========================================================
 /**
  * Build webpack DLL bundle (contain common libs)
  * @param packageJSON
- * @param webpackConfigDev
  * @param webpackConfigVendor
  * @returns {Promise}
  * Reference:
@@ -44,7 +43,7 @@ function prepareToBuild() {
  * - https://robertknight.github.io/posts/webpack-dll-plugins/
  */
 
-function buildVendors({ packageJSON, webpackConfigDev, webpackConfigVendor }) {
+function buildVendors({ packageJSON, webpackConfigVendor }) {
     // build current vendors hash
     let shouldBuildVendors = true;
     // https://nodejs.org/api/crypto.html
@@ -72,7 +71,7 @@ function buildVendors({ packageJSON, webpackConfigDev, webpackConfigVendor }) {
 
     return new Promise((resolve, reject) => {
         if (!shouldBuildVendors || !packageJSON.dependencies) {
-            return resolve({ webpackConfigDev });
+            return resolve();
         }
 
         return webpack(webpackConfigVendor).run((err) => {
@@ -84,7 +83,7 @@ function buildVendors({ packageJSON, webpackConfigDev, webpackConfigVendor }) {
             fs.writeFileSync(vendorHashFilePath, currentVendorsHash, 'utf-8');
 
             // done
-            resolve({ webpackConfigDev });
+            resolve();
         });
     });
 }
@@ -92,11 +91,11 @@ function buildVendors({ packageJSON, webpackConfigDev, webpackConfigVendor }) {
 /**
  * The Compiler module of webpack is the main engine that creates a compilation instance
  * with all the options passed through webpack CLI or webpack api or webpack configuration file.
- * @param webpackConfigDev
  * @returns {Promise}
  */
-function buildClient({ webpackConfigDev }) {
+function buildClient() {
     return new Promise((resolve, reject) => {
+        const webpackConfigDev = require(paths.WEBPACK_CONFIG_DEV);
         // "Compiler" is a low-level interface to Webpack.
         // It lets us listen to some events and provide our own custom messages.
         const compiler = webpack(webpackConfigDev);
@@ -130,10 +129,7 @@ function buildClient({ webpackConfigDev }) {
             if (messages.errors.length) {
                 console.log(chalk.red('Failed to compile.'));
                 console.log();
-                // messages.errors.forEach(message => {
-                //     console.log(message);
-                //     console.log();
-                // });
+                // messages.errors.forEach(message => console.error(message));
                 reject(messages.errors);
             }
 
@@ -141,10 +137,7 @@ function buildClient({ webpackConfigDev }) {
             if (messages.warnings.length) {
                 console.log(chalk.yellow('Compiled with warnings.'));
                 console.log();
-                // messages.warnings.forEach(message => {
-                //     console.log(message);
-                //     console.log();
-                // });
+                messages.warnings.forEach(message => console.warn(message));
                 // Teach some ESLint tricks.
                 console.log('You may use special comments to disable some warnings.');
                 console.log('Use ' + chalk.yellow('// eslint-disable-next-line') + ' to ignore the next line.');

@@ -6,6 +6,9 @@ import { AppContainer } from 'react-hot-loader';
 
 import App from './App';
 
+// TODO: find a way to set process.env.NODE_ENV === 'production';
+console.log('process.env.NODE_ENV : ', process.env.NODE_ENV );
+
 const render = (Component) => {
     ReactDOM.render(
         <AppContainer>

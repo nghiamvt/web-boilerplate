@@ -6,7 +6,8 @@
   "author": "Nghia Mai <nghia.mai@everymatrix.com>",
   "license": "MIT",
   "scripts": {
-    "dev3": "node_modules/.bin/webpack --config ./configs/webpack.dev.js",
+    "tdev": "node_modules/.bin/webpack --config ./configs/webpack.dev.js",
+    "tprod": "node_modules/.bin/webpack --config ./configs/webpack.prod.js",
     "dev": "node scripts/dev.js",
     "prod": "node scripts/prod.js"
   },
@@ -38,6 +39,7 @@
     "style-loader": "^0.17.0",
     "webpack": "^2.5.1",
     "webpack-dev-server": "^2.4.5",
+    "webpack-merge": "^4.1.0",
     "whatwg-fetch": "^2.0.3"
   }
 }
