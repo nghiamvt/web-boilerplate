@@ -1,10 +1,24 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-// const paths = require('./paths');
 const WebpackCommonConfig = require('./webpack.common.js');
 
 module.exports = merge(WebpackCommonConfig, {
+    devtool: "source-map",
+    // Don't attempt to continue if there are any errors
+    bail: true,
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: "css-loader"
+                })
+            },
+        ]
+    },
     plugins: [
         // The DefinePlugin performs search-and-replace operations on the original source code.
         // Any occurrence of process.env.NODE_ENV in the imported code is replaced by "production"
@@ -13,16 +27,7 @@ module.exports = merge(WebpackCommonConfig, {
                 'NODE_ENV': JSON.stringify('production')
             }
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            beautify: false,
-            mangle: {
-                screw_ie8: true,
-                keep_fnames: true
-            },
-            compress: {
-                screw_ie8: true
-            },
-            comments: false
-        })
+        new ExtractTextPlugin("style/[id].[name].[contenthash].css"),
+        new webpack.optimize.UglifyJsPlugin(),
     ]
 });

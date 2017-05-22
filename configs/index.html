@@ -7,8 +7,8 @@
 </head>
 <body>
     <div id="root"></div>
-    <% if (htmlWebpackPlugin.options.vendorsFilePath) { %>
-    <script src="<%= htmlWebpackPlugin.options.vendorsFilePath %>"></script>
+    <% if (htmlWebpackPlugin.options.dll) { %>
+        <script src="<%= htmlWebpackPlugin.options.dll %>"></script>
     <% } %>
 </body>
 </html>

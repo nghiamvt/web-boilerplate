@@ -1,0 +1,17 @@
+// http://eslint.org/docs/rules
+// https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules
+
+{
+  "parser": "babel-eslint",
+  "plugins": ["react"],
+  "globals": {
+    "window": true
+  },
+  "extends": ["airbnb"],
+  "rules": {
+    "indent": [1, 4, { "SwitchCase": 1 }],
+    "arrow-body-style": [0, "as-needed"],
+    "react/jsx-indent": [1, 4],
+    "react/jsx-filename-extension": [1, { "extensions": [".js"] }]
+  }
+}
