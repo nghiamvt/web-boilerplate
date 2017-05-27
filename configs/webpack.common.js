@@ -1,4 +1,3 @@
-const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const paths = require('./paths');
@@ -6,10 +5,10 @@ const paths = require('./paths');
 const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
-    target: "web",
+    target: 'web',
     entry: [
         'babel-polyfill',
-        paths.mainEntry
+        paths.mainEntry,
     ],
     output: {
         // dev use “in-memory” files
@@ -30,15 +29,15 @@ module.exports = {
         rules: [
             {
                 test: /\.js?$/,
-                loaders: "babel-loader",
+                loaders: 'babel-loader',
                 exclude: /node_modules/,
             },
-        ]
+        ],
     },
     resolve: {
         extensions: ['.js', '.json', '.css'],
         modules: [
-            "node_modules",
+            'node_modules',
             paths.appSrc,
         ],
     },
