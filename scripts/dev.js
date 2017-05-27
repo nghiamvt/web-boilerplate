@@ -174,6 +174,10 @@ function startDevServer({ compiler, webpackConfigDev }) {
             // It is important to tell WebpackDevServer to use the same "root" path
             // as we specified in the config. In development, we always serve from /.
             publicPath: webpackConfigDev.output.publicPath,
+            // http://webpack.github.io/docs/webpack-dev-server.html#the-historyapifallback-option
+            historyApiFallback: {
+                index: paths.appPublicPath,
+            },
         });
 
         // We fire up the development server and give notice in the terminal

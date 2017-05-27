@@ -27,9 +27,10 @@
     "react-hot-loader": "next",
     "react-redux": "^5.0.5",
     "react-router": "^4.1.1",
-    "react-router-redux": "next",
+    "react-router-redux": "^5.0.0-alpha.6",
     "redux": "^3.6.0",
-    "redux-saga": "^0.15.3"
+    "redux-saga": "^0.15.3",
+    "reselect": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.1",

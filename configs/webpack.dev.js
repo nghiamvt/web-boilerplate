@@ -8,7 +8,7 @@ const WebpackCommonConfig = require('./webpack.common.js');
 
 module.exports = merge(WebpackCommonConfig, {
     // https://webpack.js.org/configuration/devtool/
-    devtool: "source-map",
+    devtool: 'source-map',
     entry: [
         'react-hot-loader/patch',
         'webpack-dev-server/client?http://' + paths.host + ':' + paths.port,
@@ -31,7 +31,7 @@ module.exports = merge(WebpackCommonConfig, {
                     }
                 ],
             },
-        ]
+        ],
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
@@ -47,5 +47,5 @@ module.exports = merge(WebpackCommonConfig, {
                 return { apply: () => null };
             }
         })(),
-    ]
+    ],
 });
