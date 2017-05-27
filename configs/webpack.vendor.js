@@ -3,9 +3,6 @@ const path = require('path');
 module.exports = (paths, packageJSON, webpack) => {
     return {
         target: 'web',
-        node: {
-            fs: 'empty',
-        },
         entry: {
             // [paths.vendorsEntryName] = [name]
             [paths.vendorEntryName]: (() => {
@@ -24,8 +21,6 @@ module.exports = (paths, packageJSON, webpack) => {
                 path: path.join(paths.appCache, `[name]_${paths.manifestJSON}`),
                 name: '[name]_[hash]', //  Keep the name consistent with output.library
             }),
-            // new webpack.optimize.OccurrenceOrderPlugin(),
-            // new webpack.optimize.UglifyJsPlugin(),
         ],
     };
 };

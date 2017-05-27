@@ -23,13 +23,28 @@ prepareToBuild()
  * @returns {Promise}
  */
 function prepareToBuild() {
-    return new Promise((resolve) => {
-        const webpackConfigProd = require(paths.WEBPACK_CONFIG_DEV);
 
-        // TODO: remove old build
-        if (!fs.existsSync('build')) {
-            fs.mkdirSync(paths.appBuild);
+    const removeFolderRecursive = function(path) {
+        if( fs.existsSync(path) ) {
+            fs.readdirSync(path).forEach(function(file){
+                const curPath = path + "/" + file;
+                if(fs.statSync(curPath).isDirectory()) {
+                    removeFolderRecursive(curPath); // recurse
+                } else { // delete file
+                    fs.unlinkSync(curPath);
+                }
+            });
+            fs.rmdirSync(path);
         }
+    };
+
+
+    return new Promise((resolve) => {
+        const webpackConfigProd = require(paths.WEBPACK_CONFIG_PROD);
+
+        removeFolderRecursive(paths.appBuild);
+        fs.mkdirSync(paths.appBuild);
+
         resolve({ webpackConfigProd });
     });
 }
@@ -60,6 +75,7 @@ function buildClient({ webpackConfigProd }) {
             if (messages.warnings.length) {
                 console.log(chalk.yellow('Compiled with warnings.'));
                 reject(messages.warnings);
+                messages.warnings.forEach(message => console.error(message));
             }
 
             return resolve();

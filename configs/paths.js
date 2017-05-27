@@ -7,7 +7,7 @@ function resolveApp(relativePath) {
 
 module.exports = {
     // files
-    mainEntry: resolveApp('app/index.js'),
+    mainEntry: resolveApp('src/index.js'),
     appTemplate: resolveApp('configs/index.html'), // TODO: move index, favicon.icon to another directory
     appFavicon: resolveApp('configs/favicon.ico'),
     packageJSON: resolveApp('package.json'),
@@ -25,6 +25,7 @@ module.exports = {
 
     WEBPACK_CONFIG_VENDOR: resolveApp('configs/webpack.vendor'),
     WEBPACK_CONFIG_DEV: resolveApp('configs/webpack.dev'),
+    WEBPACK_CONFIG_PROD: resolveApp('configs/webpack.prod'),
 
     host: 'localhost',
     port: '3000',

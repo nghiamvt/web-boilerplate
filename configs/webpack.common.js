@@ -1,23 +1,19 @@
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const paths = require('./paths');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
-    // https://webpack.js.org/configuration/devtool/
-    devtool: "source-map",
-    // the environment in which the bundle should run
-    // changes chunk loading behavior and available modules
     target: "web",
     entry: [
-        require.resolve('./polyfills'),
+        'babel-polyfill',
         paths.mainEntry
     ],
     output: {
-        // This is the JS bundle containing code from all our entry points, and the Webpack runtime.
-        // We are not actually outputting any files when running the workflow,
-        // but we want these “in-memory” files to be fetched from the same path as in production,
-        // Ex: <script src="main.bundle.js"></script>
-        filename: isProduction ? '[name].[hash].bundle.js' : "[name].bundle.js",
+        // dev use “in-memory” files
+        filename: '[name].[hash].bundle.js',
         // We need to give Webpack a path. It does not actually need it,
         // because files are kept in memory in webpack-dev-server, but an
         // error will occur if nothing is specified. We use the buildPath
@@ -37,10 +33,6 @@ module.exports = {
                 loaders: "babel-loader",
                 exclude: /node_modules/,
             },
-            {
-                test: /\.css$/,
-                use: [ 'style-loader', 'css-loader?modules', ],
-            },
         ]
     },
     resolve: {
@@ -51,11 +43,20 @@ module.exports = {
         ],
     },
     plugins: [
-        // TODO: remove configs in dev & prod
-        // new webpack.DefinePlugin({
-        //     'process.env': {
-        //         'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-        //     }
-        // }),
-    ]
+        // https://github.com/jantimon/html-webpack-plugin
+        new HtmlWebpackPlugin({
+            inject: true,
+            title: 'React Web Boilerplate',
+            template: paths.appTemplate,
+            favicon: paths.appFavicon,
+            dll: !isProduction && `/.cache/${paths.vendorEntryName}.bundle.js`,
+        }),
+    ],
+    // Some libraries import Node modules but don't use them in the browser.
+    // Tell Webpack to provide empty mocks for them so importing them works.
+    node: {
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty',
+    },
 };
