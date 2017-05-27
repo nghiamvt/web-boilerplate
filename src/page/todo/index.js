@@ -1,37 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Header from './component/Header';
-import MainSection from './component/MainSection';
-import * as TodoActions from './actions';
 
-import { getTodos } from './selectors';
-import './todomvc.css';
-
-const mapStateToProps = (state) => ({
-    todos: getTodos(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators(TodoActions, dispatch),
-})
-
-function TodoMVC({ todos, actions }) {
-    return (
-        <div className="todoapp">
-            <Header addTodo={actions.addTodo} />
-            <MainSection todos={todos} actions={actions} />
-        </div>
-    );
+function mapStateToProps(state) {
+    return {};
 }
 
+const TodoMVC = ({ todos, actions }) => (
+    <div className="todomvc">
+        <span>hello todoMVC</span>
+    </div>
+)
+
 TodoMVC.propTypes = {
-    todos: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
+    todos: PropTypes.arrayOf(PropTypes.number).isRequired,
+    dispatch: PropTypes.func.isRequired,
 }
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps,
+    dispatch => ({ dispatch }),
 )(TodoMVC);
