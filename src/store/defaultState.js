@@ -1,7 +1,10 @@
 export default {
-    todos: [{
-        text: 'Use Redux',
-        completed: false,
-        id: 0,
-    }],
+    todos: {
+        0: {
+            id: 0,
+            text: 'Use Redux',
+            completed: false,
+        },
+    },
+    haha: {},
 };
