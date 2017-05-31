@@ -1,12 +1,13 @@
 import defaultState from './defaultState';
-import handleObjectData from './data.reducer.object';
 
 export default function dataReducer(state = defaultState, action) {
     switch (action.type) {
-        case 'SET_DATA':
-            return handleObjectData({ state, ...action });
+        case 'OBJECT_ADD':
+            console.log('111111 :', 111111);
+            return state;
 
         default:
+            console.log('action.type :', action.type);
             return state;
     }
 }
