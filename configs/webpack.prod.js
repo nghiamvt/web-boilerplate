@@ -14,7 +14,17 @@ module.exports = merge(WebpackCommonConfig, {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
                     fallback: "style-loader",
-                    use: "css-loader"
+                    use: [
+                        "css-loader",
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                plugins: () => [
+                                    require('autoprefixer')(),
+                                ]
+                            }
+                        }
+                    ]
                 })
             },
         ]
