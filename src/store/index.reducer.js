@@ -5,11 +5,17 @@ import { reduceReducers } from './utils';
 import dataReducer from './data.reducer';
 import defaultState from './defaultState';
 
-const combinedReducer = combineReducers({
-    todos: (s = defaultState) => s,
+// Put new reducers here
+const reducers = {
     router: routerReducer,
-});
-
-const rootReducer = reduceReducers(dataReducer, routerReducer);
-
+};
+const defaultReducer = (s = {}) => s;
+const combinedReducer = combineReducers(
+    Object.keys(defaultState).reduce((result, key) => {
+        return Object.assign({}, result, {
+            [key]: reducers[key] ? reducers[key] : defaultReducer,
+        });
+    }, reducers),
+);
+const rootReducer = reduceReducers(combinedReducer, dataReducer);
 export default rootReducer;

@@ -6,5 +6,4 @@ export default {
             completed: false,
         },
     },
-    haha: {},
 };
