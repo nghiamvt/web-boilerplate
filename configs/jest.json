@@ -1,0 +1,5 @@
+{
+  "rootDir": "..",
+  "testMatch": ["**/__tests__/**/*.test.js"],
+  "moduleFileExtensions": [ "js", "json" ]
+}
