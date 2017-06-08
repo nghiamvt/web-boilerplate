@@ -3,8 +3,8 @@ import { routerMiddleware } from 'react-router-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 
 import middleware from '../middleware';
-import rootReducer from './index.reducer';
-import rootSaga from './index.saga';
+import rootReducer from './rootReducer';
+import rootSaga from './rootSaga';
 import defaultState from './defaultState';
 
 export default function configureStore({ history }) {

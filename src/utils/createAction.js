@@ -13,12 +13,12 @@ export default function createActionCreator(type, payloadCreator = v => v, metaC
         'Expected payloadCreator to be a function, undefined or null',
     );
 
-    const buildPayLoadCreator = (firstArgs, ...args) => {
+    const finalPayLoadCreator = (firstArgs, ...args) => {
         return (firstArgs instanceof Error) ? firstArgs : payloadCreator(firstArgs, ...args);
     };
 
     return (...args) => {
-        const payload = buildPayLoadCreator(...args);
+        const payload = finalPayLoadCreator(...args);
         const action = { type };
 
         if (payload instanceof Error) {
