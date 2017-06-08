@@ -8,5 +8,10 @@
     "transform-class-properties",
     "transform-object-rest-spread",
     "react-hot-loader/babel"
-  ]
+  ],
+  "env": {
+    "test": {
+      "plugins": ["transform-es2015-modules-commonjs"]
+    }
+  }
 }

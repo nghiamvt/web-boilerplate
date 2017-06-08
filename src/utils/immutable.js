@@ -37,7 +37,7 @@ function getArrayIndex(head, obj) {
  * @param path The path to be set.
  * @param value The value to set.
  */
-export const set = function(obj, path, value) {
+export function set(obj, path, value) {
     const pathList = pathToArray(path);
 
 	const setPropImmutableRec = (obj, pathList, value) => {
@@ -49,7 +49,7 @@ export const set = function(obj, path, value) {
 	};
 
 	return setPropImmutableRec(obj, pathList, value);
-};
+}
 
 /**
  * Get a value by a dot path.
