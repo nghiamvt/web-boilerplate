@@ -1,10 +1,7 @@
-/* eslint-disable */
-import { isArray, isFunction, isNumber } from './is'
+import { isArray, isFunction, isNumber, isObject } from './is';
 
 /**
- * Convert "123" => 123
- * @param key {String}
- * @returns {Number}
+ * Convert "123" => 123 ({String} => {Number})
  */
 function getKey(key) {
     const intKey = parseInt(key);
@@ -13,19 +10,20 @@ function getKey(key) {
 
 /**
  * Convert path format to array
- * @param path
- * @returns {Array}
  */
 function pathToArray(path) {
     return isArray(path) ? path : path.toString().split('.').map(getKey);
 }
 
+/**
+ * Handle index of array
+ */
 function getArrayIndex(head, obj) {
     if (head === '$end') {
-        head = obj.length - 1;
+        return obj.length - 1;
     }
     if (!isNumber(head)) {
-        throw new Error('Array index \'' + head + '\' has to be an integer');
+        throw new Error(`Array index '${head}' has to be an integer`);
     }
     return head;
 }
@@ -33,34 +31,35 @@ function getArrayIndex(head, obj) {
 
 /**
  * Set a value by a dot path.
- * @param obj The object to evaluate.
+ * @param src The object to evaluate.
  * @param path The path to be set.
  * @param value The value to set.
  */
-export function set(obj, path, value) {
-    const pathList = pathToArray(path);
+export function set(src, path, value) {
+    const pathArr = pathToArray(path);
 
-	const setPropImmutableRec = (obj, pathList, value) => {
-	    if (!pathList.length) return isFunction(value) ? value(obj) : value;
-	    let clone = isArray(obj) ? obj.slice() : Object.assign({}, obj);
-        const curPath = pathList[0];
-        clone[curPath] = setPropImmutableRec(obj[curPath] !== undefined ? obj[curPath] : {}, pathList.slice(1), value);
+    const setImmutable = (obj, pathList, val) => {
+        if (!pathList.length) return isFunction(val) ? val(obj) : val;
+        const isArr = isArray(obj);
+        const clone = isArr ? obj.slice() : Object.assign({}, obj);
+        const curPath = isArr ? getArrayIndex(pathList[0], obj) : pathList[0];
+        clone[curPath] = setImmutable(obj[curPath] !== undefined ? obj[curPath] : {}, pathList.slice(1), val);
         return clone;
-	};
+    };
 
-	return setPropImmutableRec(obj, pathList, value);
+    return setImmutable(src, pathArr, value);
 }
 
 /**
  * Get a value by a dot path.
- * @param obj The object to evaluate.
+ * @param src The object to evaluate.
  * @param path The path to value that should be returned.
  */
-export const get = function(obj, path) {
+export function get(src, path) {
     const pathList = pathToArray(path);
-    if (pathList.length === 0) return obj;
+    if (pathList.length === 0) return src;
     return pathList.reduce((result, pathFragment) => {
-        return result ? result[pathFragment] : obj[pathFragment];
+        return result ? result[pathFragment] : src[pathFragment];
     }, null);
 }
 
@@ -69,89 +68,68 @@ export const get = function(obj, path) {
  * If target container is an object, the property is deleted.
  * If target container is an array, the index is deleted.
  * If target container is undefined, nothing is deleted.
- * @param obj The object to evaluate.
- * @param prop The path to the property or index that should be deleted.
+ * @param src The object to evaluate.
+ * @param path The path to the property or index that should be deleted.
  */
-const delete1 = function(obj, prop) {
-	prop = typeof prop === 'number' ? propToArray(prop.toString()) : typeof prop === 'string' ? propToArray(prop) : prop;
+export function remove(src, path) {
+    const pathArr = pathToArray(path);
 
-	var deletePropImmutableRec = function(obj, prop, i) {
-		var clone, head = prop[i];
+    const deleteImmutable = (obj, pathList) => {
+        const isArr = isArray(obj);
+        const curPath = isArr ? getArrayIndex(pathList[0], obj) : pathList[0];
+        if ((!isObject(obj) && !isArr) || (isArray(obj) && obj[getArrayIndex(curPath, obj)] === undefined)) {
+            return obj;
+        }
+        let clone;
+        if (pathList.length > 1) {
+            clone = isArr ? obj.slice() : Object.assign({}, obj);
+            clone[curPath] = deleteImmutable(obj[curPath], pathList.slice(1));
+            return clone;
+        }
 
-		if (typeof obj !== 'object' ||
-			!Array.isArray(obj) && obj[head] === undefined ||
-			Array.isArray(obj) && obj[getArrayIndex(head, obj)] === undefined) {
+        if (isArr) {
+            clone = [].concat(obj.slice(0, curPath), obj.slice(curPath + 1));
+        } else {
+            clone = Object.assign({}, obj);
+            delete clone[curPath];
+        }
+        return clone;
+    };
 
-			return obj;
-		}
-
-		if (prop.length - 1 > i) {
-			if (Array.isArray(obj)) {
-				head = getArrayIndex(head, obj);
-				clone = obj.slice();
-			} else {
-				clone = Object.assign({}, obj);
-			}
-
-			clone[head] = deletePropImmutableRec(obj[head], prop, i + 1);
-			return clone;
-		}
-
-		if (Array.isArray(obj)) {
-			head = getArrayIndex(head, obj);
-			clone = [].concat(obj.slice(0, head), obj.slice(head + 1));
-		} else {
-			clone = Object.assign({}, obj);
-			delete clone[head];
-		}
-
-		return clone;
-	};
-
-	return deletePropImmutableRec(obj, prop, 0);
-};
+    return deleteImmutable(src, pathArr);
+}
 
 /**
- * Toggles a value.  The target value is evaluated using Boolean(currentValue).  The result will always be a JSON boolean.
+ * Toggles a value. The target value is evaluated using Boolean(currentValue). The result will always be a JSON boolean.
  * Be careful with strings as target value, as "true" and "false" will toggle to false, but "0" will toggle to true.
  * Here is what Javascript considers false:  0, -0, null, false, NaN, undefined, and the empty string ("")
- * @param obj The object to evaluate.
- * @param prop The path to the value.
+ * @param src The object to evaluate.
+ * @param path The path to the value.
  */
-const toggle = function(obj, prop) {
-	var curVal = this.get(obj, prop);
-	return this.set(obj, prop, !Boolean(curVal));
-};
+export function toggle(src, path) {
+    const curVal = get(src, path);
+    return set(src, path, !(curVal));
+}
 
 /**
  * Merges a value.  The target value must be an object, array, null, or undefined.
  * If target is an object, Object.assign({}, target, param) is used.
  * If target an array, target.concat(param) is used.
  * If target is null or undefined, the value is simply set.
- * @param obj The object to evaluate.
- * @param prop The path to the value.
+ * @param src The object to evaluate.
+ * @param path The path to the value.
  * @param val The value to merge into the target value.
  */
-const merge = function(obj, prop, val) {
-	var curVal = this.get(obj, prop);
-	if (typeof curVal === 'object') {
-		if (Array.isArray(curVal)){
-			return this.set(obj, prop, curVal.concat(val));
-		} else if (curVal === null){
-			return this.set(obj, prop, val);
-		}
-		else {
-			var merged = Object.assign({}, curVal, val);
-			return this.set(obj, prop, merged);
-		}
-	} else if (typeof curVal === 'undefined'){
-		return this.set(obj, prop, val);
-	}
-	else {
-		return obj;
-	}
-};
-
-function propToArray(prop) {
-	return prop.replace(/\\\./g, '@').replace(/\./g, '*').replace(/@/g, '.').split('*');
+export function merge(src, path, val) {
+    const curVal = get(src, path);
+    if (curVal === null || typeof curVal === 'undefined') {
+        return set(src, path, val);
+    }
+    if (isArray(curVal)) {
+        return set(src, path, curVal.concat(val));
+    }
+    if (isObject(curVal)) {
+        return set(src, path, Object.assign({}, curVal, val));
+    }
+    return src;
 }
