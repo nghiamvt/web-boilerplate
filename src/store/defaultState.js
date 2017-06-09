@@ -1,5 +1,5 @@
 export default {
-    todos: {
+    todo: {
         0: {
             id: 0,
             text: 'Use Redux',

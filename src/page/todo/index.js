@@ -6,28 +6,28 @@ import Header from './component/Header';
 import MainSection from './component/MainSection';
 import * as TodoActions from './actions';
 
-import { getTodos } from './selectors';
+import { todoList } from './selectors';
 import './todomvc.css';
 
 const mapStateToProps = (state) => ({
-    todos: getTodos(state),
+    todo: todoList(state),
 });
 
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(TodoActions, dispatch),
-})
+});
 
-function TodoMVC({ todos, actions }) {
+function TodoMVC({ todo, actions }) {
     return (
         <div className="todoapp">
             <Header addTodo={actions.addTodo} />
-            <MainSection todos={todos} actions={actions} />
+            <MainSection todos={todo} actions={actions} />
         </div>
     );
 }
 
 TodoMVC.propTypes = {
-    todos: PropTypes.object.isRequired,
+    todo: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
 }
 

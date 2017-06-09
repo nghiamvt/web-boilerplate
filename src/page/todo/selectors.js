@@ -1,2 +1,2 @@
-export const getTodos = (state) => state.store.todos;
-export const getVisibilityFilter = (state) => state.store.visibilityFilter;
+export const todoList = (state) => state.todo;
+export const getVisibilityFilter = (state) => state.visibilityFilter;

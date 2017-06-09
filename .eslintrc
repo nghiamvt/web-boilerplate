@@ -23,7 +23,7 @@
     "indent": [1, 4, { "SwitchCase": 1 }],
     "no-plusplus": 0,
     "radix": [1, "as-needed"],
-    "arrow-parens": [1, "as-needed"],
+    "arrow-parens": 0,
     "arrow-body-style": 0,
     "react/forbid-prop-types": [1, { "forbid": ["any"] }],
     "react/jsx-indent": [1, 4],

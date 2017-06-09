@@ -1,4 +1,5 @@
 import invariant from './invariant';
+import { isFunction, isObject, isUndefined } from './is';
 
 /**
  * Flux Standard Action utilities for Redux.
@@ -7,10 +8,15 @@ import invariant from './invariant';
  * @param metaCreator
  * @returns {function(...[*])}
  */
-export default function createActionCreator(type, payloadCreator = v => v, metaCreator) {
+export default function createAction(type, payloadCreator = v => v, metaCreator) {
     invariant(
-        typeof payloadCreator === 'function',
-        'Expected payloadCreator to be a function, undefined or null',
+        isFunction(payloadCreator) || isUndefined(payloadCreator),
+        'Expected payloadCreator to be a function or undefined',
+    );
+
+    invariant(
+        isFunction(metaCreator) || isObject(metaCreator) || isUndefined(metaCreator),
+        'Expected metaCreator to be a function or object or undefined',
     );
 
     const finalPayLoadCreator = (firstArgs, ...args) => {
@@ -25,12 +31,12 @@ export default function createActionCreator(type, payloadCreator = v => v, metaC
             action.error = true;
         }
 
-        if (payload !== undefined) {
+        if (!isUndefined(payload)) {
             action.payload = payload;
         }
 
-        if (typeof metaCreator === 'function') {
-            action.meta = metaCreator(...args);
+        if (metaCreator) {
+            action.meta = isFunction(metaCreator) ? metaCreator(...args) : metaCreator;
         }
 
         return action;

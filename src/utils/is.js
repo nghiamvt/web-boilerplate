@@ -10,6 +10,10 @@ function isFunction(obj) {
     return typeof obj === 'function';
 }
 
+function isUndefined(obj) {
+    return typeof obj === 'undefined';
+}
+
 function isArray(obj) {
     return Array.isArray(obj);
 }
@@ -37,4 +41,5 @@ export {
     isArray,
     isObject,
     isEmpty,
+    isUndefined,
 };
