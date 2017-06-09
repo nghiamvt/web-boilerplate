@@ -1,5 +1,5 @@
 function isNumber(value) {
-    return typeof value === 'number';
+    return /^\d+$/.test(value);
 }
 
 function isString(obj) {
