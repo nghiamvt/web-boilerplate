@@ -5,5 +5,10 @@ export default {
             text: 'Use Redux',
             completed: false,
         },
+        1: {
+            id: 1,
+            text: 'Use SAGA',
+            completed: false,
+        },
     },
 };

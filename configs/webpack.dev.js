@@ -8,10 +8,10 @@ const WebpackCommonConfig = require('./webpack.common.js');
 
 module.exports = merge(WebpackCommonConfig, {
     // https://webpack.js.org/configuration/devtool/
-    devtool: 'source-map',
+    devtool: 'cheap-module-source-map',
     entry: [
         'react-hot-loader/patch',
-        'webpack-dev-server/client?http://' + paths.host + ':' + paths.port,
+        `webpack-dev-server/client?http://${paths.host}:${paths.port}`,
         'webpack/hot/only-dev-server',
     ],
     module: {

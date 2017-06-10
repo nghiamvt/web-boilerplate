@@ -1,11 +1,25 @@
 import createAction from '../utils/createAction';
+import invariant from '../utils/invariant';
+import { isEmpty } from '../utils/is';
 
-// TODO: shorten this
+const dataPayloadCreator = ({ path, ...payload }) => payload;
+const dataMetaCreator = data => {
+    invariant(!isEmpty(data.path), 'Path is required');
+    return { path: data.path };
+};
+const createDataAction = (type) => {
+    return createAction(type, dataPayloadCreator, dataMetaCreator);
+};
 
-const payloadCreator = ({ path, ...payload }) => payload;
-const metaCreator = data => ({ path: data.path });
+export const dataActionConst = {
+    SET_DATA: 'SET_DATA',
+    GET_DATA: 'GET_DATA',
+    REMOVE_DATA: 'REMOVE_DATA',
+    TOGGLE_DATA: 'TOGGLE_DATA',
+    MERGE_DATA: 'MERGE_DATA',
+};
 
-export const SET_DATA = createAction('SET_DATA', payloadCreator, metaCreator);
-export const GET_DATA = createAction('GET_DATA', payloadCreator, metaCreator);
-export const REMOVE_DATA = createAction('REMOVE_DATA', payloadCreator, metaCreator);
-export const TOGGLE_DATA = createAction('TOGGLE_DATA', payloadCreator, metaCreator);
+export const SET_DATA = createDataAction(dataActionConst.SET_DATA);
+export const GET_DATA = createDataAction(dataActionConst.GET_DATA);
+export const REMOVE_DATA = createDataAction(dataActionConst.REMOVE_DATA);
+export const TOGGLE_DATA = createDataAction(dataActionConst.TOGGLE_DATA);

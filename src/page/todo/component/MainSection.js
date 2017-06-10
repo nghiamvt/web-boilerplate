@@ -21,6 +21,11 @@ export default class MainSection extends Component {
         this.state = { filter: SHOW_ALL };
     }
 
+    onClearCompleted = (props) => {
+        const completedIds = Object.values(props.todos).filter((todo) => todo.completed).map(i => i.id);
+        props.actions.clearCompleted(completedIds);
+    }
+
     handleShow = filter => {
         this.setState({ filter });
     }
@@ -62,7 +67,7 @@ export default class MainSection extends Component {
                 completedCount={completedCount}
                 activeCount={activeCount}
                 filter={state.filter}
-                onClearCompleted={props.actions.clearCompleted}
+                onClearCompleted={() => this.onClearCompleted(props)}
                 onShow={this.handleShow}
             />
         );

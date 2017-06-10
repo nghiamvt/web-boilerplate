@@ -1,4 +1,3 @@
-import * as types from './constants';
 import { SET_DATA, REMOVE_DATA, TOGGLE_DATA } from '../../store/dataAction';
 
 export const addTodo = (text) => {
@@ -30,6 +29,15 @@ export const completeTodo = (id) => {
     });
 };
 
-// TODO: handle next 2 actions
-export const completeAll = () => ({ type: types.COMPLETE_ALL });
-export const clearCompleted = () => ({ type: types.CLEAR_COMPLETED });
+export const completeAll = () => {
+    return TOGGLE_DATA({
+        path: 'todo.*.completed',
+    });
+}
+
+
+export function clearCompleted(id) {
+    return REMOVE_DATA({
+        path: `todo.${id[0]}`,
+    });
+}

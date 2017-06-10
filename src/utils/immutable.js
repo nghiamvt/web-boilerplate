@@ -100,15 +100,40 @@ export function remove(src, path) {
 }
 
 /**
- * Toggles a value. The target value is evaluated using Boolean(currentValue). The result will always be a JSON boolean.
+ * Toggles a value or all value
  * Be careful with strings as target value, as "true" and "false" will toggle to false, but "0" will toggle to true.
  * Here is what Javascript considers false:  0, -0, null, false, NaN, undefined, and the empty string ("")
  * @param src The object to evaluate.
  * @param path The path to the value.
  */
+
 export function toggle(src, path) {
-    const curVal = get(src, path);
-    return set(src, path, !(curVal));
+    const pathArr = pathToArray(path);
+    const secondToLastIndex = pathArr.length - 2;
+    // Toggle One
+    if (pathArr[secondToLastIndex] !== '*') {
+        return set(src, path, !(get(src, pathArr)));
+    }
+    // Toggle All
+    const newPath = pathArr.slice(0, secondToLastIndex);
+    const curVal = get(src, newPath);
+    const field = pathArr[secondToLastIndex + 1];
+    let newVal;
+    if (isArray(curVal)) {
+        newVal = curVal.map(i => ({ ...i, [field]: !i[field] }));
+    } else if (isObject(curVal)) {
+        newVal = Object.keys(curVal).reduce((result, k) => {
+            return Object.assign({}, result, {
+                [k]: {
+                    ...curVal[k],
+                    [field]: !curVal[k][field],
+                },
+            });
+        }, {});
+    } else {
+        return src;
+    }
+    return set(src, newPath, newVal);
 }
 
 /**
