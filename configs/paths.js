@@ -1,9 +1,8 @@
+const fs = require('fs');
 const path = require('path');
 
-function resolveApp(relativePath) {
-    // process.cwd(): returns the current working directory of the Node.js process.
-    return path.resolve(process.cwd(), relativePath);
-}
+const appDirectory = fs.realpathSync(process.cwd());
+const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 
 module.exports = {
     // files
@@ -11,6 +10,7 @@ module.exports = {
     appTemplate: resolveApp('configs/index.html'), // TODO: move index, favicon.icon to another directory
     appFavicon: resolveApp('configs/favicon.ico'),
     packageJSON: resolveApp('package.json'),
+    dotenv: resolveApp('.env'),
 
     manifestJSON: 'manifest.json',
     vendorEntryName: 'vendor',
@@ -21,12 +21,12 @@ module.exports = {
     appSrc: resolveApp('app'),
     appBuild: resolveApp('build'),
     appCache: resolveApp('.cache'),
+
+    // TODO: change base on env
     appPublicPath: '/',
+    publicUrl: '',
 
     WEBPACK_CONFIG_VENDOR: resolveApp('configs/webpack.vendor'),
     WEBPACK_CONFIG_DEV: resolveApp('configs/webpack.dev'),
     WEBPACK_CONFIG_PROD: resolveApp('configs/webpack.prod'),
-
-    host: 'localhost',
-    port: '3000',
 };

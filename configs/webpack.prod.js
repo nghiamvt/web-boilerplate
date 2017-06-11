@@ -1,11 +1,12 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
 const WebpackCommonConfig = require('./webpack.common.js');
 
 module.exports = merge(WebpackCommonConfig, {
-    devtool: "source-map",
+    devtool: 'source-map',
     // Don't attempt to continue if there are any errors
     bail: true,
     module: {
@@ -13,31 +14,40 @@ module.exports = merge(WebpackCommonConfig, {
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
+                    fallback: 'style-loader',
                     use: [
-                        "css-loader",
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                importLoaders: 1,
+                                minimize: true,
+                                sourceMap: true,
+                            },
+                        },
                         {
                             loader: 'postcss-loader',
                             options: {
                                 plugins: () => [
-                                    require('autoprefixer')(),
-                                ]
-                            }
-                        }
-                    ]
-                })
+                                    require('postcss-flexbugs-fixes'),
+                                    autoprefixer({
+                                        browsers: [
+                                            '>1%',
+                                            'last 4 versions',
+                                            'Firefox ESR',
+                                            'not ie < 9', // React doesn't support IE8 anyway
+                                        ],
+                                        flexbox: 'no-2009',
+                                    }),
+                                ],
+                            },
+                        },
+                    ],
+                }),
             },
-        ]
+        ],
     },
     plugins: [
-        // The DefinePlugin performs search-and-replace operations on the original source code.
-        // Any occurrence of process.env.NODE_ENV in the imported code is replaced by "production"
-        new webpack.DefinePlugin({
-            'process.env': {
-                'NODE_ENV': JSON.stringify('production')
-            }
-        }),
-        new ExtractTextPlugin("style/[id].[name].[contenthash].css"),
+        new ExtractTextPlugin('style/[id].[name].[contenthash].css'),
         new webpack.optimize.UglifyJsPlugin(),
-    ]
+    ],
 });
