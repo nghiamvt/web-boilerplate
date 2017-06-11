@@ -8,6 +8,7 @@ module.exports = {
     target: 'web',
     entry: [
         'babel-polyfill',
+        'whatwg-fetch',
         paths.mainEntry,
     ],
     output: {

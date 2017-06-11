@@ -86,7 +86,6 @@ function buildClient({ webpackConfigProd }) {
 // ==========================================================
 /**
  * Report build status
- * TODO: show file size here
  */
 function reportBuildStatus() {
     console.info('----\n==> ✅  Building production completed (%dms).', (Date.now() - global.BUILD_STARTED));

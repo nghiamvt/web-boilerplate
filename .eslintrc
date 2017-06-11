@@ -12,11 +12,9 @@
   "extends": ["airbnb"],
   "parser": "babel-eslint",
   "plugins": ["react"],
-  "globals": {
-    "window": true
-  },
   "env": {
-    "jest": true
+    "jest": true,
+    "browser": true
   },
   "rules": {
     "max-len": [1, 120],

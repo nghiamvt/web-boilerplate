@@ -5,5 +5,3 @@
 - React-Router
 - Redux
 - Redux-Saga
-
-# TODO

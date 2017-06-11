@@ -1,8 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import apiAction from './apiAction';
 
-// TODO: test on IE and add polyfill (https://github.com/github/fetch)
-
+// TODO: handle to catch errors
 export default function* callApi(action) {
     const { method, data, endpoint, path } = action;
 
@@ -11,27 +10,26 @@ export default function* callApi(action) {
 
     let respond; // { status, result, error }
     try {
-        const response = yield call(fetch, `http://${window.location.origin}/${endpoint}`, {
+        const response = yield call(fetch, endpoint, {
             method: method || 'GET',
             credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
             body: data ? JSON.stringify(data) : undefined,
         });
-
         const { status } = response;
-        const json = yield response.json();
         if (status >= 200 && status < 300) {
+            const json = yield response.json();
             respond = { status, result: json };
         } else {
             // eslint-disable-next-line
-            console.error(status, json);
-            respond = { status, error: json };
+            console.error('callAPI: ', status, response);
+            respond = { status, error: response.statusText };
         }
         return respond;
-    } catch (e) {
+    } catch (error) {
         // eslint-disable-next-line
-        console.error('callApi: ', e);
-        respond = { error: e };
+        console.error('callAPI: ', error);
+        respond = { error };
         return respond;
     } finally {
         if (path) {
