@@ -1,6 +1,10 @@
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const paths = require('./paths');
 
+const paths = require('./paths');
+const getClientEnvironment = require('./env');
+
+const env = getClientEnvironment();
 const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
@@ -13,24 +17,38 @@ module.exports = {
     output: {
         // dev use “in-memory” files
         filename: '[name].[hash].bundle.js',
-        // We need to give Webpack a path. It does not actually need it,
-        // because files are kept in memory in webpack-dev-server, but an
-        // error will occur if nothing is specified. We use the buildPath
-        // as that points to where the files will eventually be bundled
-        // in production
         path: paths.appBuild,
-        // Webpack uses `publicPath` to determine where the app is being served from.
-        // In development, we always serve from the root. This makes config easier.
-        // Ex: "/" => http://localhost:3000/, "/homepage/" => http://localhost:3000/homepage
         publicPath: paths.appPublicPath,
         pathinfo: !isProduction,
     },
     module: {
         rules: [
+            // "file" loader makes sure those assets end up in the `build` folder.
+            // When you `import` an asset, you get its filename.
+            {
+                exclude: [/\.html$/, /\.(js|jsx)$/, /\.css$/, /\.json$/, /\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+                loader: require.resolve('file-loader'),
+                options: {
+                    name: 'static/media/[name].[hash:8].[ext]',
+                },
+            },
+            // "url" loader works just like "file" loader but it also embeds
+            // assets smaller than specified size as data URLs to avoid requests.
+            {
+                test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+                loader: require.resolve('url-loader'),
+                options: {
+                    limit: 10000,
+                    name: 'static/media/[name].[hash:8].[ext]',
+                },
+            },
             {
                 test: /\.js?$/,
                 loaders: 'babel-loader',
                 exclude: /node_modules/,
+                options: {
+                    cacheDirectory: true,
+                },
             },
         ],
     },
@@ -50,6 +68,9 @@ module.exports = {
             favicon: paths.appFavicon,
             dll: !isProduction && `/.cache/${paths.vendorEntryName}.bundle.js`,
         }),
+        // new InterpolateHtmlPlugin(env.raw), TODO: check this
+        // Makes some environment variables available to the JS code
+        new webpack.DefinePlugin(env.stringified),
     ],
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.

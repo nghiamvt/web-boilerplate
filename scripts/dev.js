@@ -2,23 +2,15 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const clearConsole = require('react-dev-utils/clearConsole');
-
 const chalk = require('chalk');
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
 const paths = require('../configs/paths');
-
-prepareToBuild()
-    .then(buildVendors)
-    .then(buildClient)
-    .then(startDevServer)
-    .catch((err) => {
-        console.error(new Error(err));
-        process.exit(1);
-    });
-
+const common = require('../configs/common');
+// Ensure environment variables are read.
+require('../configs/env');
 
 // ==========================================================
 /**
@@ -27,6 +19,8 @@ prepareToBuild()
  */
 function prepareToBuild() {
     return new Promise((resolve) => {
+        common.rmDir(paths.appCache);
+        fs.mkdirSync(paths.appCache);
         const packageJSON = require(paths.packageJSON);
         const webpackConfigVendor = require(paths.WEBPACK_CONFIG_VENDOR)(paths, packageJSON, webpack);
         resolve({ packageJSON, webpackConfigVendor });
@@ -104,14 +98,14 @@ function buildClient() {
         // recompiling a bundle. WebpackDevServer takes care to pause serving the
         // bundle, so if you refresh, it'll wait instead of serving the old one.
         // "invalid" is short for "bundle invalidated", it doesn't imply any errors.
-        compiler.plugin('invalid', function(fileName) {
+        compiler.plugin('invalid', (fileName) => {
             clearConsole();
             console.log('Compiling...', fileName);
         });
 
         // "done" event fires when Webpack has finished recompiling the bundle.
         // Whether or not you have warnings or errors, you will get this event.
-        compiler.plugin('done', function(stats) {
+        compiler.plugin('done', (stats) => {
             clearConsole();
 
             // We have switched off the default Webpack output in WebpackDevServer
@@ -121,7 +115,7 @@ function buildClient() {
             if (!messages.errors.length && !messages.warnings.length) {
                 console.log(chalk.green('Compiled successfully!'));
                 console.log();
-                console.log('The app is running at: ' + chalk.cyan('http://' + paths.host + ':' + paths.port + '/'));
+                console.log(`The app is running at: http://${process.env.HOST}:${process.env.PORT}/`);
                 console.log();
             }
 
@@ -140,8 +134,8 @@ function buildClient() {
                 messages.warnings.forEach(message => console.warn(message));
                 // Teach some ESLint tricks.
                 console.log('You may use special comments to disable some warnings.');
-                console.log('Use ' + chalk.yellow('// eslint-disable-next-line') + ' to ignore the next line.');
-                console.log('Use ' + chalk.yellow('/* eslint-disable */') + ' to ignore all warnings in a file.');
+                console.log(`Use ${chalk.yellow('// eslint-disable-next-line')} to ignore the next line.`);
+                console.log(`Use ${chalk.yellow('/* eslint-disable */')} to ignore all warnings in a file.`);
             }
         });
 
@@ -158,6 +152,11 @@ function startDevServer({ compiler, webpackConfigDev }) {
             // in the Webpack development configuration. Note that only changes
             // to CSS are currently hot reloaded. JS changes will refresh the browser.
             hot: true,
+            // Enable gzip compression of generated files.
+            compress: true,
+            // Silence WebpackDevServer's own logs since they're generally not useful.
+            // It will still show compile warnings and errors with this setting.
+            clientLogLevel: 'none',
             // Terminal configurations
             // https://webpack.github.io/docs/node.js-api.html#stats
             stats: {
@@ -174,15 +173,21 @@ function startDevServer({ compiler, webpackConfigDev }) {
             // It is important to tell WebpackDevServer to use the same "root" path
             // as we specified in the config. In development, we always serve from /.
             publicPath: webpackConfigDev.output.publicPath,
+            // https://github.com/facebookincubator/create-react-app/issues/293
+            watchOptions: {
+                ignored: /node_modules/,
+            },
             // http://webpack.github.io/docs/webpack-dev-server.html#the-historyapifallback-option
             historyApiFallback: {
                 index: paths.appPublicPath,
+                // See https://github.com/facebookincubator/create-react-app/issues/387.
+                disableDotRule: true,
             },
         });
 
         // We fire up the development server and give notice in the terminal
         // that we are starting the initial bundle
-        server.listen(paths.port, paths.host, (err) => {
+        server.listen(process.env.PORT, process.env.HOST, (err) => {
             if (err) {
                 reject(err);
             }
@@ -190,3 +195,13 @@ function startDevServer({ compiler, webpackConfigDev }) {
         });
     });
 }
+
+
+prepareToBuild()
+    .then(buildVendors)
+    .then(buildClient)
+    .then(startDevServer)
+    .catch((err) => {
+        console.error(new Error(err));
+        process.exit(1);
+    });

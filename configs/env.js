@@ -6,9 +6,6 @@ const paths = require('./paths');
 const dotenvFiles = [
     `${paths.dotenv}.${process.env.NODE_ENV}.local`,
     `${paths.dotenv}.${process.env.NODE_ENV}`,
-    // Don't include `.env.local` for `test` environment
-    // since normally you expect tests to produce the same
-    // results for everyone
     process.env.NODE_ENV !== 'test' && `${paths.dotenv}.local`,
     paths.dotenv,
 ].filter(Boolean);
@@ -24,3 +21,35 @@ dotenvFiles.forEach(dotenvFile => {
         });
     }
 });
+
+// Grab NODE_ENV and REACT_APP_* environment variables and prepare them to be
+// injected into the application via DefinePlugin in Webpack configuration.
+const REACT_APP = /^REACT_APP_/i;
+
+function getClientEnvironment() {
+    const raw = Object.keys(process.env)
+        .filter(key => REACT_APP.test(key))
+        .reduce((env, key) => {
+            return Object.assign({}, env, {
+                [key]: process.env[key],
+            });
+        },
+        {
+            NODE_ENV: process.env.NODE_ENV || 'development',
+            PUBLIC_URL: paths.publicUrl,
+            HOST: process.env.HOST || '0.0.0.0',
+            PORT: parseInt(process.env.PORT) || 3000,
+        });
+    // Stringify all values so we can feed into Webpack DefinePlugin
+    const stringified = {
+        'process.env': Object.keys(raw).reduce((env, key) => {
+            return Object.assign({}, env, {
+                [key]: JSON.stringify(raw[key]),
+            });
+        }, {}),
+    };
+
+    return { raw, stringified };
+}
+
+module.exports = getClientEnvironment;

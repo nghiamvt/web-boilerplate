@@ -9,35 +9,25 @@ const paths = require('../configs/paths');
 global.BUILD_STARTED = Date.now();
 process.env.NODE_ENV = 'production';
 
-prepareToBuild()
-    .then(buildClient)
-    .then(reportBuildStatus)
-    .catch((err) => {
-        console.error(new Error(err));
-        process.exit(1);
-    });
-
 // ==========================================================
 /**
  * Prepare what necessary to build
  * @returns {Promise}
  */
 function prepareToBuild() {
-
-    const removeFolderRecursive = function(path) {
-        if( fs.existsSync(path) ) {
-            fs.readdirSync(path).forEach(function(file){
-                const curPath = path + "/" + file;
-                if(fs.statSync(curPath).isDirectory()) {
+    const removeFolderRecursive = (dir) => {
+        if (fs.existsSync(dir)) {
+            fs.readdirSync(dir).forEach((file) => {
+                const curPath = `${dir}/${file}`;
+                if (fs.statSync(curPath).isDirectory()) {
                     removeFolderRecursive(curPath); // recurse
                 } else { // delete file
                     fs.unlinkSync(curPath);
                 }
             });
-            fs.rmdirSync(path);
+            fs.rmdirSync(dir);
         }
     };
-
 
     return new Promise((resolve) => {
         const webpackConfigProd = require(paths.WEBPACK_CONFIG_PROD);
@@ -91,3 +81,12 @@ function reportBuildStatus() {
     console.info('----\n==> ✅  Building production completed (%dms).', (Date.now() - global.BUILD_STARTED));
     process.exit(0);
 }
+
+
+prepareToBuild()
+    .then(buildClient)
+    .then(reportBuildStatus)
+    .catch((err) => {
+        console.error(new Error(err));
+        process.exit(1);
+    });

@@ -21,12 +21,12 @@ module.exports = {
     appSrc: resolveApp('app'),
     appBuild: resolveApp('build'),
     appCache: resolveApp('.cache'),
+
+    // TODO: change base on env
     appPublicPath: '/',
+    publicUrl: '',
 
     WEBPACK_CONFIG_VENDOR: resolveApp('configs/webpack.vendor'),
     WEBPACK_CONFIG_DEV: resolveApp('configs/webpack.dev'),
     WEBPACK_CONFIG_PROD: resolveApp('configs/webpack.prod'),
-
-    host: 'localhost',
-    port: '3000',
 };
