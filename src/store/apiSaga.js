@@ -13,11 +13,13 @@ export default function* callApi(action) {
         const response = yield call(fetch, endpoint, {
             method: method || 'GET',
             credentials: 'same-origin',
-            headers: { 'Content-Type': 'application/json' },
-            body: data ? JSON.stringify(data) : undefined,
+            headers: {
+                Accept: 'application/json',
+            },
+            body: data ? JSON.stringify(data) : {},
         });
         const { status } = response;
-        if (status >= 200 && status < 300) {
+        if (status === 200) {
             const json = yield response.json();
             respond = { status, result: json };
         } else {
