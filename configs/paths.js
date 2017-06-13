@@ -11,6 +11,7 @@ module.exports = {
     appFavicon: resolveApp('configs/favicon.ico'),
     packageJSON: resolveApp('package.json'),
     dotenv: resolveApp('.env'),
+    yarnLockFile: resolveApp('yarn.lock'),
 
     manifestJSON: 'manifest.json',
     vendorEntryName: 'vendor',
@@ -27,6 +28,7 @@ module.exports = {
     publicUrl: '',
 
     WEBPACK_CONFIG_VENDOR: resolveApp('configs/webpack.vendor'),
+    WEBPACK_CONFIG_SERVER: resolveApp('configs/webpack.server'),
     WEBPACK_CONFIG_DEV: resolveApp('configs/webpack.dev'),
     WEBPACK_CONFIG_PROD: resolveApp('configs/webpack.prod'),
 };
