@@ -1,12 +1,13 @@
 import { SET_DATA } from './dataAction';
 
 export default {
-    preFetch({ path }) {
+    preFetch({ path, status, error }) {
         return SET_DATA({
             path,
             _meta: {
                 isLoading: true,
-                error: false,
+                status,
+                error,
             },
         });
     },
@@ -16,8 +17,8 @@ export default {
             ...result,
             _meta: {
                 isLoading: false,
-                error,
                 status,
+                error,
             },
         });
     },
