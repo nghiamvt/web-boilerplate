@@ -63,7 +63,7 @@
     "postcss-flexbugs-fixes": "^3.0.0",
     "postcss-loader": "^2.0.5",
     "progress-bar-webpack-plugin": "^1.9.3",
-    "react-dev-utils": "^0.5.2",
+    "react-dev-utils": "^3.0.0",
     "style-loader": "^0.17.0",
     "url-loader": "^0.5.8",
     "webpack": "^2.5.1",

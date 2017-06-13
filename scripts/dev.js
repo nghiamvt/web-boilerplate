@@ -1,17 +1,18 @@
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
-const clearConsole = require('react-dev-utils/clearConsole');
 const chalk = require('chalk');
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
 const paths = require('../configs/paths');
-const common = require('../configs/common');
+const clearConsole = require('react-dev-utils/clearConsole');
+const openBrowser = require('react-dev-utils/openBrowser');
+const { choosePort, prepareUrls, createCompiler } = require('react-dev-utils/WebpackDevServerUtils');
+
 // Ensure environment variables are read.
 require('../configs/env');
-
 // ==========================================================
 /**
  * Prepare what necessary to build
@@ -19,8 +20,6 @@ require('../configs/env');
  */
 function prepareToBuild() {
     return new Promise((resolve) => {
-        common.rmDir(paths.appCache);
-        fs.mkdirSync(paths.appCache);
         const packageJSON = require(paths.packageJSON);
         const webpackConfigVendor = require(paths.WEBPACK_CONFIG_VENDOR)(paths, packageJSON, webpack);
         resolve({ packageJSON, webpackConfigVendor });
@@ -82,116 +81,40 @@ function buildVendors({ packageJSON, webpackConfigVendor }) {
     });
 }
 // ==========================================================
-/**
- * The Compiler module of webpack is the main engine that creates a compilation instance
- * with all the options passed through webpack CLI or webpack api or webpack configuration file.
- * @returns {Promise}
- */
-function buildClient() {
+function startDevServer() {
     return new Promise((resolve, reject) => {
+        const DEFAULT_PORT = parseInt(process.env.PORT);
+        const HOST = process.env.HOST;
         const webpackConfigDev = require(paths.WEBPACK_CONFIG_DEV);
-        // "Compiler" is a low-level interface to Webpack.
-        // It lets us listen to some events and provide our own custom messages.
-        const compiler = webpack(webpackConfigDev);
 
-        // "invalid" event fires when you have changed a file, and Webpack is
-        // recompiling a bundle. WebpackDevServer takes care to pause serving the
-        // bundle, so if you refresh, it'll wait instead of serving the old one.
-        // "invalid" is short for "bundle invalidated", it doesn't imply any errors.
-        compiler.plugin('invalid', (fileName) => {
-            clearConsole();
-            console.log('Compiling...', fileName);
-        });
+        choosePort(HOST, DEFAULT_PORT).then((port) => {
+            if (port === null) return;
+            const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
+            const appName = require(paths.packageJSON).name;
+            const urls = prepareUrls(protocol, HOST, port);
 
-        // "done" event fires when Webpack has finished recompiling the bundle.
-        // Whether or not you have warnings or errors, you will get this event.
-        compiler.plugin('done', (stats) => {
-            clearConsole();
+            // Create a webpack compiler that is configured with custom messages.
+            const useYarn = fs.existsSync(paths.yarnLockFile);
+            const compiler = createCompiler(webpack, webpackConfigDev, appName, urls, useYarn);
 
-            // We have switched off the default Webpack output in WebpackDevServer
-            // options so we are going to "massage" the warnings and errors and present
-            // them in a readable focused way.
-            const messages = formatWebpackMessages(stats.toJson({}, true));
-            if (!messages.errors.length && !messages.warnings.length) {
-                console.log(chalk.green('Compiled successfully!'));
-                console.log();
-                console.log(`The app is running at: http://${process.env.HOST}:${process.env.PORT}/`);
-                console.log();
-            }
+            const webpackConfigDevServer = require(paths.WEBPACK_CONFIG_SERVER)(webpackConfigDev, paths);
+            const devServer = new WebpackDevServer(compiler, webpackConfigDevServer);
 
-            // If errors exist, only show errors.
-            if (messages.errors.length) {
-                console.log(chalk.red('Failed to compile.'));
-                console.log();
-                // messages.errors.forEach(message => console.error(message));
-                reject(messages.errors);
-            }
+            devServer.listen(port, HOST, (err) => {
+                if (err) {
+                    reject(err);
+                }
+                clearConsole();
+                console.log(chalk.cyan('Starting the development server...\n'));
+                resolve();
+            });
 
-            // Show warnings if no errors were found.
-            if (messages.warnings.length) {
-                console.log(chalk.yellow('Compiled with warnings.'));
-                console.log();
-                messages.warnings.forEach(message => console.warn(message));
-                // Teach some ESLint tricks.
-                console.log('You may use special comments to disable some warnings.');
-                console.log(`Use ${chalk.yellow('// eslint-disable-next-line')} to ignore the next line.`);
-                console.log(`Use ${chalk.yellow('/* eslint-disable */')} to ignore all warnings in a file.`);
-            }
-        });
-
-        resolve({ compiler, webpackConfigDev });
-    });
-}
-// ==========================================================
-function startDevServer({ compiler, webpackConfigDev }) {
-    return new Promise((resolve, reject) => {
-        const server = new WebpackDevServer(compiler, {
-            // Enable hot reloading server. It will provide /sockjs-node/ endpoint
-            // for the WebpackDevServer client so it can learn when the files were
-            // updated. The WebpackDevServer client is included as an entry point
-            // in the Webpack development configuration. Note that only changes
-            // to CSS are currently hot reloaded. JS changes will refresh the browser.
-            hot: true,
-            // Enable gzip compression of generated files.
-            compress: true,
-            // Silence WebpackDevServer's own logs since they're generally not useful.
-            // It will still show compile warnings and errors with this setting.
-            clientLogLevel: 'none',
-            // Terminal configurations
-            // https://webpack.github.io/docs/node.js-api.html#stats
-            stats: {
-                assets: true,
-                assetsSort: false,
-                colors: true,
-                version: true,
-                hash: false,
-                timings: true,
-                chunks: false,
-                children: false, // Child html-webpack-plugin for "index.html"
-            },
-            contentBase: webpackConfigDev.output.outputPath,
-            // It is important to tell WebpackDevServer to use the same "root" path
-            // as we specified in the config. In development, we always serve from /.
-            publicPath: webpackConfigDev.output.publicPath,
-            // https://github.com/facebookincubator/create-react-app/issues/293
-            watchOptions: {
-                ignored: /node_modules/,
-            },
-            // http://webpack.github.io/docs/webpack-dev-server.html#the-historyapifallback-option
-            historyApiFallback: {
-                index: paths.appPublicPath,
-                // See https://github.com/facebookincubator/create-react-app/issues/387.
-                disableDotRule: true,
-            },
-        });
-
-        // We fire up the development server and give notice in the terminal
-        // that we are starting the initial bundle
-        server.listen(process.env.PORT, process.env.HOST, (err) => {
-            if (err) {
-                reject(err);
-            }
-            resolve();
+            ['SIGINT', 'SIGTERM'].forEach((sig) => {
+                process.on(sig, () => {
+                    devServer.close();
+                    process.exit();
+                });
+            });
         });
     });
 }
@@ -199,7 +122,6 @@ function startDevServer({ compiler, webpackConfigDev }) {
 
 prepareToBuild()
     .then(buildVendors)
-    .then(buildClient)
     .then(startDevServer)
     .catch((err) => {
         console.error(new Error(err));

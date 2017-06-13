@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const progressBarPlugin = require('progress-bar-webpack-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
 const paths = require('./paths');
@@ -44,7 +44,7 @@ module.exports = merge(WebpackCommonConfig, {
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NamedModulesPlugin(), // prints more readable module names in the browser console on HMR updates
-        new progressBarPlugin(), //eslint-disable-line
+        new ProgressBarPlugin(),
         (() => {
             try {
                 const manifestFile = path.join(paths.appCache, `${paths.vendorEntryName}_${paths.manifestJSON}`);
