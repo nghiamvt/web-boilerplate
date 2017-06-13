@@ -1,5 +1,5 @@
+import * as immutable from 'utils/immutable';
 import defaultState from './defaultState';
-import * as immutable from '../utils/immutable';
 import { dataActionConst } from './dataAction';
 
 export default function dataReducer(state = defaultState, action) {

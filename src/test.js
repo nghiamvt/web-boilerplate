@@ -1,5 +1,5 @@
 import React from 'react';
-import './style/index.css';
+import 'style/index.css';
 
 export default function Test() {
     return (

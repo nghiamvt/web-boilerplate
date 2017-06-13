@@ -1,4 +1,4 @@
-import { SET_DATA, REMOVE_DATA, TOGGLE_DATA } from '../../store/dataAction';
+import { SET_DATA, REMOVE_DATA, TOGGLE_DATA } from 'store/dataAction';
 
 export const addTodo = (text) => {
     const id = Math.floor(Date.now());

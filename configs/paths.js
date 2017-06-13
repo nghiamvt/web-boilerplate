@@ -18,7 +18,7 @@ module.exports = {
 
     // directories
     appRoot: resolveApp(''),
-    appSrc: resolveApp('app'),
+    appSrc: resolveApp('src'),
     appBuild: resolveApp('build'),
     appCache: resolveApp('.cache'),
 

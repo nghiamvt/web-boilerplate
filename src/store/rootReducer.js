@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
+import { reduceReducers } from 'utils/store';
 
-import { reduceReducers } from '../utils/store';
 import dataReducer from './dataReducer';
 import defaultState from './defaultState';
 

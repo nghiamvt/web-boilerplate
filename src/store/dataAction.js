@@ -1,6 +1,6 @@
-import createAction from '../utils/createAction';
-import invariant from '../utils/invariant';
-import { isEmpty } from '../utils/is';
+import createAction from 'utils/createAction';
+import invariant from 'utils/invariant';
+import { isEmpty } from 'utils/is';
 
 const dataPayloadCreator = ({ _path, ...payload }) => payload;
 const dataMetaCreator = data => {

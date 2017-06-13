@@ -16,6 +16,13 @@
     "jest": true,
     "browser": true
   },
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "configs/webpack.common.js"
+      }
+    }
+  },
   "rules": {
     "max-len": [1, 120],
     "indent": [1, 4, { "SwitchCase": 1 }],
