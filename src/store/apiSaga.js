@@ -1,8 +1,17 @@
 import { call, put } from 'redux-saga/effects';
 import apiAction from './apiAction';
 
-function* callApi({ _path, endpoint, method, data, options }) {
-    if (!endpoint) throw new Error('Endpoint required for ajax call');
+/**
+ * Call API
+ * @param _path The location of Store which will be updated
+ * @param url The Url to call
+ * @param method POST/GET (apiGet/apiPost)
+ * @param data The data sent to server
+ * @param options Use to customize fetch's options such as headers, body or credentials
+ * @returns {*}
+ */
+function* callApi({ _path, url, method, data, options }) {
+    if (!url) throw new Error('url required for ajax call');
     if (_path) yield put(apiAction.preFetch({ _path }));
     const fetchOptions = Object.assign({}, {
         credentials: 'same-origin',
@@ -13,7 +22,7 @@ function* callApi({ _path, endpoint, method, data, options }) {
     }, options, { method });
     let respond; // { status, result, error }
     try {
-        const response = yield call(fetch, endpoint, fetchOptions);
+        const response = yield call(fetch, url, fetchOptions);
         const { status } = response;
         if (status === 200) {
             const json = yield response.json();
