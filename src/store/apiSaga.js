@@ -1,9 +1,9 @@
 import { call, put } from 'redux-saga/effects';
 import apiAction from './apiAction';
 
-function* callApi({ path, endpoint, method, data, options }) {
+function* callApi({ _path, endpoint, method, data, options }) {
     if (!endpoint) throw new Error('Endpoint required for ajax call');
-    if (path) yield put(apiAction.preFetch({ path }));
+    if (_path) yield put(apiAction.preFetch({ _path }));
     const fetchOptions = Object.assign({}, {
         credentials: 'same-origin',
         headers: {
@@ -28,8 +28,8 @@ function* callApi({ path, endpoint, method, data, options }) {
         respond = { error };
         return respond;
     } finally {
-        if (path) {
-            yield put(apiAction.postFetch({ path, ...respond }));
+        if (_path) {
+            yield put(apiAction.postFetch({ _path, ...respond }));
         }
     }
 }

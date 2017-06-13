@@ -1,20 +1,18 @@
 import { SET_DATA } from './dataAction';
 
 export default {
-    preFetch({ path, status, error }) {
+    preFetch({ _path }) {
         return SET_DATA({
-            path,
+            _path,
             _meta: {
                 isLoading: true,
-                status,
-                error,
             },
         });
     },
-    postFetch({ path, status, result, error }) {
+    postFetch({ _path, status, result, error }) {
         return SET_DATA({
-            path,
             ...result,
+            _path,
             _meta: {
                 isLoading: false,
                 status,
