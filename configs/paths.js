@@ -22,6 +22,7 @@ module.exports = {
     appSrc: resolveApp('src'),
     appBuild: resolveApp('build'),
     appCache: resolveApp('.cache'),
+    appPublic: resolveApp('public'),
 
     // TODO: change base on env
     appPublicPath: '/',

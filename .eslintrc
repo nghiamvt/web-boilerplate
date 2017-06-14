@@ -28,7 +28,7 @@
     "indent": [1, 4, { "SwitchCase": 1 }],
     "no-plusplus": 0,
     "no-underscore-dangle": 0,
-    "no-console": [1, { "allow": ["warn", "error"] }],
+    "no-console": [1, { "allow": ["info", "warn", "error"] }],
     "radix": [1, "as-needed"],
     "arrow-parens": 0,
     "arrow-body-style": 0,

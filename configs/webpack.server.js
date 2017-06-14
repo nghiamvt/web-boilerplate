@@ -1,4 +1,6 @@
-module.exports = (webpackConfigDev, paths) => {
+const paths = require('./paths');
+
+module.exports = ({ webpackConfigDev, proxyConfig, allowedHost }) => {
     return {
         // Enable hot reloading server. It will provide /sockjs-node/ endpoint
         // for the WebpackDevServer client so it can learn when the files were
@@ -8,6 +10,8 @@ module.exports = (webpackConfigDev, paths) => {
         hot: true,
         // Enable gzip compression of generated files.
         compress: true,
+        // WebpackDevServer is noisy by default so using messages from `compiler.plugin` instead.
+        quiet: false,
         // Silence WebpackDevServer's own logs since they're generally not useful.
         // It will still show compile warnings and errors with this setting.
         clientLogLevel: 'none',
@@ -31,6 +35,8 @@ module.exports = (webpackConfigDev, paths) => {
         watchOptions: {
             ignored: /node_modules/,
         },
+        proxy: proxyConfig,
+        public: allowedHost,
         // http://webpack.github.io/docs/webpack-dev-server.html#the-historyapifallback-option
         historyApiFallback: {
             index: paths.appPublicPath,
