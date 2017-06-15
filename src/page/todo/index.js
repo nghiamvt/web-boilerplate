@@ -17,13 +17,15 @@ const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(TodoActions, dispatch),
 });
 
-function TodoMVC({ todo, actions }) {
-    return (
-        <div className="todoapp">
-            <Header addTodo={actions.addTodo} />
-            <MainSection todos={todo} actions={actions} />
-        </div>
-    );
+class TodoMVC extends React.Component {
+    render() {
+        return (
+            <div className="todoapp">
+                <Header addTodo={this.props.actions.addTodo} />
+                <MainSection todos={this.props.todo} actions={this.props.actions} />
+            </div>
+        );
+    }
 }
 
 TodoMVC.propTypes = {

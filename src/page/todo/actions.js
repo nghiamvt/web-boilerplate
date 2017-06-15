@@ -38,6 +38,7 @@ export const completeAll = () => {
 
 export function clearCompleted(id) {
     return REMOVE_DATA({
-        _path: `todo.${id[0]}`,
+        _path: 'todo',
+        _ids: id
     });
 }
