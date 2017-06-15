@@ -1,4 +1,4 @@
-import { isArray, isFunction, isNumber, isObject } from './is';
+import { isArray, isFunction, isNumber, isObject, isEmpty } from './is';
 
 /**
  * Convert "123" => 123 ({String} => {Number})
@@ -30,7 +30,7 @@ function getArrayIndex(head, obj) {
 
 
 /**
- * Set a value by a dot path.
+ * Set a value. Check merge for multiple values
  * @param src The object to evaluate.
  * @param path The path to be set.
  * @param value The value to set.
@@ -70,7 +70,25 @@ export function get(src, path) {
  * If target container is undefined, nothing is deleted.
  * @param src The object to evaluate.
  * @param path The path to the property or index that should be deleted.
+ * @param _ids The array of id which will be deleted
+ * @param callback The callback to handle value
  */
+// TODO: rename, re-write unit test, check immutable
+export function remove2(src, path, _ids, callback) {
+    const handleVal = !isEmpty(callback) ? callback : (val) => {
+        if (isArray(val)) {
+            return val.filter((v, i) => !_ids.includes(i));
+        } else if (isObject(val)) {
+            const idStrList = _ids.map(String);
+            return Object.keys(val).reduce((result, k) => {
+                return !idStrList.includes(k) ? { ...result, [k]: val[k] } : result;
+            }, {});
+        }
+        return val;
+    }
+    return set(src, path, handleVal);
+}
+
 export function remove(src, path) {
     const pathArr = pathToArray(path);
 
@@ -86,7 +104,6 @@ export function remove(src, path) {
             clone[curPath] = deleteImmutable(obj[curPath], pathList.slice(1));
             return clone;
         }
-
         if (isArr) {
             clone = [].concat(obj.slice(0, curPath), obj.slice(curPath + 1));
         } else {
@@ -95,45 +112,21 @@ export function remove(src, path) {
         }
         return clone;
     };
-
     return deleteImmutable(src, pathArr);
 }
 
 /**
- * Toggles a value or all value
+ * Toggles a value
  * Be careful with strings as target value, as "true" and "false" will toggle to false, but "0" will toggle to true.
  * Here is what Javascript considers false:  0, -0, null, false, NaN, undefined, and the empty string ("")
  * @param src The object to evaluate.
  * @param path The path to the value.
+ * @param callback The callback to handle val.
  */
 
-export function toggle(src, path) {
-    const pathArr = pathToArray(path);
-    const secondToLastIndex = pathArr.length - 2;
-    // Toggle One
-    if (pathArr[secondToLastIndex] !== '*') {
-        return set(src, path, !(get(src, pathArr)));
-    }
-    // Toggle All
-    const newPath = pathArr.slice(0, secondToLastIndex);
-    const curVal = get(src, newPath);
-    const field = pathArr[secondToLastIndex + 1];
-    let newVal;
-    if (isArray(curVal)) {
-        newVal = curVal.map(i => ({ ...i, [field]: !i[field] }));
-    } else if (isObject(curVal)) {
-        newVal = Object.keys(curVal).reduce((result, k) => {
-            return Object.assign({}, result, {
-                [k]: {
-                    ...curVal[k],
-                    [field]: !curVal[k][field],
-                },
-            });
-        }, {});
-    } else {
-        return src;
-    }
-    return set(src, newPath, newVal);
+export function toggle(src, path, callback) {
+    const handleVal = !isEmpty(callback) ? callback : (v) => !v;
+    return set(src, path, handleVal);
 }
 
 /**
