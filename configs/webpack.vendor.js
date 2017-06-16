@@ -1,25 +1,28 @@
 const path = require('path');
+const webpack = require('webpack');
+const paths = require('./paths');
 
-module.exports = (paths, packageJSON, webpack) => {
-    return {
-        entry: {
-            // [paths.vendorsEntryName] = [name]
-            [paths.vendorEntryName]: (() => {
-                // get name of all dependencies package
-                return Reflect.ownKeys(packageJSON.dependencies);
-            })(),
-        },
-        output: {
-            path: paths.appCache,
-            filename: '[name].bundle.js',
-            // name of the global var
-            library: '[name]_[hash]',
-        },
-        plugins: [
-            new webpack.DllPlugin({
-                path: path.join(paths.appCache, `[name]_${paths.manifestJSON}`),
-                name: '[name]_[hash]', //  Keep the name consistent with output.library
-            }),
-        ],
-    };
+const packageJSON = require(paths.packageJSON);
+
+module.exports = {
+    entry: {
+        vendor: Object.keys(packageJSON.dependencies), // vendor = [name]
+    },
+    output: {
+        path: paths.appCache,
+        filename: paths.DLL_FILE_FORMAT,
+        library: '[name]_[hash]',
+    },
+    plugins: [
+        new webpack.DllPlugin({
+            // The path to the manifest file which maps between
+            // modules included in a bundle and the internal IDs
+            // within that bundle.
+            path: path.join(paths.appCache, paths.DLL_MANIFEST_FILE_FORMAT),
+            // The name of the global variable which the library's
+            // require function has been assigned to. This must match the
+            // output.library option above.
+            name: '[name]_[hash]',
+        }),
+    ],
 };

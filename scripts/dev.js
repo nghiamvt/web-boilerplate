@@ -59,7 +59,7 @@ function buildVendors({ packageJSON }) {
         shouldBuildVendors = true;
     }
 
-    const webpackConfigVendor = require(paths.WEBPACK_CONFIG_VENDOR)(paths, packageJSON, webpack);
+    const webpackConfigVendor = require(paths.WEBPACK_CONFIG_VENDOR);
 
     return new Promise((resolve, reject) => {
         if (!shouldBuildVendors || !packageJSON.dependencies) {
@@ -106,7 +106,9 @@ function startDevServer({ packageJSON }) {
             console.info(chalk.cyan('\nStarting the development server...'));
             const devServer = new WebpackDevServer(compiler, webpackConfigDevServer);
             devServer.listen(port, HOST, (err) => {
-                if (err) { reject(err); }
+                if (err) {
+                    reject(err);
+                }
                 resolve();
             });
 
@@ -122,9 +124,9 @@ function startDevServer({ packageJSON }) {
 
 
 prepareToBuild()
-    // .then(buildVendors)
+    .then(buildVendors)
     .then(startDevServer)
     .catch((err) => {
-        console.error(new Error(err));
+        console.error('err :', err);
         process.exit(1);
     });
