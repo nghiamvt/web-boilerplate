@@ -1,4 +1,3 @@
-const path = require('path');
 const webpack = require('webpack');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 
@@ -10,19 +9,21 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
     target: 'web',
-    // entry: [
-    //     'babel-polyfill',
-    //     'whatwg-fetch',
-    //     paths.mainEntry,
-    // ],
+    entry: [
+        !isProduction && 'react-hot-loader/patch',
+        !isProduction && `webpack-dev-server/client?http://${process.env.HOST}:${process.env.PORT}`,
+        !isProduction && 'webpack/hot/only-dev-server',
+        'babel-polyfill',
+        'whatwg-fetch',
+        paths.mainEntry,
+    ],
     output: {
         path: paths.appBuild,
         pathinfo: !isProduction,
         // dev use “in-memory” files
-        filename: 'static/js/[name].[hash].bundle.js',
-        chunkFilename: 'static/js/[name].chunk.js',
+        filename: 'js/app.[hash:8].js',
+        // chunkFilename: 'static/js/[name].chunk.js',
         publicPath: paths.appPublicPath, // TODO: review
-        devtoolModuleFilenameTemplate: info => path.relative(paths.appSrc, info.absoluteResourcePath),
     },
     resolve: {
         extensions: ['.js', '.json'],

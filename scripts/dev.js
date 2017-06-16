@@ -5,8 +5,8 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
-const common = require('../configs/common');
 const paths = require('../configs/paths');
+const { mkDir } = require('../configs/common');
 // const clearConsole = require('react-dev-utils/clearConsole');
 // const openBrowser = require('react-dev-utils/openBrowser');
 const { choosePort, prepareUrls, createCompiler, prepareProxy } = require('react-dev-utils/WebpackDevServerUtils');
@@ -20,8 +20,7 @@ require('../configs/env');
  */
 function prepareToBuild() {
     return new Promise((resolve) => {
-        common.rmDir(paths.appCache);
-        fs.mkdirSync(paths.appCache);
+        mkDir(paths.appDev);
         const packageJSON = require(paths.packageJSON);
         resolve({ packageJSON });
     });
@@ -48,14 +47,14 @@ function buildVendors({ packageJSON }) {
         })).digest('hex');
 
     // Check vendor bundle hash if changed
-    const vendorHashFilePath = path.join(paths.appCache, paths.vendorHashFileName);
+    const vendorHashFilePath = path.join(paths.appDev, paths.vendorHashFileName);
     try {
         if (fs.existsSync(vendorHashFilePath)) {
             const prevVendorsHash = fs.readFileSync(vendorHashFilePath, 'utf8');
             shouldBuildVendors = (prevVendorsHash !== currentVendorsHash);
         }
     } catch (e) {
-        console.error(e);
+        console.error('build Vendors: ', e);
         shouldBuildVendors = true;
     }
 
@@ -93,13 +92,12 @@ function startDevServer({ packageJSON }) {
         choosePort(HOST, DEFAULT_PORT).then((port) => {
             if (port === null) return;
             const urls = prepareUrls(protocol, HOST, port);
-            const proxyConfig = prepareProxy(proxySetting, paths.appPublic);
+            const proxyConfig = prepareProxy(proxySetting, paths.appDev);
 
             // Create a webpack compiler that is configured with custom messages.
             const compiler = createCompiler(webpack, webpackConfigDev, appName, urls, useYarn);
 
             const webpackConfigDevServer = require(paths.WEBPACK_CONFIG_SERVER)({
-                webpackConfigDev,
                 proxyConfig,
                 allowedHost: urls.lanUrlForConfig,
             });

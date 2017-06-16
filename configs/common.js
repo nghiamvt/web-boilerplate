@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 const removeFolderRecursive = (dir) => {
     if (fs.existsSync(dir)) {
@@ -14,6 +15,17 @@ const removeFolderRecursive = (dir) => {
     }
 }
 
+const createFolderRecursive = (dir) => {
+    dir.split(path.sep).reduce((currentPath, folder) => {
+        const newPath = currentPath + folder + path.sep;
+        if (!fs.existsSync(newPath)) {
+            fs.mkdirSync(newPath);
+        }
+        return newPath;
+    }, '');
+}
+
 module.exports = {
     rmDir: removeFolderRecursive,
+    mkDir: createFolderRecursive,
 }
