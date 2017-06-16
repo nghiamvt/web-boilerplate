@@ -5,6 +5,7 @@
   "main": "index.js",
   "author": "Nghia Mai <mvtnghia@gmail.com>",
   "license": "MIT",
+  "proxy": "http://www.mocky.io/",
   "scripts": {
     "eslint": "eslint src",
     "tdev": "node_modules/.bin/webpack --config ./configs/webpack.dev.js",

@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
+const common = require('../configs/common');
 const paths = require('../configs/paths');
 // const clearConsole = require('react-dev-utils/clearConsole');
 // const openBrowser = require('react-dev-utils/openBrowser');
@@ -19,6 +20,8 @@ require('../configs/env');
  */
 function prepareToBuild() {
     return new Promise((resolve) => {
+        common.rmDir(paths.appCache);
+        fs.mkdirSync(paths.appCache);
         const packageJSON = require(paths.packageJSON);
         resolve({ packageJSON });
     });
@@ -100,7 +103,6 @@ function startDevServer({ packageJSON }) {
                 proxyConfig,
                 allowedHost: urls.lanUrlForConfig,
             });
-
             console.info(chalk.cyan('\nStarting the development server...'));
             const devServer = new WebpackDevServer(compiler, webpackConfigDevServer);
             devServer.listen(port, HOST, (err) => {
@@ -120,7 +122,7 @@ function startDevServer({ packageJSON }) {
 
 
 prepareToBuild()
-    .then(buildVendors)
+    // .then(buildVendors)
     .then(startDevServer)
     .catch((err) => {
         console.error(new Error(err));

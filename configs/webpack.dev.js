@@ -14,6 +14,8 @@ module.exports = merge(WebpackCommonConfig, {
         'react-hot-loader/patch',
         `webpack-dev-server/client?http://${process.env.HOST}:${process.env.PORT}`,
         'webpack/hot/only-dev-server',
+        'babel-polyfill',
+        paths.mainEntry,
     ],
     module: {
         rules: [
@@ -45,17 +47,17 @@ module.exports = merge(WebpackCommonConfig, {
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NamedModulesPlugin(), // prints more readable module names in the browser console on HMR updates
         new ProgressBarPlugin(),
-        (() => {
-            try {
-                const manifestFile = path.join(paths.appCache, `${paths.vendorEntryName}_${paths.manifestJSON}`);
-                return new webpack.DllReferencePlugin({
-                    context: '.',
-                    manifest: require(manifestFile),
-                });
-            } catch (e) {
-                return { apply: () => null };
-            }
-        })(),
+        // (() => {
+        //     try {
+        //         const manifestFile = path.join(paths.appCache, `${paths.vendorEntryName}_${paths.manifestJSON}`);
+        //         return new webpack.DllReferencePlugin({
+        //             context: '.',
+        //             manifest: require(manifestFile),
+        //         });
+        //     } catch (e) {
+        //         return { apply: () => null };
+        //     }
+        // })(),
     ],
     // Turn off performance hints during development because we don't do any
     // splitting or minification in interest of speed. These warnings become

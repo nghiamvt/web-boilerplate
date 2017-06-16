@@ -1,5 +1,7 @@
+const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
@@ -9,17 +11,26 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
     target: 'web',
-    entry: [
-        'babel-polyfill',
-        'whatwg-fetch',
-        paths.mainEntry,
-    ],
+    // entry: [
+    //     'babel-polyfill',
+    //     'whatwg-fetch',
+    //     paths.mainEntry,
+    // ],
     output: {
-        // dev use “in-memory” files
-        filename: '[name].[hash].bundle.js',
         path: paths.appBuild,
-        publicPath: paths.appPublicPath,
         pathinfo: !isProduction,
+        // dev use “in-memory” files
+        filename: 'static/js/[name].[hash].bundle.js',
+        chunkFilename: 'static/js/[name].chunk.js',
+        publicPath: paths.appPublicPath, // TODO: review
+        devtoolModuleFilenameTemplate: info => path.relative(paths.appSrc, info.absoluteResourcePath),
+    },
+    resolve: {
+        extensions: ['.js', '.json'],
+        modules: [
+            'node_modules',
+            paths.appSrc,
+        ],
     },
     module: {
         rules: [
@@ -27,7 +38,7 @@ module.exports = {
             // When you `import` an asset, you get its filename.
             {
                 exclude: [/\.html$/, /\.(js|jsx)$/, /\.css$/, /\.json$/, /\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-                loader: require.resolve('file-loader'),
+                loader: 'file-loader',
                 options: {
                     name: 'static/media/[name].[hash:8].[ext]',
                 },
@@ -36,7 +47,7 @@ module.exports = {
             // assets smaller than specified size as data URLs to avoid requests.
             {
                 test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-                loader: require.resolve('url-loader'),
+                loader: 'url-loader',
                 options: {
                     limit: 10000,
                     name: 'static/media/[name].[hash:8].[ext]',
@@ -44,28 +55,20 @@ module.exports = {
             },
             {
                 test: /\.js?$/,
+                include: paths.appSrc,
                 loaders: 'babel-loader',
-                exclude: /node_modules/,
                 options: {
                     cacheDirectory: true,
                 },
             },
         ],
     },
-    resolve: {
-        extensions: ['.js', '.json', '.css'],
-        modules: [
-            'node_modules',
-            paths.appSrc,
-        ],
-    },
     plugins: [
+        new InterpolateHtmlPlugin(env.raw),
         // https://github.com/jantimon/html-webpack-plugin
         new HtmlWebpackPlugin({
             inject: true,
-            title: 'React Web Boilerplate',
-            template: paths.appTemplate,
-            favicon: paths.appFavicon,
+            template: paths.appHtml,
             dll: !isProduction && `/.cache/${paths.vendorEntryName}.bundle.js`,
         }),
         // new InterpolateHtmlPlugin(env.raw), TODO: check this

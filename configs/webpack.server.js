@@ -1,20 +1,20 @@
 const paths = require('./paths');
 
+const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
+const host = process.env.HOST || '0.0.0.0';
+
 module.exports = ({ webpackConfigDev, proxyConfig, allowedHost }) => {
     return {
-        // Enable hot reloading server. It will provide /sockjs-node/ endpoint
-        // for the WebpackDevServer client so it can learn when the files were
-        // updated. The WebpackDevServer client is included as an entry point
-        // in the Webpack development configuration. Note that only changes
-        // to CSS are currently hot reloaded. JS changes will refresh the browser.
-        hot: true,
-        // Enable gzip compression of generated files.
+        disableHostCheck: !proxyConfig,
         compress: true,
-        // WebpackDevServer is noisy by default so using messages from `compiler.plugin` instead.
-        quiet: false,
-        // Silence WebpackDevServer's own logs since they're generally not useful.
-        // It will still show compile warnings and errors with this setting.
         clientLogLevel: 'none',
+        contentBase: paths.appPublic,
+        watchContentBase: true,
+        hot: true,
+        // It is important to tell WebpackDevServer to use the same "root" path
+        // as we specified in the config. In development, we always serve from /.
+        publicPath: webpackConfigDev.output.publicPath,
+        quiet: false,
         // Terminal configurations
         // https://webpack.github.io/docs/node.js-api.html#stats
         stats: {
@@ -27,21 +27,19 @@ module.exports = ({ webpackConfigDev, proxyConfig, allowedHost }) => {
             chunks: false,
             children: false, // Child html-webpack-plugin for "index.html"
         },
-        contentBase: webpackConfigDev.output.outputPath,
-        // It is important to tell WebpackDevServer to use the same "root" path
-        // as we specified in the config. In development, we always serve from /.
-        publicPath: webpackConfigDev.output.publicPath,
         // https://github.com/facebookincubator/create-react-app/issues/293
         watchOptions: {
             ignored: /node_modules/,
         },
-        proxy: proxyConfig,
-        public: allowedHost,
+        https: protocol === 'https',
+        host,
         // http://webpack.github.io/docs/webpack-dev-server.html#the-historyapifallback-option
         historyApiFallback: {
             index: paths.appPublicPath,
             // See https://github.com/facebookincubator/create-react-app/issues/387.
             disableDotRule: true,
         },
+        public: allowedHost,
+        proxy: proxyConfig,
     };
 };

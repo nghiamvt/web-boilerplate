@@ -2,7 +2,6 @@ const path = require('path');
 
 module.exports = (paths, packageJSON, webpack) => {
     return {
-        target: 'web',
         entry: {
             // [paths.vendorsEntryName] = [name]
             [paths.vendorEntryName]: (() => {

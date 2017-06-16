@@ -7,6 +7,7 @@ const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 module.exports = {
     // files
     mainEntry: resolveApp('src/index.js'),
+    appHtml: resolveApp('public/index.html'),
     appTemplate: resolveApp('configs/index.html'), // TODO: move index, favicon.icon to another directory
     appFavicon: resolveApp('configs/favicon.ico'),
     packageJSON: resolveApp('package.json'),
