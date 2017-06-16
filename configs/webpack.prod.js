@@ -2,7 +2,9 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const paths = require('./paths');
 const WebpackCommonConfig = require('./webpack.common.js');
 
 module.exports = merge(WebpackCommonConfig, {
@@ -48,6 +50,11 @@ module.exports = merge(WebpackCommonConfig, {
     },
     plugins: [
         new ExtractTextPlugin('style/[id].[name].[contenthash].css'),
+        // https://github.com/jantimon/html-webpack-plugin
+        new HtmlWebpackPlugin({
+            inject: true,
+            template: paths.appHtml,
+        }),
         new webpack.optimize.UglifyJsPlugin(),
     ],
 });

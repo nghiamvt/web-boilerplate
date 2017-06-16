@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 
 const paths = require('./paths');
@@ -65,12 +64,6 @@ module.exports = {
     },
     plugins: [
         new InterpolateHtmlPlugin(env.raw),
-        // https://github.com/jantimon/html-webpack-plugin
-        new HtmlWebpackPlugin({
-            inject: true,
-            template: paths.appHtml,
-            dll: !isProduction && `/.cache/${paths.vendorEntryName}.bundle.js`,
-        }),
         // new InterpolateHtmlPlugin(env.raw), TODO: check this
         // Makes some environment variables available to the JS code
         new webpack.DefinePlugin(env.stringified),

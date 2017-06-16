@@ -36,8 +36,10 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    <% if (htmlWebpackPlugin.options.dll) { %>
-    <script src="<%= htmlWebpackPlugin.options.dll %>"></script>
-    <% } %>
+    <!--<% if (htmlWebpackPlugin.options.dll && htmlWebpackPlugin.options.dll.paths) { %>-->
+      <!--<% htmlWebpackPlugin.options.dll.paths.forEach(function (path) { %>-->
+        <!--<script src="<%= path %>"></script>-->
+      <!--<% }) %>-->
+    <!--<% } %>-->
   </body>
 </html>

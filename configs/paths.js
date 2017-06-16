@@ -14,9 +14,10 @@ module.exports = {
     dotenv: resolveApp('.env'),
     yarnLockFile: resolveApp('yarn.lock'),
 
-    manifestJSON: 'manifest.json',
-    vendorEntryName: 'vendor',
     vendorHashFileName: 'vendor_hash',
+    DLL_NAME_FORMAT: '[name]_dll',
+    DLL_FILE_FORMAT: '[name].dll.js',
+    DLL_MANIFEST_FILE_FORMAT: '[name]-manifest.json',
 
     // directories
     appRoot: resolveApp(''),
