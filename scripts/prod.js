@@ -1,9 +1,9 @@
-const fs = require('fs');
 const chalk = require('chalk');
 const webpack = require('webpack');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 
 const paths = require('../configs/paths');
+const { mkDir, rmDir } = require('../configs/common');
 
 // start build time
 global.BUILD_STARTED = Date.now();
@@ -15,25 +15,12 @@ process.env.NODE_ENV = 'production';
  * @returns {Promise}
  */
 function prepareToBuild() {
-    const removeFolderRecursive = (dir) => {
-        if (fs.existsSync(dir)) {
-            fs.readdirSync(dir).forEach((file) => {
-                const curPath = `${dir}/${file}`;
-                if (fs.statSync(curPath).isDirectory()) {
-                    removeFolderRecursive(curPath); // recurse
-                } else { // delete file
-                    fs.unlinkSync(curPath);
-                }
-            });
-            fs.rmdirSync(dir);
-        }
-    };
-
     return new Promise((resolve) => {
         const webpackConfigProd = require(paths.WEBPACK_CONFIG_PROD);
 
-        removeFolderRecursive(paths.appBuild);
-        fs.mkdirSync(paths.appBuild);
+        // TODO: change build prod to /build/dist
+        rmDir(paths.appBuild);
+        mkDir(paths.appBuild);
 
         resolve({ webpackConfigProd });
     });

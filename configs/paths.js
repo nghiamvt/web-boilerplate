@@ -8,14 +8,13 @@ module.exports = {
     // files
     mainEntry: resolveApp('src/index.js'),
     appHtml: resolveApp('public/index.html'),
-    appTemplate: resolveApp('configs/index.html'), // TODO: move index, favicon.icon to another directory
     appFavicon: resolveApp('configs/favicon.ico'),
     packageJSON: resolveApp('package.json'),
     dotenv: resolveApp('.env'),
     yarnLockFile: resolveApp('yarn.lock'),
 
     vendorHashFileName: 'vendor_hash',
-    DLL_NAME_FORMAT: '[name]_dll',
+    DLL_LIB_FORMAT: '[name]_dll',
     DLL_FILE_FORMAT: '[name].dll.js',
     DLL_MANIFEST_FILE_FORMAT: '[name]-manifest.json',
 
@@ -23,6 +22,8 @@ module.exports = {
     appRoot: resolveApp(''),
     appSrc: resolveApp('src'),
     appBuild: resolveApp('build'),
+    appDev: resolveApp('build/dev'),
+    appDist: resolveApp('build/dist'),
     appCache: resolveApp('.cache'),
     appPublic: resolveApp('public'),
 
