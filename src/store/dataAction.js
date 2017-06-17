@@ -21,5 +21,5 @@ export const dataActionConst = {
 
 export const SET_DATA = createDataAction(dataActionConst.SET_DATA);
 export const GET_DATA = createDataAction(dataActionConst.GET_DATA);
-export const REMOVE_DATA = createDataAction(dataActionConst.REMOVE_DATA);
 export const TOGGLE_DATA = createDataAction(dataActionConst.TOGGLE_DATA);
+export const REMOVE_DATA = createAction(dataActionConst.REMOVE_DATA, ({ _ids }) => _ids, dataMetaCreator);
