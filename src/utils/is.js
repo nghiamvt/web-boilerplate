@@ -11,7 +11,7 @@ function isFunction(obj) {
 }
 
 function isUndefined(obj) {
-    return typeof obj === 'undefined';
+    return obj === undefined;
 }
 
 function isArray(obj) {
