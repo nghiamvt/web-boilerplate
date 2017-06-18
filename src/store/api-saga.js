@@ -1,5 +1,5 @@
 import { call, put } from 'redux-saga/effects';
-import apiAction from './apiAction';
+import apiAction from './api-action';
 
 /**
  * Call API

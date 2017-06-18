@@ -10,28 +10,26 @@ import { todoList } from './selectors';
 import './todomvc.css';
 
 const mapStateToProps = (state) => ({
-    todo: todoList(state),
+    todos: todoList(state),
 });
 
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(TodoActions, dispatch),
 });
 
-class TodoMVC extends React.Component {
-    render() {
-        return (
-            <div className="todoapp">
-                <Header addTodo={this.props.actions.addTodo} />
-                <MainSection todos={this.props.todo} actions={this.props.actions} />
-            </div>
-        );
-    }
+function TodoMVC(props) {
+    return (
+        <div className="todoapp">
+            <Header addTodo={props.actions.addTodo} />
+            <MainSection todos={props.todos} actions={props.actions} />
+        </div>
+    );
 }
 
 TodoMVC.propTypes = {
-    todo: PropTypes.object.isRequired,
+    todos: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-}
+};
 
 export default connect(
     mapStateToProps,

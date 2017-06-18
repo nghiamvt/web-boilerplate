@@ -4,10 +4,10 @@ import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 
-import configureStore from './store/configureStore';
+import configureStore from './store/configure-store';
 import Master from './layout/master';
 import App from './app';
-import TodoMVC from './page/todo';
+import TodoMVC from './page/todomvc';
 
 export default function Routes() {
     const history = createHistory();

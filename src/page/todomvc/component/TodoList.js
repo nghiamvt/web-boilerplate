@@ -26,21 +26,6 @@ export default class MainSection extends Component {
         this.setState({ filter });
     }
 
-    renderToggleAll = (completedCount) => {
-        const { todos, actions } = this.props;
-        if (todos.length > 0) {
-            return (
-                <input
-                    className="toggle-all"
-                    type="checkbox"
-                    checked={completedCount === todos.length}
-                    onChange={actions.completeAll}
-                />
-            );
-        }
-        return null;
-    }
-
     renderFooter = (completedCount) => {
         const { todos } = this.props;
         const { filter } = this.state;
@@ -74,7 +59,7 @@ export default class MainSection extends Component {
                 {this.renderToggleAll(completedCount)}
                 <ul className="todo-list">
                     {filteredTodos.map(todo =>
-                        <TodoItem key={todo.id} todo={todo} {...actions} />
+                        <TodoItem key={todo.id} todo={todo} {...actions} />,
                     )}
                 </ul>
                 {this.renderFooter(completedCount)}

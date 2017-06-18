@@ -38,7 +38,7 @@ export function set(src, path, value) {
         if (!pathList.length) return isFunction(value) ? val(obj, pathList[0]) : val;
         const isArr = isArray(obj);
         const clone = isArr ? obj.slice() : Object.assign({}, obj);
-        const curPath = isArr ? getArrayIndex(pathList[0], obj) : pathList[0];
+        const curPath = isArr ? getArrayIndex(pathList[0]) : pathList[0];
         clone[curPath] = setImmutable(!isUndefined(obj[curPath]) ? obj[curPath] : {}, pathList.slice(1), val);
         return clone;
     };
@@ -91,18 +91,6 @@ export function remove(src, path, _ids) {
         }
         return val;
     });
-}
-
-/**
- * Toggles a value
- * Be careful with strings as target value, as "true" and "false" will toggle to false, but "0" will toggle to true.
- * Here is what Javascript considers false:  0, -0, null, false, NaN, undefined, and the empty string ("")
- * @param src The object to evaluate.
- * @param path The path to the value.
- */
-
-export function toggle(src, path) {
-    return set(src, path, (val) => !val);
 }
 
 /**
