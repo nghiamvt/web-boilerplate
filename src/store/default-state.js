@@ -1,5 +1,5 @@
 export default {
-    todo: {
+    todomvc: {
         0: {
             id: 0,
             text: 'Use Redux',
@@ -7,8 +7,8 @@ export default {
         },
         1: {
             id: 1,
-            text: 'Use SAGA',
-            completed: false,
+            text: 'Use Immutable',
+            completed: true,
         },
     },
 };

@@ -1,11 +1,12 @@
 import createSagaMiddleware from 'redux-saga';
 import { routerMiddleware } from 'react-router-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
+import localStorageEnhancer from './local-storage-enhancer';
 
 import middleware from '../middleware';
-import rootReducer from './rootReducer';
-import rootSaga from './rootSaga';
-import defaultState from './defaultState';
+import rootReducer from './root-reducer';
+import rootSaga from './root-saga';
+import defaultState from './default-state';
 
 export default function configureStore({ history }) {
     const sagaMiddleware = createSagaMiddleware();
@@ -14,6 +15,7 @@ export default function configureStore({ history }) {
     const composeEnhancers = (process.env.NODE_ENV !== 'production' && reduxDEC) ? reduxDEC({}) : compose;
     const store = createStore(rootReducer, defaultState, composeEnhancers(
         applyMiddleware(...middleware, routeMiddleWare, sagaMiddleware),
+        localStorageEnhancer('todomvc'),
     ));
     sagaMiddleware.run(rootSaga);
 

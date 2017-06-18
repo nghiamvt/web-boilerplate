@@ -30,6 +30,21 @@ export default class MainSection extends Component {
         this.setState({ filter });
     }
 
+    toggleAll = () => {
+        const todos = this.props.todos;
+        const notAllMarked = Object.keys(todos).some(t => !todos[t].completed);
+        const newTodos = Object.keys(todos).reduce((result, key) => {
+            return {
+                ...result,
+                [key]: {
+                    ...todos[key],
+                    completed: notAllMarked,
+                }
+            }
+        }, {});
+        this.props.actions.completeAll(newTodos);
+    }
+
     renderToggleAll = (props, completedCount) => {
         const numOfTodo = Object.keys(props.todos).length;
         if (!numOfTodo) return null;
@@ -38,7 +53,7 @@ export default class MainSection extends Component {
                 className="toggle-all"
                 type="checkbox"
                 checked={completedCount === numOfTodo}
-                onChange={props.actions.completeAll}
+                onChange={this.toggleAll}
             />
         );
     }

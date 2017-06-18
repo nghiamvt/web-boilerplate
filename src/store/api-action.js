@@ -1,4 +1,4 @@
-import { SET_DATA } from './dataAction';
+import { SET_DATA } from './data-action';
 
 export default {
     preFetch({ _path }) {

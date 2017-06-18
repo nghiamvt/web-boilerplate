@@ -1,4 +1,4 @@
-import createAction from 'utils/createAction';
+import createAction from 'utils/create-action';
 import invariant from 'utils/invariant';
 import { isEmpty } from 'utils/is';
 
@@ -15,11 +15,10 @@ export const dataActionConst = {
     SET_DATA: 'SET_DATA',
     GET_DATA: 'GET_DATA',
     REMOVE_DATA: 'REMOVE_DATA',
-    TOGGLE_DATA: 'TOGGLE_DATA',
     MERGE_DATA: 'MERGE_DATA',
 };
 
 export const SET_DATA = createDataAction(dataActionConst.SET_DATA);
 export const GET_DATA = createDataAction(dataActionConst.GET_DATA);
-export const TOGGLE_DATA = createDataAction(dataActionConst.TOGGLE_DATA);
+export const MERGE_DATA = createDataAction(dataActionConst.MERGE_DATA);
 export const REMOVE_DATA = createAction(dataActionConst.REMOVE_DATA, ({ _ids }) => _ids, dataMetaCreator);

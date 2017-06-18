@@ -24,7 +24,7 @@ export default class TodoItem extends Component {
 
     handleSave = (id, text) => {
         if (text.length === 0) {
-            this.props.deleteTodo(id);
+            this.props.deleteTodo([id]);
         } else {
             this.props.editTodo(id, text);
         }

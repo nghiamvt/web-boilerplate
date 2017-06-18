@@ -2,8 +2,8 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import { reduceReducers } from 'utils/store';
 
-import dataReducer from './dataReducer';
-import defaultState from './defaultState';
+import dataReducer from './data-reducer';
+import defaultState from './default-state';
 
 // Put new reducers here
 const reducers = {

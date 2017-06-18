@@ -1,6 +1,6 @@
 import * as immutable from 'utils/immutable';
-import defaultState from './defaultState';
-import { dataActionConst } from './dataAction';
+import defaultState from './default-state';
+import { dataActionConst } from './data-action';
 
 export default function dataReducer(state = defaultState, action) {
     if (Object.keys(dataActionConst).includes(action.type)) {
