@@ -1,7 +1,6 @@
 import React from 'react';
 import 'style/index.css';
 
-
 export default function App() {
     return (
         <div className="App">
