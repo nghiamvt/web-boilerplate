@@ -1,4 +1,5 @@
-import { isArray, isFunction, isNumber, isObject } from './is';
+import { isArray, isFunction, isNumber, isObject, isEmpty, isString, isUndefined } from './is';
+import invariant from './invariant';
 
 /**
  * Convert "123" => 123 ({String} => {Number})
@@ -12,7 +13,9 @@ function getKey(key) {
  * Convert path format to array
  */
 function pathToArray(path) {
-    return isArray(path) ? path : path.toString().split('.').map(getKey);
+    if (isArray(path)) return path;
+    if (isEmpty(path)) return [];
+    return path.replace(/\\\./g, '@').replace(/\./g, '*').replace(/@/g, '.').split('*').map(getKey);
 }
 
 /**
@@ -30,20 +33,27 @@ function getArrayIndex(head, obj) {
 
 
 /**
- * Set a value by a dot path.
+ * Set a value. Check merge for multiple values
  * @param src The object to evaluate.
  * @param path The path to be set.
  * @param value The value to set.
  */
 export function set(src, path, value) {
+    const hasCallBack = isFunction(value);
+    if (isEmpty(path)) {
+        if (hasCallBack) return value(src);
+        if (isArray(src)) return src.concat(value);
+        if (isObject(src)) return invariant(false, 'path is required for setting data of object');
+        return src;
+    }
     const pathArr = pathToArray(path);
 
     const setImmutable = (obj, pathList, val) => {
-        if (!pathList.length) return isFunction(val) ? val(obj) : val;
+        if (!pathList.length) return hasCallBack ? val(obj, pathList[0]) : val;
         const isArr = isArray(obj);
         const clone = isArr ? obj.slice() : Object.assign({}, obj);
         const curPath = isArr ? getArrayIndex(pathList[0], obj) : pathList[0];
-        clone[curPath] = setImmutable(obj[curPath] !== undefined ? obj[curPath] : {}, pathList.slice(1), val);
+        clone[curPath] = setImmutable(!isUndefined(obj[curPath]) ? obj[curPath] : {}, pathList.slice(1), val);
         return clone;
     };
 
@@ -64,43 +74,36 @@ export function get(src, path) {
 }
 
 /**
- * Delete a property by a dot path.
+ * Delete an array of items.
  * If target container is an object, the property is deleted.
  * If target container is an array, the index is deleted.
  * If target container is undefined, nothing is deleted.
  * @param src The object to evaluate.
- * @param path The path to the property or index that should be deleted.
+ * @param path The path to target container.
+ * @param _ids The array of property or index which will be deleted.
  */
-export function remove(src, path) {
-    const pathArr = pathToArray(path);
+export function remove(src, path, _ids) {
+    invariant(arguments.length >= 3, 'src, path and _ids are required');
+    invariant(isArray(_ids), `Expected _ids to be an array but got ${typeof _ids}`);
 
-    const deleteImmutable = (obj, pathList) => {
-        const isArr = isArray(obj);
-        const curPath = isArr ? getArrayIndex(pathList[0], obj) : pathList[0];
-        if ((!isObject(obj) && !isArr) || (isArray(obj) && obj[getArrayIndex(curPath, obj)] === undefined)) {
-            return obj;
-        }
-        let clone;
-        if (pathList.length > 1) {
-            clone = isArr ? obj.slice() : Object.assign({}, obj);
-            clone[curPath] = deleteImmutable(obj[curPath], pathList.slice(1));
-            return clone;
-        }
+    if (isUndefined(get(src, path))) return src;
 
-        if (isArr) {
-            clone = [].concat(obj.slice(0, curPath), obj.slice(curPath + 1));
-        } else {
-            clone = Object.assign({}, obj);
-            delete clone[curPath];
+    return set(src, path, (val) => {
+        if (isArray(val)) {
+            invariant(!(_ids.some((id) => isString(getKey(id)))), 'Array index has to be an integer');
+            return val.filter((v, i) => !_ids.includes(i));
+        } else if (isObject(val)) {
+            const idStrList = _ids.map(String);
+            return Object.keys(val).reduce((result, k) => {
+                return !idStrList.includes(k) ? { ...result, [k]: val[k] } : result;
+            }, {});
         }
-        return clone;
-    };
-
-    return deleteImmutable(src, pathArr);
+        return val;
+    });
 }
 
 /**
- * Toggles a value or all value
+ * Toggles a value
  * Be careful with strings as target value, as "true" and "false" will toggle to false, but "0" will toggle to true.
  * Here is what Javascript considers false:  0, -0, null, false, NaN, undefined, and the empty string ("")
  * @param src The object to evaluate.
@@ -108,32 +111,7 @@ export function remove(src, path) {
  */
 
 export function toggle(src, path) {
-    const pathArr = pathToArray(path);
-    const secondToLastIndex = pathArr.length - 2;
-    // Toggle One
-    if (pathArr[secondToLastIndex] !== '*') {
-        return set(src, path, !(get(src, pathArr)));
-    }
-    // Toggle All
-    const newPath = pathArr.slice(0, secondToLastIndex);
-    const curVal = get(src, newPath);
-    const field = pathArr[secondToLastIndex + 1];
-    let newVal;
-    if (isArray(curVal)) {
-        newVal = curVal.map(i => ({ ...i, [field]: !i[field] }));
-    } else if (isObject(curVal)) {
-        newVal = Object.keys(curVal).reduce((result, k) => {
-            return Object.assign({}, result, {
-                [k]: {
-                    ...curVal[k],
-                    [field]: !curVal[k][field],
-                },
-            });
-        }, {});
-    } else {
-        return src;
-    }
-    return set(src, newPath, newVal);
+    return set(src, path, (val) => !val);
 }
 
 /**
@@ -146,15 +124,14 @@ export function toggle(src, path) {
  * @param val The value to merge into the target value.
  */
 export function merge(src, path, val) {
-    const curVal = get(src, path);
-    if (curVal === null || typeof curVal === 'undefined') {
-        return set(src, path, val);
-    }
-    if (isArray(curVal)) {
-        return set(src, path, curVal.concat(val));
-    }
-    if (isObject(curVal)) {
-        return set(src, path, Object.assign({}, curVal, val));
-    }
-    return src;
+    return set(src, path, (curVal) => {
+        if (curVal === null || isUndefined(curVal)) {
+            return val;
+        } else if (isArray(curVal)) {
+            return curVal.concat(val);
+        } else if (isObject(curVal)) {
+            return Object.assign({}, curVal, val);
+        }
+        return src;
+    });
 }

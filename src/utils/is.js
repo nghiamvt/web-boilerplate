@@ -11,7 +11,7 @@ function isFunction(obj) {
 }
 
 function isUndefined(obj) {
-    return typeof obj === 'undefined';
+    return obj === undefined;
 }
 
 function isArray(obj) {
@@ -28,7 +28,7 @@ function isEmpty(value) {
     if (isArray(value) && value.length === 0) {
         return true;
     } else if (isObject(value)) {
-        return !!Object.keys(value).length;
+        return !Object.keys(value).length;
     }
     return false;
 }

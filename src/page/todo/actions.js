@@ -12,7 +12,8 @@ export const addTodo = (text) => {
 
 export const deleteTodo = (id) => {
     return REMOVE_DATA({
-        _path: `todo.${id}`,
+        _path: 'todo',
+        _ids: [id],
     });
 };
 
@@ -36,8 +37,9 @@ export const completeAll = () => {
 }
 
 
-export function clearCompleted(id) {
+export function clearCompleted(ids) {
     return REMOVE_DATA({
-        _path: `todo.${id[0]}`,
+        _path: 'todo',
+        _ids: ids
     });
 }

@@ -69,14 +69,18 @@ describe('Immutable', () => {
             });
 
             describe('when set path empty path', () => {
+                let error;
+
                 beforeEach(() => {
-                    result = immutable.set({}, '', 3);
+                    try {
+                        immutable.set({}, '', 3);
+                    } catch (err) {
+                        error = err;
+                    }
                 });
 
-                test('should replace path', () => {
-                    expect(result).toEqual({
-                        '': 3,
-                    });
+                test('should throw an error', () => {
+                    expect(error.message).toEqual('path is required for setting data of object');
                 });
             });
 
@@ -280,6 +284,27 @@ describe('Immutable', () => {
                 test('invariant', arrInvariant);
             });
         });
+
+        describe('when set array[index] with function', () => {
+            beforeEach(() => {
+                result = immutable.set(obj, 'c.0', v => v * 3);
+            });
+
+            test('should remove path', () => {
+                expect(result).toEqual({
+                    a: 1,
+                    b: {
+                        x: 1,
+                        y: 2,
+                    },
+                    c: [3, 2],
+                    d: null,
+                    'b.x': 10,
+                });
+            });
+
+            test('invariant', objInvariant);
+        });
     });
 
     describe('when get', () => {
@@ -298,7 +323,16 @@ describe('Immutable', () => {
 
             describe('when get path empty path', () => {
                 test('should get path', () => {
-                    expect(immutable.get(obj, '')).toBeUndefined();
+                    expect(immutable.get(obj, '')).toEqual({
+                        a: 1,
+                        b: {
+                            x: 1,
+                            y: 2,
+                        },
+                        c: [1, 2],
+                        d: null,
+                        'b.x': 10,
+                    });
                 });
             });
 
@@ -373,9 +407,46 @@ describe('Immutable', () => {
 
     describe('when remove', () => {
         describe('when have an object', () => {
+            describe('when lacking params', () => {
+                let error;
+
+                beforeEach(() => {
+                    try {
+                        immutable.remove(obj, ['b']);
+                    } catch (err) {
+                        error = err;
+                    }
+                });
+
+                test('should throw an error', () => {
+                    expect(error.message).toEqual('src, path and _ids are required');
+                });
+
+                test('invariant', objInvariant);
+            });
+
+            describe('when _ids is not an array', () => {
+                let error;
+                const _ids = '1';
+
+                beforeEach(() => {
+                    try {
+                        immutable.remove(obj, ['b'], _ids);
+                    } catch (err) {
+                        error = err;
+                    }
+                });
+
+                test('should throw an error', () => {
+                    expect(error.message).toEqual(`Expected _ids to be an array but got ${typeof _ids}`);
+                });
+
+                test('invariant', objInvariant);
+            });
+
             describe('when remove path', () => {
                 beforeEach(() => {
-                    result = immutable.remove(obj, 'b');
+                    result = immutable.remove(obj, '', ['b']);
                 });
 
                 test('should remove path', () => {
@@ -392,7 +463,7 @@ describe('Immutable', () => {
 
             describe('when remove path empty object', () => {
                 beforeEach(() => {
-                    result = immutable.remove({}, 'b');
+                    result = immutable.remove({}, '', ['b']);
                 });
 
                 test('should remove path', () => {
@@ -402,7 +473,7 @@ describe('Immutable', () => {
 
             describe('when remove path empty path', () => {
                 beforeEach(() => {
-                    result = immutable.remove({}, '');
+                    result = immutable.remove({}, '', ['']);
                 });
 
                 test('should remove path', () => {});
@@ -410,7 +481,7 @@ describe('Immutable', () => {
 
             describe('when remove deep path', () => {
                 beforeEach(() => {
-                    result = immutable.remove(obj, 'b.x');
+                    result = immutable.remove(obj, 'b', ['x']);
                 });
 
                 test('should remove path', () => {
@@ -430,7 +501,7 @@ describe('Immutable', () => {
 
             describe('when remove deep path not defined', () => {
                 beforeEach(() => {
-                    result = immutable.remove(obj, 'b.z.w');
+                    result = immutable.remove(obj, 'b.z', ['w']);
                 });
 
                 test('should remove path', () => {
@@ -451,7 +522,7 @@ describe('Immutable', () => {
 
             describe('when remove array[index]', () => {
                 beforeEach(() => {
-                    result = immutable.remove(obj, 'c.0');
+                    result = immutable.remove(obj, 'c', [0]);
                 });
 
                 test('should remove path', () => {
@@ -470,30 +541,9 @@ describe('Immutable', () => {
                 test('invariant', objInvariant);
             });
 
-            describe('when remove array[index] with function', () => {
-                beforeEach(() => {
-                    result = immutable.set(obj, 'c.0', v => v * 3);
-                });
-
-                test('should remove path', () => {
-                    expect(result).toEqual({
-                        a: 1,
-                        b: {
-                            x: 1,
-                            y: 2,
-                        },
-                        c: [3, 2],
-                        d: null,
-                        'b.x': 10,
-                    });
-                });
-
-                test('invariant', objInvariant);
-            });
-
             describe('when remove array[index] path not defined', () => {
                 beforeEach(() => {
-                    result = immutable.remove(obj, 'c.1.z.w');
+                    result = immutable.remove(obj, 'c.1.z', ['w']);
                 });
 
                 test('should remove path', () => {
@@ -514,7 +564,7 @@ describe('Immutable', () => {
 
             describe('when remove array[index] out of index', () => {
                 beforeEach(() => {
-                    result = immutable.remove(obj, 'c.3');
+                    result = immutable.remove(obj, 'c', [3]);
                 });
 
                 test('should remove path', () => {
@@ -538,14 +588,14 @@ describe('Immutable', () => {
 
                 beforeEach(() => {
                     try {
-                        immutable.remove(obj, 'c.w');
+                        immutable.remove(obj, 'c', ['w']);
                     } catch (err) {
                         error = err;
                     }
                 });
 
                 test('should throw an error', () => {
-                    expect(error.message).toEqual('Array index \'w\' has to be an integer');
+                    expect(error.message).toEqual('Array index has to be an integer');
                 });
 
                 test('invariant', objInvariant);
@@ -555,7 +605,7 @@ describe('Immutable', () => {
         describe('when have an array', () => {
             describe('when remove array[index]', () => {
                 beforeEach(() => {
-                    result = immutable.remove(arr, '0');
+                    result = immutable.remove(arr, '', [0]);
                 });
 
                 test('should remove path', () => {
@@ -569,7 +619,7 @@ describe('Immutable', () => {
 
             describe('when remove array[index] deep path', () => {
                 beforeEach(() => {
-                    result = immutable.remove(arr, '1.a');
+                    result = immutable.remove(arr, '1', ['a']);
                 });
 
                 test('should remove path', () => {

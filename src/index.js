@@ -19,5 +19,6 @@ render(Routes);
 
 // Hot Module Replacement API
 if (module.hot) {
+    // $FlowFixMe
     module.hot.accept('./routes', () => render(Routes));
 }
