@@ -1,13 +1,6 @@
-import { isArray, isFunction, isNumber, isObject, isEmpty, isString, isUndefined } from './is';
+import { isArray, isFunction, isNumber, isObject, isEmpty, isUndefined } from './is';
 import invariant from './invariant';
-
-/**
- * Convert "123" => 123 ({String} => {Number})
- */
-function getKey(key) {
-    const intKey = parseInt(key);
-    return (intKey.toString() === key) ? intKey : key;
-}
+import { removeItems } from './object';
 
 /**
  * Convert path format to array
@@ -15,19 +8,18 @@ function getKey(key) {
 function pathToArray(path) {
     if (isArray(path)) return path;
     if (isEmpty(path)) return [];
-    return path.replace(/\\\./g, '@').replace(/\./g, '*').replace(/@/g, '.').split('*').map(getKey);
+    return path
+        .replace(/\\\./g, '@')
+        .replace(/\./g, '*')
+        .replace(/@/g, '.')
+        .split('*');
 }
 
 /**
  * Handle index of array
  */
-function getArrayIndex(head, obj) {
-    if (head === '$end') {
-        return obj.length - 1;
-    }
-    if (!isNumber(head)) {
-        throw new Error(`Array index '${head}' has to be an integer`);
-    }
+function getArrayIndex(head) {
+    invariant(isNumber(head), `Array index '${head}' has to be an integer`);
     return head;
 }
 
@@ -39,17 +31,11 @@ function getArrayIndex(head, obj) {
  * @param value The value to set.
  */
 export function set(src, path, value) {
-    const hasCallBack = isFunction(value);
-    if (isEmpty(path)) {
-        if (hasCallBack) return value(src);
-        if (isArray(src)) return src.concat(value);
-        if (isObject(src)) return invariant(false, 'path is required for setting data of object');
-        return src;
-    }
+    invariant(!isEmpty(path), 'path is required for setting data');
     const pathArr = pathToArray(path);
 
     const setImmutable = (obj, pathList, val) => {
-        if (!pathList.length) return hasCallBack ? val(obj, pathList[0]) : val;
+        if (!pathList.length) return isFunction(value) ? val(obj, pathList[0]) : val;
         const isArr = isArray(obj);
         const clone = isArr ? obj.slice() : Object.assign({}, obj);
         const curPath = isArr ? getArrayIndex(pathList[0], obj) : pathList[0];
@@ -85,12 +71,17 @@ export function get(src, path) {
 export function remove(src, path, _ids) {
     invariant(arguments.length >= 3, 'src, path and _ids are required');
     invariant(isArray(_ids), `Expected _ids to be an array but got ${typeof _ids}`);
+    if (isEmpty(path)) {
+        if (isArray(src)) return src.filter((i, index) => !_ids.includes(index));
+        if (isObject(src)) return removeItems(src, _ids);
+        return src;
+    }
 
     if (isUndefined(get(src, path))) return src;
 
     return set(src, path, (val) => {
         if (isArray(val)) {
-            invariant(!(_ids.some((id) => isString(getKey(id)))), 'Array index has to be an integer');
+            invariant(!(_ids.some((id) => !isNumber(id))), 'Array index has to be an integer');
             return val.filter((v, i) => !_ids.includes(i));
         } else if (isObject(val)) {
             const idStrList = _ids.map(String);

@@ -80,7 +80,7 @@ describe('Immutable', () => {
                 });
 
                 test('should throw an error', () => {
-                    expect(error.message).toEqual('path is required for setting data of object');
+                    expect(error.message).toEqual('path is required for setting data');
                 });
             });
 
