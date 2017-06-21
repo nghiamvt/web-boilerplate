@@ -14,9 +14,11 @@ module.exports = {
     yarnLockFile: resolveApp('yarn.lock'),
 
     vendorHashFileName: 'vendor_hash',
+    appBundle: 'js/app.[hash:8].js',
     DLL_LIB_FORMAT: '[name]_dll',
     DLL_FILE_FORMAT: '[name].dll.js',
     DLL_MANIFEST_FILE_FORMAT: '[name]-manifest.json',
+    appPublicPath: '/',
 
     // directories
     appRoot: resolveApp(''),
@@ -24,12 +26,7 @@ module.exports = {
     appBuild: resolveApp('build'),
     appDev: resolveApp('build/dev'),
     appDist: resolveApp('build/dist'),
-    appCache: resolveApp('.cache'),
     appPublic: resolveApp('public'),
-
-    // TODO: change base on env
-    appPublicPath: '/',
-    publicUrl: '',
 
     WEBPACK_CONFIG_VENDOR: resolveApp('configs/webpack.vendor'),
     WEBPACK_CONFIG_SERVER: resolveApp('configs/webpack.server'),

@@ -55,7 +55,7 @@ module.exports = merge(WebpackCommonConfig, {
             // within the template to be made available to the application.
             dll: {
                 paths: Object.keys(webpackVendorCfg.entry).map((e) => {
-                    return path.join(paths.DLL_FILE_FORMAT.replace(/\[name\]/g, e));
+                    return `${paths.appPublicPath}/${paths.DLL_FILE_FORMAT.replace(/\[name\]/g, e)}`.replace('//', '/');
                 }),
             },
         })

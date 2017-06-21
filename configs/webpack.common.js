@@ -21,7 +21,7 @@ module.exports = {
         path: paths.appBuild,
         pathinfo: !isProduction,
         // dev use “in-memory” files
-        filename: 'js/app.[hash:8].js',
+        filename: paths.appBundle,
         // chunkFilename: 'static/js/[name].chunk.js',
         publicPath: paths.appPublicPath, // TODO: review
     },
