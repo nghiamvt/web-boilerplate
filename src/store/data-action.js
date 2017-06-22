@@ -2,7 +2,7 @@ import createAction from 'utils/create-action';
 import invariant from 'utils/invariant';
 import { isEmpty } from 'utils/is';
 
-const dataPayloadCreator = ({ _path, ...payload }) => payload;
+const dataPayloadCreator = ({ _value }) => _value;
 const dataMetaCreator = data => {
     invariant(!isEmpty(data._path), '_path is required');
     return { _path: data._path };
@@ -19,6 +19,6 @@ export const dataActionConst = {
 };
 
 export const SET_DATA = createDataAction(dataActionConst.SET_DATA);
+export const REMOVE_DATA = createDataAction(dataActionConst.REMOVE_DATA);
 export const GET_DATA = createDataAction(dataActionConst.GET_DATA);
 export const MERGE_DATA = createDataAction(dataActionConst.MERGE_DATA);
-export const REMOVE_DATA = createAction(dataActionConst.REMOVE_DATA, ({ _ids }) => _ids, dataMetaCreator);

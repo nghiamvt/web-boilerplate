@@ -7,7 +7,7 @@ import createHistory from 'history/createBrowserHistory';
 import configureStore from './store/configure-store';
 import Master from './layout/master';
 import App from './app';
-import TodoMVC from './page/todomvc';
+import Todo from './page/todo';
 
 export default function Routes() {
     const history = createHistory();
@@ -19,7 +19,7 @@ export default function Routes() {
                 <Master>
                     <Switch>
                         <Route exact path="/" component={App} />
-                        <Route path="/todo" component={TodoMVC} />
+                        <Route path="/todo" component={Todo} />
                         <Route component={() => (<div>404 Not found</div>)} />
                     </Switch>
                 </Master>

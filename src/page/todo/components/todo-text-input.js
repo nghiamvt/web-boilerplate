@@ -1,27 +1,30 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import classNames from 'classnames';
 
-export default class TodoTextInput extends Component {
-    static propTypes = {
-        onSave: PropTypes.func.isRequired,
-        text: PropTypes.string,
-        placeholder: PropTypes.string,
-        editing: PropTypes.bool,
-        newTodo: PropTypes.bool,
-    }
+export type Props = {
+    onSave?: Function,
+    text?: string,
+    placeholder?: string,
+    editing?: boolean,
+    newTodo?: boolean,
+}
+type State = {};
+export default class TodoTextInput extends Component<void, Props, State> {
+    props: Props;
+    state: State;
 
     static defaultProps = {
+        onSave: () => {},
         text: '',
         placeholder: '',
         editing: false,
         newTodo: false,
-    }
+    };
 
     constructor(props) {
         super(props);
         this.state = {
-            text: this.props.text || '',
+            text: props.text || '',
         };
     }
 
@@ -46,7 +49,7 @@ export default class TodoTextInput extends Component {
     }
 
     render() {
-        const cls = classnames({
+        const cls = classNames({
             edit: this.props.editing,
             'new-todo': this.props.newTodo,
         });

@@ -1,5 +1,3 @@
-/* @flow */
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
@@ -19,6 +17,5 @@ render(Routes);
 
 // Hot Module Replacement API
 if (module.hot) {
-    // $FlowFixMe
     module.hot.accept('./routes', () => render(Routes));
 }
