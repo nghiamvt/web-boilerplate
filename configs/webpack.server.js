@@ -10,7 +10,6 @@ module.exports = ({ proxyConfig, allowedHost }) => {
         clientLogLevel: 'none',
         contentBase: paths.appDev,
         watchContentBase: true,
-        hot: true,
         // It is important to tell WebpackDevServer to use the same "root" path
         // as we specified in the config. In development, we always serve from /.
         publicPath: paths.appPublicPath,

@@ -38,8 +38,6 @@ module.exports = merge(WebpackCommonConfig, {
         ],
     },
     plugins: [].concat(
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NamedModulesPlugin(),
         new ProgressBarPlugin(),
         Object.keys(webpackVendorCfg.entry).map((e) => {
             return new webpack.DllReferencePlugin({

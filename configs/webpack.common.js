@@ -10,9 +10,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
     target: 'web',
     entry: [
-        !isProduction && 'react-hot-loader/patch',
         !isProduction && `webpack-dev-server/client?http://${process.env.HOST}:${process.env.PORT}`,
-        !isProduction && 'webpack/hot/only-dev-server',
         'babel-polyfill',
         'whatwg-fetch',
         paths.mainEntry,
