@@ -32,7 +32,7 @@ function mergeState(initialState, persistedState) {
 /**
  * persistState is a Store Enhancer that syncs (a subset of) store state to localStorage.
  *
- * @param {String|String[]} [paths] Specify keys to sync with localStorage, if left undefined the whole store is persisted
+ * @param {String|String[]} [paths] Specify keys to sync with localStorage, if undefined the whole store is persisted
  * @param {Object} [config] Optional config object
  * @param {String} [config.key="redux"] String used as localStorage key
  * @param {Function} [config.slicer] (paths) => (state) => subset. A function that returns a subset
@@ -58,8 +58,8 @@ export default function localStorageEnhancer(paths, config) {
 
     return next => (reducer, initialState, enhancer) => {
         if (isFunction(initialState) && isUndefined(enhancer)) {
-            enhancer = initialState;
-            initialState = undefined;
+            enhancer = initialState;  //eslint-disable-line
+            initialState = undefined; //eslint-disable-line
         }
 
         let persistedState;

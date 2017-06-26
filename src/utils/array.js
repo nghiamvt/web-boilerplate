@@ -3,6 +3,10 @@
  * @param arr
  * @returns {*}
  */
-export function arrayToObject(arr) {
+function arrayToObject(arr) {
     return arr.reduce((result, i) => ({ ...result, [i]: i }), {});
 }
+
+export {
+    arrayToObject,
+};

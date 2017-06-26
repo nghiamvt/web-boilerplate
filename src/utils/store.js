@@ -23,16 +23,6 @@ function rebuildObjectByPath(location, newValue) {
     }, newValue);
 }
 
-function updateObject(oldObject, newValues) {
-    return Object.assign({}, oldObject, newValues);
-}
-
-function updateItemInArray(array, itemId, updateItemCallback) {
-    return array.map(item => {
-        return (item.id !== itemId) ? item : updateItemCallback(item);
-    });
-}
-
 export {
     reduceReducers,
     getValueByPath,

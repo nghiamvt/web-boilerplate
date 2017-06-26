@@ -26,6 +26,6 @@ const invariant = (condition, format, a, b, c, d, e, f) => {
         error.framesToPop = 1; // we don't care about invariant's own frame
         throw error;
     }
-}
+};
 
 export default invariant;
