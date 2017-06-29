@@ -18,7 +18,7 @@ function* callApi({ _path, url, method, data, options }) {
         headers: {
             Accept: 'application/json',
         },
-        body: data ? JSON.stringify(data) : {},
+        body: data ? JSON.stringify(data) : undefined,
     }, options, { method });
     let respond; // { status, result, error }
     try {
