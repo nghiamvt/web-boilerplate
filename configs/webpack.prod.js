@@ -14,7 +14,7 @@ module.exports = merge(WebpackCommonConfig, {
     module: {
         rules: [
             {
-                test: /\.css$/,
+                test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: [
@@ -43,6 +43,7 @@ module.exports = merge(WebpackCommonConfig, {
                                 ],
                             },
                         },
+                        'sass-loader',
                     ],
                 }),
             },

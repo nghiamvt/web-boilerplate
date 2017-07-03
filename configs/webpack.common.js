@@ -20,8 +20,7 @@ module.exports = {
         pathinfo: !isProduction,
         // dev use “in-memory” files
         filename: paths.appBundle,
-        // chunkFilename: 'static/js/[name].chunk.js',
-        publicPath: paths.appPublicPath, // TODO: review
+        publicPath: paths.appPublicPath,
     },
     resolve: {
         extensions: ['.js', '.json'],
@@ -35,7 +34,7 @@ module.exports = {
             // "file" loader makes sure those assets end up in the `build` folder.
             // When you `import` an asset, you get its filename.
             {
-                exclude: [/\.html$/, /\.(js|jsx)$/, /\.css$/, /\.json$/, /\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+                exclude: [/\.html$/, /\.(js|jsx)$/, /\.s?css$/, /\.json$/, /\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
                 loader: 'file-loader',
                 options: {
                     name: 'static/media/[name].[hash:8].[ext]',
@@ -62,9 +61,8 @@ module.exports = {
         ],
     },
     plugins: [
-        new InterpolateHtmlPlugin(env.raw),
-        // new InterpolateHtmlPlugin(env.raw), TODO: check this
         // Makes some environment variables available to the JS code
+        new InterpolateHtmlPlugin(env.raw),
         new webpack.DefinePlugin(env.stringified),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     ],

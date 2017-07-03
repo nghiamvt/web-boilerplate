@@ -14,7 +14,7 @@ module.exports = merge(WebpackCommonConfig, {
     module: {
         rules: [
             {
-                test: /\.css$/,
+                test: /\.scss$/,
                 use: [
                     'style-loader',
                     'css-loader',
@@ -33,6 +33,7 @@ module.exports = merge(WebpackCommonConfig, {
                             }),
                         ] },
                     },
+                    'sass-loader',
                 ],
             },
         ],
@@ -56,8 +57,7 @@ module.exports = merge(WebpackCommonConfig, {
                     return `${paths.appPublicPath}/${paths.DLL_FILE_FORMAT.replace(/\[name\]/g, e)}`.replace('//', '/');
                 }),
             },
-        })
-    ),
+        })),
     performance: {
         hints: false,
     },

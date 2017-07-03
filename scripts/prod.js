@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 
 const paths = require('../configs/paths');
-const { mkDir, rmDir } = require('../configs/common');
+const { mkDir, rmDir } = require('./common');
 
 // start build time
 global.BUILD_STARTED = Date.now();

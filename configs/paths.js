@@ -8,7 +8,7 @@ module.exports = {
     // files
     mainEntry: resolveApp('src/index.js'),
     appHtml: resolveApp('public/index.html'),
-    appFavicon: resolveApp('configs/favicon.ico'),
+    appFavicon: resolveApp('public/favicon.ico'),
     packageJSON: resolveApp('package.json'),
     dotenv: resolveApp('.env'),
     yarnLockFile: resolveApp('yarn.lock'),
@@ -18,7 +18,7 @@ module.exports = {
     DLL_LIB_FORMAT: '[name]_dll',
     DLL_FILE_FORMAT: '[name].dll.js',
     DLL_MANIFEST_FILE_FORMAT: '[name]-manifest.json',
-    appPublicPath: '/',
+    appPublicPath: '',
 
     // directories
     appRoot: resolveApp(''),

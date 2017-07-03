@@ -13,7 +13,7 @@ const removeFolderRecursive = (dir) => {
         });
         fs.rmdirSync(dir);
     }
-}
+};
 
 const createFolderRecursive = (dir) => {
     dir.split(path.sep).reduce((currentPath, folder) => {
@@ -23,9 +23,14 @@ const createFolderRecursive = (dir) => {
         }
         return newPath;
     }, '');
-}
+};
+
+const copyFileToDir = (file, dir) => {
+    fs.writeFileSync(path.join(dir, path.basename(file)), fs.readFileSync(file));
+};
 
 module.exports = {
     rmDir: removeFolderRecursive,
     mkDir: createFolderRecursive,
-}
+    copyFileToDir,
+};

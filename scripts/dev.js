@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 const paths = require('../configs/paths');
-const { mkDir } = require('../configs/common');
+const { mkDir, copyFileToDir } = require('./common');
 // const clearConsole = require('react-dev-utils/clearConsole');
 // const openBrowser = require('react-dev-utils/openBrowser');
 const { choosePort, prepareUrls, createCompiler, prepareProxy } = require('react-dev-utils/WebpackDevServerUtils');
@@ -20,7 +20,10 @@ require('../configs/env');
  */
 function prepareToBuild() {
     return new Promise((resolve) => {
-        mkDir(paths.appDev);
+        if (!fs.existsSync(paths.appDev)) {
+            mkDir(paths.appDev);
+        }
+        copyFileToDir(paths.appFavicon, paths.appDev);
         const packageJSON = require(paths.packageJSON);
         resolve({ packageJSON });
     });
@@ -125,6 +128,6 @@ prepareToBuild()
     .then(buildVendors)
     .then(startDevServer)
     .catch((err) => {
-        console.error('err :', err);
+        console.error('Error :', err);
         process.exit(1);
     });
