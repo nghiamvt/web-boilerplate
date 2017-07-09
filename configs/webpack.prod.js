@@ -14,7 +14,7 @@ module.exports = merge(WebpackCommonConfig, {
     module: {
         rules: [
             {
-                test: /\.scss$/,
+                test: /\.s?css$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: [
@@ -50,11 +50,23 @@ module.exports = merge(WebpackCommonConfig, {
         ],
     },
     plugins: [
-        new ExtractTextPlugin('style/[id].[name].[contenthash].css'),
+        new ExtractTextPlugin('style/[name].[contenthash].css'),
         // https://github.com/jantimon/html-webpack-plugin
         new HtmlWebpackPlugin({
             inject: true,
             template: paths.appHtml,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeRedundantAttributes: true,
+                useShortDoctype: true,
+                removeEmptyAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                keepClosingSlash: true,
+                minifyJS: true,
+                minifyCSS: true,
+                minifyURLs: true,
+            },
         }),
         new webpack.optimize.UglifyJsPlugin(),
     ],

@@ -1,13 +1,16 @@
+const fs = require('fs');
 const chalk = require('chalk');
 const webpack = require('webpack');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
+const { printFileSizesAfterBuild } = require('react-dev-utils/FileSizeReporter');
 
 const paths = require('../configs/paths');
-const { mkDir, rmDir } = require('./common');
+const { mkDir, rmDir, copyFileToDir } = require('./common');
 
-// start build time
-global.BUILD_STARTED = Date.now();
 process.env.NODE_ENV = 'production';
+// These sizes are pretty large. We'll warn for bundles exceeding them.
+const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;
+const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
 
 // ==========================================================
 /**
@@ -16,12 +19,13 @@ process.env.NODE_ENV = 'production';
  */
 function prepareToBuild() {
     return new Promise((resolve) => {
+        if (fs.existsSync(paths.appDev)) {
+            rmDir(paths.appDist);
+        }
+        mkDir(paths.appDist);
+        copyFileToDir(paths.appFavicon, paths.appDist);
+
         const webpackConfigProd = require(paths.WEBPACK_CONFIG_PROD);
-
-        // TODO: change build prod to /build/dist
-        rmDir(paths.appBuild);
-        mkDir(paths.appBuild);
-
         resolve({ webpackConfigProd });
     });
 }
@@ -32,30 +36,22 @@ function prepareToBuild() {
  * @returns {Promise}
  */
 function buildClient({ webpackConfigProd }) {
+    console.info(chalk.cyan('Creating an optimized production build...'));
+
     return new Promise((resolve, reject) => {
-        console.log('Creating an optimized production build...');
-        console.log();
         webpack(webpackConfigProd).run((err, stats) => {
+            if (err) return reject(err);
+
             const messages = formatWebpackMessages(stats.toJson({}, true));
-            if (!messages.errors.length && !messages.warnings.length) {
-                console.log(chalk.green('Compiled successfully!'));
-                console.log();
-            }
-
-            // If errors exist, only show errors.
             if (messages.errors.length) {
-                console.log(chalk.red('Failed to compile.'));
-                reject(messages.errors);
+                return reject(new Error(messages.errors.join('\n\n')));
             }
 
-            // Show warnings if no errors were found.
             if (messages.warnings.length) {
-                console.log(chalk.yellow('Compiled with warnings.'));
-                reject(messages.warnings);
-                messages.warnings.forEach(message => console.error(message));
+                return reject(new Error(messages.warnings.join('\n\n')));
             }
 
-            return resolve();
+            return resolve({ stats });
         });
     });
 }
@@ -64,9 +60,17 @@ function buildClient({ webpackConfigProd }) {
 /**
  * Report build status
  */
-function reportBuildStatus() {
-    console.info('----\n==> ✅  Building production completed (%dms).', (Date.now() - global.BUILD_STARTED));
-    process.exit(0);
+function reportBuildStatus({ stats }) {
+    console.info(chalk.green('==> Compiled successfully.\n'));
+
+    console.info('File sizes after gzip:\n');
+    printFileSizesAfterBuild(
+        stats,
+        { root: paths.appDist, sizes: {} },
+        paths.appDist,
+        WARN_AFTER_BUNDLE_GZIP_SIZE,
+        WARN_AFTER_CHUNK_GZIP_SIZE,
+    );
 }
 
 
@@ -74,6 +78,7 @@ prepareToBuild()
     .then(buildClient)
     .then(reportBuildStatus)
     .catch((err) => {
-        console.error(new Error(err));
+        console.info(chalk.red('Failed to compile.\n'));
+        console.error(err);
         process.exit(1);
     });

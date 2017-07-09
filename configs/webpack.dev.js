@@ -11,10 +11,13 @@ const webpackVendorCfg = require('./webpack.vendor');
 
 module.exports = merge(WebpackCommonConfig, {
     devtool: 'cheap-module-source-map',
+    entry: [
+        `webpack-dev-server/client?http://${process.env.HOST}:${process.env.PORT}`,
+    ],
     module: {
         rules: [
             {
-                test: /\.scss$/,
+                test: /\.s?css$/,
                 use: [
                     'style-loader',
                     'css-loader',

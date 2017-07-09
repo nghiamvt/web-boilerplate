@@ -128,6 +128,7 @@ prepareToBuild()
     .then(buildVendors)
     .then(startDevServer)
     .catch((err) => {
-        console.error('Error :', err);
+        console.info(chalk.red('Failed to compile.\n'));
+        console.error(err);
         process.exit(1);
     });

@@ -10,13 +10,12 @@ const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
     target: 'web',
     entry: [
-        !isProduction && `webpack-dev-server/client?http://${process.env.HOST}:${process.env.PORT}`,
         'babel-polyfill',
         'whatwg-fetch',
         paths.mainEntry,
     ],
     output: {
-        path: paths.appBuild,
+        path: paths.appDist, // not used in dev
         pathinfo: !isProduction,
         // dev use “in-memory” files
         filename: paths.appBundle,
@@ -69,6 +68,7 @@ module.exports = {
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.
     node: {
+        dgram: 'empty',
         fs: 'empty',
         net: 'empty',
         tls: 'empty',
