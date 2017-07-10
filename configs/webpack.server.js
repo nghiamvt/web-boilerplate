@@ -12,7 +12,7 @@ module.exports = ({ proxyConfig, allowedHost }) => {
         watchContentBase: true,
         // It is important to tell WebpackDevServer to use the same "root" path
         // as we specified in the config. In development, we always serve from /.
-        publicPath: paths.appPublicPath,
+        publicPath: paths.publicPath,
         quiet: false,
         // Terminal configurations
         // https://webpack.github.io/docs/node.js-api.html#stats
@@ -33,7 +33,7 @@ module.exports = ({ proxyConfig, allowedHost }) => {
         host,
         // http://webpack.github.io/docs/webpack-dev-server.html#the-historyapifallback-option
         historyApiFallback: {
-            index: paths.appPublicPath,
+            index: paths.publicPath,
             disableDotRule: true,
         },
         public: allowedHost,

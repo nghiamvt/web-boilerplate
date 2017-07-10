@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const paths = require('./paths');
 const WebpackCommonConfig = require('./webpack.common.js');
@@ -50,24 +49,7 @@ module.exports = merge(WebpackCommonConfig, {
         ],
     },
     plugins: [
-        new ExtractTextPlugin('style/[name].[contenthash].css'),
-        // https://github.com/jantimon/html-webpack-plugin
-        new HtmlWebpackPlugin({
-            inject: true,
-            template: paths.appHtml,
-            minify: {
-                removeComments: true,
-                collapseWhitespace: true,
-                removeRedundantAttributes: true,
-                useShortDoctype: true,
-                removeEmptyAttributes: true,
-                removeStyleLinkTypeAttributes: true,
-                keepClosingSlash: true,
-                minifyJS: true,
-                minifyCSS: true,
-                minifyURLs: true,
-            },
-        }),
+        new ExtractTextPlugin(paths.CSS_FILE),
         new webpack.optimize.UglifyJsPlugin(),
     ],
 });

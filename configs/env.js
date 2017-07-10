@@ -36,7 +36,7 @@ function getClientEnvironment() {
         },
         {
             NODE_ENV: process.env.NODE_ENV || 'development',
-            PUBLIC_URL: paths.appPublicPath,
+            PUBLIC_URL: paths.publicPath,
             HOST: process.env.HOST || '0.0.0.0',
             PORT: parseInt(process.env.PORT) || 3000,
         });

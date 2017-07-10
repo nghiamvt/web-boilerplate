@@ -8,10 +8,6 @@ const paths = require('../configs/paths');
 const { mkDir, rmDir, copyFileToDir } = require('./common');
 
 process.env.NODE_ENV = 'production';
-// These sizes are pretty large. We'll warn for bundles exceeding them.
-const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;
-const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
-
 // ==========================================================
 /**
  * Prepare what necessary to build
@@ -25,8 +21,23 @@ function prepareToBuild() {
         mkDir(paths.appDist);
         copyFileToDir(paths.appFavicon, paths.appDist);
 
-        const webpackConfigProd = require(paths.WEBPACK_CONFIG_PROD);
-        resolve({ webpackConfigProd });
+        resolve();
+    });
+}
+
+// ==========================================================
+/**
+ * Build webpack DLL bundle (contain common libs)
+ * @returns {Promise}
+ */
+
+function buildVendors() {
+    return new Promise((resolve, reject) => {
+        const webpackConfigVendor = require(paths.WEBPACK_CONFIG_VENDOR)({ isProduction: true });
+        return webpack(webpackConfigVendor).run((err) => {
+            if (err) { reject(err); }
+            resolve();
+        });
     });
 }
 
@@ -35,10 +46,11 @@ function prepareToBuild() {
  * Creating application bundles
  * @returns {Promise}
  */
-function buildClient({ webpackConfigProd }) {
+function buildClient() {
     console.info(chalk.cyan('Creating an optimized production build...'));
 
     return new Promise((resolve, reject) => {
+        const webpackConfigProd = require(paths.WEBPACK_CONFIG_PROD);
         webpack(webpackConfigProd).run((err, stats) => {
             if (err) return reject(err);
 
@@ -64,17 +76,11 @@ function reportBuildStatus({ stats }) {
     console.info(chalk.green('==> Compiled successfully.\n'));
 
     console.info('File sizes after gzip:\n');
-    printFileSizesAfterBuild(
-        stats,
-        { root: paths.appDist, sizes: {} },
-        paths.appDist,
-        WARN_AFTER_BUNDLE_GZIP_SIZE,
-        WARN_AFTER_CHUNK_GZIP_SIZE,
-    );
+    printFileSizesAfterBuild(stats, { root: paths.appDist, sizes: {} }, paths.appDist);
 }
 
-
 prepareToBuild()
+    .then(buildVendors)
     .then(buildClient)
     .then(reportBuildStatus)
     .catch((err) => {

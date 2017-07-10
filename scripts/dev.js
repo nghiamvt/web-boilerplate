@@ -61,7 +61,7 @@ function buildVendors({ packageJSON }) {
         shouldBuildVendors = true;
     }
 
-    const webpackConfigVendor = require(paths.WEBPACK_CONFIG_VENDOR);
+    const webpackConfigVendor = require(paths.WEBPACK_CONFIG_VENDOR)({ isProduction: false });
 
     return new Promise((resolve, reject) => {
         if (!shouldBuildVendors || !packageJSON.dependencies) {
