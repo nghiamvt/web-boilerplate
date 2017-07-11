@@ -4,9 +4,9 @@
  * @returns {*}
  */
 function arrayToObject(arr) {
-    return arr.reduce((result, i) => ({ ...result, [i]: i }), {});
+	return arr.reduce((result, i) => ({ ...result, [i]: i }), {});
 }
 
 export {
-    arrayToObject,
+	arrayToObject,
 };

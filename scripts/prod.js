@@ -14,15 +14,17 @@ process.env.NODE_ENV = 'production';
  * @returns {Promise}
  */
 function prepareToBuild() {
-    return new Promise((resolve) => {
-        if (fs.existsSync(paths.appDev)) {
-            rmDir(paths.appDist);
-        }
-        mkDir(paths.appDist);
-        copyFileToDir(paths.appFavicon, paths.appDist);
+	console.info(chalk.cyan('Creating an optimized production build...'));
 
-        resolve();
-    });
+	return new Promise((resolve) => {
+		if (fs.existsSync(paths.appDev)) {
+			rmDir(paths.appDist);
+		}
+		mkDir(paths.appDist);
+		copyFileToDir(paths.appFavicon, paths.appDist);
+
+		resolve();
+	});
 }
 
 // ==========================================================
@@ -32,13 +34,15 @@ function prepareToBuild() {
  */
 
 function buildVendors() {
-    return new Promise((resolve, reject) => {
-        const webpackConfigVendor = require(paths.WEBPACK_CONFIG_VENDOR)({ isProduction: true });
-        return webpack(webpackConfigVendor).run((err) => {
-            if (err) { reject(err); }
-            resolve();
-        });
-    });
+	return new Promise((resolve, reject) => {
+		const webpackConfigVendor = require(paths.WEBPACK_CONFIG_VENDOR)({ isProduction: true });
+		return webpack(webpackConfigVendor).run((err) => {
+			if (err) {
+				reject(err);
+			}
+			resolve();
+		});
+	});
 }
 
 // ==========================================================
@@ -47,25 +51,23 @@ function buildVendors() {
  * @returns {Promise}
  */
 function buildClient() {
-    console.info(chalk.cyan('Creating an optimized production build...'));
+	return new Promise((resolve, reject) => {
+		const webpackConfigProd = require(paths.WEBPACK_CONFIG);
+		webpack(webpackConfigProd).run((err, stats) => {
+			if (err) return reject(err);
 
-    return new Promise((resolve, reject) => {
-        const webpackConfigProd = require(paths.WEBPACK_CONFIG_PROD);
-        webpack(webpackConfigProd).run((err, stats) => {
-            if (err) return reject(err);
+			const messages = formatWebpackMessages(stats.toJson({}, true));
+			if (messages.errors.length) {
+				return reject(new Error(messages.errors.join('\n\n')));
+			}
 
-            const messages = formatWebpackMessages(stats.toJson({}, true));
-            if (messages.errors.length) {
-                return reject(new Error(messages.errors.join('\n\n')));
-            }
+			if (messages.warnings.length) {
+				return reject(new Error(messages.warnings.join('\n\n')));
+			}
 
-            if (messages.warnings.length) {
-                return reject(new Error(messages.warnings.join('\n\n')));
-            }
-
-            return resolve({ stats });
-        });
-    });
+			return resolve({ stats });
+		});
+	});
 }
 
 // ==========================================================
@@ -73,18 +75,18 @@ function buildClient() {
  * Report build status
  */
 function reportBuildStatus({ stats }) {
-    console.info(chalk.green('==> Compiled successfully.\n'));
+	console.info(chalk.green('==> Compiled successfully.\n'));
 
-    console.info('File sizes after gzip:\n');
-    printFileSizesAfterBuild(stats, { root: paths.appDist, sizes: {} }, paths.appDist);
+	console.info('File sizes after gzip:\n');
+	printFileSizesAfterBuild(stats, { root: paths.appDist, sizes: {} }, paths.appDist);
 }
 
 prepareToBuild()
-    .then(buildVendors)
-    .then(buildClient)
-    .then(reportBuildStatus)
-    .catch((err) => {
-        console.info(chalk.red('Failed to compile.\n'));
-        console.error(err);
-        process.exit(1);
-    });
+	.then(buildVendors)
+	.then(buildClient)
+	.then(reportBuildStatus)
+	.catch((err) => {
+		console.info(chalk.red('Failed to compile.\n'));
+		console.error(err);
+		process.exit(1);
+	});

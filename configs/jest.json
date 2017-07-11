@@ -1,6 +1,11 @@
 {
-  "rootDir": "..",
-  "verbose": false,
-  "testMatch": ["**/__tests__/**/*.test.js"],
-  "moduleFileExtensions": [ "js", "json" ]
+	"rootDir": "..",
+	"verbose": false,
+	"testMatch": [
+		"**/__tests__/**/*.test.js"
+	],
+	"moduleFileExtensions": [
+		"js",
+		"json"
+	]
 }
