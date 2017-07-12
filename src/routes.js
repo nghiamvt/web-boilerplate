@@ -14,16 +14,16 @@ export default function Routes() {
 	const store = configureStore({ history });
 
 	return (
-    <Provider store={store}>
-        <ConnectedRouter history={history}>
-            <Master>
-                <Switch>
-                    <Route exact path="/" component={App} />
-                    <Route path="/todo" component={Todo} />
-                    <Route component={() => (<div>404 Not found</div>)} />
-                </Switch>
-            </Master>
-        </ConnectedRouter>
-    </Provider>
+		<Provider store={store}>
+			<ConnectedRouter history={history}>
+				<Master>
+					<Switch>
+						<Route exact path="/" component={App} />
+						<Route path="/todo" component={Todo} />
+						<Route component={() => (<div>404 Not found</div>)} />
+					</Switch>
+				</Master>
+			</ConnectedRouter>
+		</Provider>
 	);
 }

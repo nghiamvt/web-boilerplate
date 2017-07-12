@@ -31,6 +31,5 @@ module.exports = {
 
 	WEBPACK_CONFIG_VENDOR: resolveApp('configs/webpack.vendor'),
 	WEBPACK_CONFIG_SERVER: resolveApp('configs/webpack.server'),
-	WEBPACK_CONFIG: resolveApp('configs/webpack.common'),
-	WEBPACK_CONFIG_PROD: resolveApp('configs/webpack.prod'),
+	WEBPACK_CONFIG: resolveApp('configs/webpack.client'),
 };

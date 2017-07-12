@@ -41,27 +41,27 @@ export default class TodoItem extends Component {
 
 	renderTodoEditing = (props: Props, state: State) => {
 		return (
-    <TodoTextInput
-        text={props.todo.text}
-        editing={state.editing}
-        onSave={(text) => this.handleSave(props.todo.id, text)}
-    />
+			<TodoTextInput
+				text={props.todo.text}
+				editing={state.editing}
+				onSave={(text) => this.handleSave(props.todo.id, text)}
+			/>
 		);
 	}
 
 	renderTodoView = (props: Props) => {
 		return (
-    <div className="view">
-        <input
-            id={props.todo.id}
-            className="toggle"
-            type="checkbox"
-            checked={props.todo.completed}
-            onChange={() => props.onToggleTodo(props.todo)}
-        />
-        <label htmlFor={props.todo.id} onDoubleClick={this.handleDoubleClick}>{props.todo.text}</label>
-        <button className="destroy" onClick={() => props.onDeleteTodo([props.todo.id])} />
-    </div>
+			<div className="view">
+				<input
+					id={props.todo.id}
+					className="toggle"
+					type="checkbox"
+					checked={props.todo.completed}
+					onChange={() => props.onToggleTodo(props.todo)}
+				/>
+				<label htmlFor={props.todo.id} onDoubleClick={this.handleDoubleClick}>{props.todo.text}</label>
+				<button className="destroy" onClick={() => props.onDeleteTodo([props.todo.id])} />
+			</div>
 		);
 	}
 
@@ -71,9 +71,9 @@ export default class TodoItem extends Component {
 			editing: state.editing,
 		});
 		return (
-    <li className={cls}>
-        {state.editing ? this.renderTodoEditing(props, state) : this.renderTodoView(props)}
-    </li>
+			<li className={cls}>
+				{state.editing ? this.renderTodoEditing(props, state) : this.renderTodoView(props)}
+			</li>
 		);
 	}
 

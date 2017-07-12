@@ -32,8 +32,8 @@ class Footer extends Component<void, Props, State> {
 		const itemWord = props.activeCount === 1 ? 'item' : 'items';
 
 		return (
-    <span className="todo-count">
-        <strong>{props.activeCount || 'No'}</strong> {itemWord} left
+			<span className="todo-count">
+				<strong>{props.activeCount || 'No'}</strong> {itemWord} left
             </span>
 		);
 	}
@@ -42,30 +42,30 @@ class Footer extends Component<void, Props, State> {
 		const selectedFilter = props.selectedFilter || Object.values(FILTER_TITLES)[0];
 		const linkCls = classNames({ selected: filter === selectedFilter });
 		return (
-    <a className={linkCls} onClick={() => props.changeFilter(filter)}>
-        {filter}
-    </a>
+			<a className={linkCls} onClick={() => props.changeFilter(filter)}>
+				{filter}
+			</a>
 		);
 	}
 
 	renderFilter = (props) => {
 		return (
-    <ul className="filters">
-        {
+			<ul className="filters">
+				{
 					Object.keys(FILTER_TITLES).map(key => (
-    <li key={key}>
-        {this.renderFilterLink(FILTER_TITLES[key], props)}
-    </li>
+						<li key={key}>
+							{this.renderFilterLink(FILTER_TITLES[key], props)}
+						</li>
 					))
 				}
-    </ul>
+			</ul>
 		);
 	}
 
 	renderClearButton = (props) => {
 		if (!props.activeCount) return null;
 		return (
-    <button className="clear-completed" onClick={() => props.clearCompleted(props.activeTodoList)}>
+			<button className="clear-completed" onClick={() => props.clearCompleted(props.activeTodoList)}>
 				Clear completed
 			</button>
 		);
@@ -73,11 +73,11 @@ class Footer extends Component<void, Props, State> {
 
 	renderComponent(props) {
 		return (
-    <div className="footer">
-        {this.renderTodoCount(props)}
-        {this.renderFilter(props)}
-        {this.renderClearButton(props)}
-    </div>
+			<div className="footer">
+				{this.renderTodoCount(props)}
+				{this.renderFilter(props)}
+				{this.renderClearButton(props)}
+			</div>
 		);
 	}
 

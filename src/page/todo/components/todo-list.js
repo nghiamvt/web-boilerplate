@@ -37,35 +37,35 @@ const renderToggleAll = (props: Props) => {
 	const numOfTodo = Object.keys(props.filteredTodoList).length;
 	if (!numOfTodo) return null;
 	return (
-    <input
-        className="toggle-all"
-        type="checkbox"
-        checked={!props.activeCount}
-        onChange={() => onToggleAll(props)}
-    />
+		<input
+			className="toggle-all"
+			type="checkbox"
+			checked={!props.activeCount}
+			onChange={() => onToggleAll(props)}
+		/>
 	);
 };
 
 const renderTodoItem = (todo, prop: Props) => {
 	return (
-    <TodoItem
-        key={todo.id}
-        todo={todo}
-        onEditTodo={prop.editTodo}
-        onDeleteTodo={prop.deleteTodo}
-        onToggleTodo={prop.toggleTodo}
-    />
+		<TodoItem
+			key={todo.id}
+			todo={todo}
+			onEditTodo={prop.editTodo}
+			onDeleteTodo={prop.deleteTodo}
+			onToggleTodo={prop.toggleTodo}
+		/>
 	);
 };
 
 const TodoList = (props: Props) => {
 	return (
-    <div className="main">
-        {renderToggleAll(props)}
-        <ul className="todo-list">
-            {Object.keys(props.filteredTodoList).map((k) => renderTodoItem(props.filteredTodoList[k], props))}
-        </ul>
-    </div>
+		<div className="main">
+			{renderToggleAll(props)}
+			<ul className="todo-list">
+				{Object.keys(props.filteredTodoList).map((k) => renderTodoItem(props.filteredTodoList[k], props))}
+			</ul>
+		</div>
 	);
 };
 

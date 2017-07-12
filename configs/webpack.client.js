@@ -111,6 +111,7 @@ module.exports = {
 	plugins: [
 		// Makes some environment variables available to the JS code
 		new InterpolateHtmlPlugin(env.raw),
+		new ProgressBarPlugin(),
 		new ExtractTextPlugin(paths.CSS_FILE),
 		new webpack.DefinePlugin(env.stringified),
 		new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
@@ -135,7 +136,6 @@ module.exports = {
 			},
 		}),
 		new webpack.NamedModulesPlugin(),
-		new ProgressBarPlugin(),
 		isProduction && new webpack.optimize.UglifyJsPlugin(),
 	].filter(Boolean),
 	// Some libraries import Node modules but don't use them in the browser.

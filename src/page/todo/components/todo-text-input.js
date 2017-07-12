@@ -55,14 +55,14 @@ export default class TodoTextInput extends Component<void, Props, State> {
 			'new-todo': this.props.newTodo,
 		});
 		return (
-    <input className={cls}
-        type="text"
-        placeholder={this.props.placeholder}
-        value={this.state.text}
-        onBlur={this.handleBlur}
-        onChange={this.handleChange}
-        onKeyDown={this.handleSubmit}
-    />
+			<input className={cls}
+				type="text"
+				placeholder={this.props.placeholder}
+				value={this.state.text}
+				onBlur={this.handleBlur}
+				onChange={this.handleChange}
+				onKeyDown={this.handleSubmit}
+			/>
 		);
 	}
 }

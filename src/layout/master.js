@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 
 export default function Master(props) {
 	return (
-    <div className="page-container">
-        {props.children}
-    </div>
+		<div className="page-container">
+			{props.children}
+		</div>
 	);
 }
 

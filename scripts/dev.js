@@ -97,6 +97,7 @@ function startDevServer({ packageJSON }) {
 
 		choosePort(HOST, DEFAULT_PORT).then((port) => {
 			if (port === null) return;
+			process.env.PORT = port;
 			const urls = prepareUrls(protocol, HOST, port);
 			const proxyConfig = prepareProxy(proxySetting, paths.appDev);
 
