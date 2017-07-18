@@ -16,9 +16,11 @@ export const dataActionConst = {
 	GET_DATA: 'GET_DATA',
 	REMOVE_DATA: 'REMOVE_DATA',
 	MERGE_DATA: 'MERGE_DATA',
+	TOGGLE_DATA: 'TOGGLE_DATA',
 };
 
 export const SET_DATA = createDataAction(dataActionConst.SET_DATA);
 export const REMOVE_DATA = createDataAction(dataActionConst.REMOVE_DATA);
 export const GET_DATA = createDataAction(dataActionConst.GET_DATA);
 export const MERGE_DATA = createDataAction(dataActionConst.MERGE_DATA);
+export const TOGGLE_DATA = createDataAction(dataActionConst.TOGGLE_DATA);

@@ -94,23 +94,14 @@ export function remove(src, path, _ids) {
 }
 
 /**
- * Merges a value.  The target value must be an object, array, null, or undefined.
- * If target is an object, Object.assign({}, target, param) is used.
- * If target an array, target.concat(param) is used.
- * If target is null or undefined, the value is simply set.
+ * Toggle a value.  The target value must be boolean.
  * @param src The object to evaluate.
  * @param path The path to the value.
- * @param val The value to merge into the target value.
  */
-export function merge(src, path, val) {
+export function toggle(src, path) {
 	return set(src, path, (curVal) => {
-		if (curVal === null || isUndefined(curVal)) {
-			return val;
-		} else if (isArray(curVal)) {
-			return curVal.concat(val);
-		} else if (isObject(curVal)) {
-			return Object.assign({}, curVal, val);
-		}
-		return src;
+		invariant(isBool(curVal), `Expected _ids to be boolean but got ${typeof curVal}`);
+		return !curVal;
 	});
 }
+

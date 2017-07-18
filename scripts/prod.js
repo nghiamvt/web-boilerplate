@@ -36,11 +36,19 @@ function prepareToBuild() {
 function buildVendors() {
 	return new Promise((resolve, reject) => {
 		const webpackConfigVendor = require(paths.WEBPACK_CONFIG_VENDOR)({ isProduction: true });
-		return webpack(webpackConfigVendor).run((err) => {
-			if (err) {
-				reject(err);
+		webpack(webpackConfigVendor).run((err, stats) => {
+			if (err) return reject(err);
+
+			const messages = formatWebpackMessages(stats.toJson({}, true));
+			if (messages.errors.length) {
+				return reject(new Error(messages.errors.join('\n\n')));
 			}
-			resolve();
+
+			if (messages.warnings.length) {
+				console.warn(new Error(messages.warnings.join('\n\n')));
+			}
+
+			return resolve();
 		});
 	});
 }

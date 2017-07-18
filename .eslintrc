@@ -35,6 +35,7 @@
 		"global-require": 0,
 		"import/no-dynamic-require": 0,
 		"import/no-extraneous-dependencies": 0,
+		"import/prefer-default-export": 0,
 		"react/forbid-prop-types": [1, { "forbid": ["any"] }],
 		"react/jsx-indent": [1, "tab"],
 		"react/jsx-indent-props": [1, "tab"],

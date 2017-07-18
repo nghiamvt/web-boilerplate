@@ -1,6 +1,12 @@
-@require "./component.styl"
-@require "./page.styl"
+@require "kouto-swiss"
+@require "~jeet/styl/index.styl"
 
-.App {
-    display: flex;
-}
+normalize()
+
+@require "./mixin.styl"
+@require "./lib.styl"
+@require "./general.styl"
+
+//@require "component/*.styl"
+//@require "view/*.styl"
+@require "page/*.styl"

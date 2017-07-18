@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const paths = require('./paths');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 const packageJSON = require(paths.packageJSON);
 
@@ -11,7 +12,7 @@ module.exports = ({ isProduction }) => {
 			vendor: Object.keys(packageJSON.dependencies),
 		},
 		output: {
-			path: rootPath,
+			path: path.join(rootPath, isProduction ? '' : paths.publicPath),
 			filename: paths.DLL_FILE,
 			library: paths.DLL_LIB,
 			publicPath: paths.publicPath,
@@ -27,6 +28,20 @@ module.exports = ({ isProduction }) => {
 				// output.library option above.
 				name: paths.DLL_LIB,
 			}),
-		],
+			isProduction && new webpack.DefinePlugin({
+				'process.env': {
+					NODE_ENV: JSON.stringify('production'),
+					ENVIRONMENT: JSON.stringify('production'),
+				},
+			}),
+			isProduction && new webpack.optimize.UglifyJsPlugin(),
+			isProduction && new CompressionPlugin({
+				asset: '[path].gz[query]',
+				algorithm: 'gzip',
+				test: /\.(js|css)$/,
+				threshold: 10240,
+				minRatio: 0.8,
+			}),
+		].filter(Boolean),
 	};
 };

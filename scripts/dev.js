@@ -66,17 +66,15 @@ function buildVendors({ packageJSON }) {
 
 	return new Promise((resolve, reject) => {
 		if (!shouldBuildVendors || !packageJSON.dependencies) {
-			return resolve({ packageJSON });
-		}
-
-		return webpack(webpackConfigVendor).run((err) => {
-			if (err) {
-				reject(err);
-			}
-			// save hash
-			fs.writeFileSync(vendorHashFilePath, currentVendorsHash, 'utf-8');
 			resolve({ packageJSON });
-		});
+		} else {
+			webpack(webpackConfigVendor).run((err) => {
+				if (err) return reject(err);
+				// save hash
+				fs.writeFileSync(vendorHashFilePath, currentVendorsHash, 'utf-8');
+				return resolve({ packageJSON });
+			});
+		}
 	});
 }
 // ==========================================================
