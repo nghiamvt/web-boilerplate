@@ -3,7 +3,7 @@ import invariant from './invariant';
 import { removeItems } from './object';
 
 /**
- * Convert path format to an array
+ * Convert path format to array
  */
 function pathToArray(path) {
 	if (isArray(path)) return path;
@@ -94,14 +94,23 @@ export function remove(src, path, _ids) {
 }
 
 /**
- * Toggle a value.  The target value must be boolean.
+ * Merges a value.  The target value must be an object, array, null, or undefined.
+ * If target is an object, Object.assign({}, target, param) is used.
+ * If target an array, target.concat(param) is used.
+ * If target is null or undefined, the value is simply set.
  * @param src The object to evaluate.
  * @param path The path to the value.
+ * @param val The value to merge into the target value.
  */
-export function toggle(src, path) {
+export function merge(src, path, val) {
 	return set(src, path, (curVal) => {
-		invariant(isBool(curVal), `Expected _ids to be boolean but got ${typeof curVal}`);
-		return !curVal;
+		if (curVal === null || isUndefined(curVal)) {
+			return val;
+		} else if (isArray(curVal)) {
+			return curVal.concat(val);
+		} else if (isObject(curVal)) {
+			return Object.assign({}, curVal, val);
+		}
+		return src;
 	});
 }
-
