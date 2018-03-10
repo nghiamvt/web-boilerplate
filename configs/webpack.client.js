@@ -48,6 +48,7 @@ module.exports = {
 				loader: 'file-loader',
 				options: {
 					name: 'static/media/[name].[hash:8].[ext]',
+					sourceMap: !isProduction,
 				},
 			},
 			// "url" loader works just like "file" loader but it also embeds
