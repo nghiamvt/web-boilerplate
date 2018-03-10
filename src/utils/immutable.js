@@ -3,7 +3,7 @@ import invariant from './invariant';
 import { removeItems } from './object';
 
 /**
- * Convert path format to array
+ * Convert path format to an array
  */
 function pathToArray(path) {
 	if (isArray(path)) return path;
