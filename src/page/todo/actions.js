@@ -13,6 +13,7 @@ export const addTodo = (text: string) => {
 			text,
 			completed: false,
 		},
+		type: 'ADD_TODO',
 	});
 };
 

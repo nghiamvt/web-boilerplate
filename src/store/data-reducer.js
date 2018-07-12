@@ -3,9 +3,9 @@ import defaultState from './default-state';
 import { dataActionConst } from './data-action';
 
 export default function dataReducer(state = defaultState, action) {
-	if (Object.keys(dataActionConst).includes(action.type)) {
-		const type = action.type.replace('_DATA', '').toLowerCase();
-		return immutable[type](state, action.meta._path, action.payload);
+	const type = action.type.substring(0, action.type.indexOf('_DATA/') + 5);
+	if (Object.keys(dataActionConst).includes(type)) {
+		return immutable[type.toLowerCase()](state, action.meta._path, action.payload);
 	}
 	return state;
 }

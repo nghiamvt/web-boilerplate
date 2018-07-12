@@ -34,7 +34,7 @@ class Footer extends Component<void, Props, State> {
 		return (
 			<span className="todo-count">
 				<strong>{props.activeCount || 'No'}</strong> {itemWord} left
-            </span>
+			</span>
 		);
 	}
 

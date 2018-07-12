@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { isArray, isFunction, isNumber, isObject, isEmpty, isUndefined } from './is';
 import invariant from './invariant';
 import { removeItems } from './object';
@@ -30,7 +32,7 @@ function getArrayIndex(head) {
  * @param path The path to be set.
  * @param value The value to set.
  */
-export function set(src, path, value) {
+export function set_data(src, path, value) {
 	invariant(!isEmpty(path), 'path is required for setting data');
 	const pathArr = pathToArray(path);
 
@@ -51,7 +53,7 @@ export function set(src, path, value) {
  * @param src The object to evaluate.
  * @param path The path to value that should be returned.
  */
-export function get(src, path) {
+export function get_data(src, path) {
 	const pathList = pathToArray(path);
 	if (pathList.length === 0) return src;
 	return pathList.reduce((result, pathFragment) => {
@@ -68,7 +70,7 @@ export function get(src, path) {
  * @param path The path to target container.
  * @param _ids The array of property or index which will be deleted.
  */
-export function remove(src, path, _ids) {
+export function remove_data(src, path, _ids) {
 	invariant(arguments.length >= 3, 'src, path and _ids are required');
 	invariant(isArray(_ids), `Expected _ids to be an array but got ${typeof _ids}`);
 	if (isEmpty(path)) {
@@ -77,9 +79,9 @@ export function remove(src, path, _ids) {
 		return src;
 	}
 
-	if (isUndefined(get(src, path))) return src;
+	if (isUndefined(get_data(src, path))) return src;
 
-	return set(src, path, (val) => {
+	return set_data(src, path, (val) => {
 		if (isArray(val)) {
 			invariant(!(_ids.some((id) => !isNumber(id))), 'Array index has to be an integer');
 			return val.filter((v, i) => !_ids.includes(i));
@@ -102,8 +104,8 @@ export function remove(src, path, _ids) {
  * @param path The path to the value.
  * @param val The value to merge into the target value.
  */
-export function merge(src, path, val) {
-	return set(src, path, (curVal) => {
+export function merge_data(src, path, val) {
+	return set_data(src, path, (curVal) => {
 		if (curVal === null || isUndefined(curVal)) {
 			return val;
 		} else if (isArray(curVal)) {
