@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './style/index.styl';
+
+import './style/index.scss';
 
 export default function App() {
 	return (

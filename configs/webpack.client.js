@@ -1,7 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const jeet = require('jeet');
-const koutoSwiss = require('kouto-swiss');
 const autoprefixer = require('autoprefixer');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -17,7 +15,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const webpackVendorCfg = require('./webpack.vendor')({ isProduction });
 
 module.exports = {
-	devtool: 'source-map',
+	devtool: 'cheap-module-source-map',
 	target: 'web',
 	entry: [
 		'babel-polyfill',
@@ -27,13 +25,14 @@ module.exports = {
 	].filter(Boolean),
 	output: {
 		path: paths.appDist, // not used in dev
+		// Add /* filename */ comments to generated require()s in the output.
 		pathinfo: !isProduction,
 		// dev use “in-memory” files
 		filename: paths.appBundle,
 		publicPath: paths.publicPath,
 	},
 	resolve: {
-		extensions: ['.js', '.json'],
+		extensions: ['.js', '.json', '.jsx'],
 		modules: [
 			'node_modules',
 			paths.appSrc,
@@ -69,13 +68,14 @@ module.exports = {
 				},
 			},
 			{
-				test: /\.styl$/,
+				test: /\.scss$/,
 				use: ExtractTextPlugin.extract({
 					fallback: 'style-loader',
 					use: [
 						{
 							loader: 'css-loader',
 							options: {
+								importLoaders: 2,
 								minimize: isProduction,
 								sourceMap: !isProduction,
 							},
@@ -83,6 +83,9 @@ module.exports = {
 						{
 							loader: 'postcss-loader',
 							options: {
+								// Necessary for external CSS imports to work
+								// https://github.com/facebookincubator/create-react-app/issues/2677
+								ident: 'postcss',
 								plugins: () => [
 									require('postcss-flexbugs-fixes'),
 									autoprefixer({
@@ -99,9 +102,8 @@ module.exports = {
 							},
 						},
 						{
-							loader: 'stylus-loader',
+							loader: 'sass-loader',
 							options: {
-								use: [jeet(), koutoSwiss()],
 								sourceMap: !isProduction,
 							},
 						},
@@ -142,7 +144,7 @@ module.exports = {
 		isProduction && new CompressionPlugin({
 			asset: '[path].gz[query]',
 			algorithm: 'gzip',
-			test: /\.(js|css)$/,
+			test: /\.(js|css|scss)$/,
 			threshold: 10240,
 			minRatio: 0.8,
 		}),
