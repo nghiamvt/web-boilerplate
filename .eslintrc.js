@@ -7,22 +7,20 @@
   "warn" or 1 - turn the rule on as a warning (doesn’t affect exit code)
   "error" or 2 - turn the rule on as an error (exit code is 1 when triggered)
 */
-{
-	"extends": ["airbnb"],
-	"parser": "babel-eslint",
-	"plugins": ["react"],
-	"env": {
-		"jest": true,
-		"browser": true
+module.exports = {
+	extends: ["airbnb"],
+	parser: "babel-eslint",
+	plugins: ["react"],
+	env: {
+		jest: true,
+		browser: true
 	},
-	"settings": {
+	settings: {
 		"import/resolver": {
-			"webpack": {
-			"config": "configs/webpack.client.js"
-			}
+			webpack: { config: "configs/webpack.client.js" }
 		}
 	},
-  	"rules": {
+	rules: {
 		"max-len": [1, 120],
 		"indent": [1, "tab", { "SwitchCase": 1 }],
 		"no-tabs": 0,

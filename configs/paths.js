@@ -2,16 +2,16 @@ const fs = require('fs');
 const path = require('path');
 
 const appDirectory = fs.realpathSync(process.cwd());
-const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
+const xPath = relativePath => path.resolve(appDirectory, relativePath);
 
 module.exports = {
 	// files
-	mainEntry: resolveApp('src/index.js'),
-	appHtml: resolveApp('public/index.html'),
-	appFavicon: resolveApp('public/favicon.ico'),
-	packageJSON: resolveApp('package.json'),
-	dotenv: resolveApp('.env'),
-	yarnLockFile: resolveApp('yarn.lock'),
+	mainEntry: xPath('src/index.js'),
+	appHtml: xPath('public/index.html'),
+	appFavicon: xPath('public/favicon.ico'),
+	packageJSON: xPath('package.json'),
+	dotenv: xPath('.env'),
+	yarnLockFile: xPath('yarn.lock'),
 
 	vendorHashFileName: 'vendor_hash',
 	appBundle: 'app.[hash:8].js',
@@ -22,14 +22,14 @@ module.exports = {
 	publicPath: '',
 
 	// directories
-	appRoot: resolveApp(''),
-	appSrc: resolveApp('src'),
-	appBuild: resolveApp('build'),
-	appDev: resolveApp('build/dev'),
-	appDist: resolveApp('build/dist'),
-	appPublic: resolveApp('public'),
+	appRoot: xPath(''),
+	appSrc: xPath('src'),
+	appBuild: xPath('build'),
+	appDev: xPath('build/dev'),
+	appDist: xPath('build/dist'),
+	appPublic: xPath('public'),
 
-	WEBPACK_CONFIG_VENDOR: resolveApp('configs/webpack.vendor'),
-	WEBPACK_CONFIG_SERVER: resolveApp('configs/webpack.server'),
-	WEBPACK_CONFIG: resolveApp('configs/webpack.client'),
+	WEBPACK_CONFIG_VENDOR: xPath('configs/webpack.vendor'),
+	WEBPACK_CONFIG_SERVER: xPath('configs/webpack.server'),
+	WEBPACK_CONFIG: xPath('configs/webpack.client'),
 };

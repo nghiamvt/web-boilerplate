@@ -1,4 +1,4 @@
-import * as immutable from 'utils/immutable';
+import * as immutable from '@/utils/immutable';
 import defaultState from './default-state';
 import { dataActionConst } from './data-action';
 

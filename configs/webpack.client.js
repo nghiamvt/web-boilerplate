@@ -15,8 +15,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const webpackVendorCfg = require('./webpack.vendor')({ isProduction });
 
 module.exports = {
-	devtool: 'cheap-module-source-map',
-	target: 'web',
+	devtool: isProduction ? 'source-map' : 'inline-source-map',
 	entry: [
 		'babel-polyfill',
 		'whatwg-fetch',
@@ -32,11 +31,9 @@ module.exports = {
 		publicPath: paths.publicPath,
 	},
 	resolve: {
+		alias: { '@': paths.appSrc },
 		extensions: ['.js', '.json', '.jsx'],
-		modules: [
-			'node_modules',
-			paths.appSrc,
-		],
+		modules: ['node_modules'],
 	},
 	module: {
 		rules: [
