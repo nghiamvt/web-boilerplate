@@ -10,7 +10,6 @@ module.exports = {
 	appHtml: xPath('public/index.html'),
 	appFavicon: xPath('public/favicon.ico'),
 	packageJSON: xPath('package.json'),
-	dotenv: xPath('.env'),
 	yarnLockFile: xPath('yarn.lock'),
 
 	vendorHashFileName: 'vendor_hash',

@@ -1,10 +1,9 @@
-const path = require('path');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+// const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
 const paths = require('./paths');
 const envConfig = require('./.env.js');
@@ -14,7 +13,7 @@ module.exports = (env, argv) => {
 	return {
 		devtool: devMode ? 'cheap-module-source-map' : 'source-map',
 		devServer: {
-			// hot: true,
+			hot: true,
 			contentBase: paths.appDist,
 		},
 		entry: [
@@ -103,7 +102,7 @@ module.exports = (env, argv) => {
 				favicon: paths.appFavicon,
 				env: envConfig,
 			}),
-			// new webpack.HotModuleReplacementPlugin(),
+			new webpack.HotModuleReplacementPlugin(),
 			new MiniCssExtractPlugin({
 				filename: devMode ? '[name].css' : '[name].[hash:8].css',
 			}),
