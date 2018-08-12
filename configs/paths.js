@@ -18,7 +18,7 @@ module.exports = {
 	DLL_LIB: '[name]_dll',
 	DLL_FILE: '[name].dll.js',
 	DLL_MANIFEST_FILE: '[name]-manifest.json',
-	CSS_FILE: '[name].[contenthash].css',
+	CSS_FILE: '[name].[md5:contenthash:base32:8].css',
 	publicPath: '',
 
 	// directories
@@ -26,7 +26,7 @@ module.exports = {
 	appSrc: xPath('src'),
 	appBuild: xPath('build'),
 	appDev: xPath('build/dev'),
-	appDist: xPath('build/dist'),
+	appDist: xPath('dist'),
 	appPublic: xPath('public'),
 
 	WEBPACK_CONFIG_VENDOR: xPath('configs/webpack.vendor'),
