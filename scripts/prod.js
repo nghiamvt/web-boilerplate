@@ -17,12 +17,10 @@ function prepareToBuild() {
 	console.info(chalk.cyan('Creating an optimized production build...'));
 
 	return new Promise((resolve) => {
-		if (fs.existsSync(paths.appDev)) {
+		if (fs.existsSync(paths.appDist)) {
 			rmDir(paths.appDist);
 		}
 		mkDir(paths.appDist);
-		copyFileToDir(paths.appFavicon, paths.appDist);
-
 		resolve();
 	});
 }
