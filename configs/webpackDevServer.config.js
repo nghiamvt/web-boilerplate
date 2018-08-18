@@ -9,7 +9,7 @@ module.exports = {
 	// In development, always serve from /.
 	publicPath: paths.publicPath,
 	// HMR on console.
-	clientLogLevel: 'none',
+	// clientLogLevel: 'none',
 	compress: true,
 	disableHostCheck: false,
 	historyApiFallback: {

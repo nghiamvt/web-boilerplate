@@ -2,22 +2,16 @@ const path = require('path');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const paths = require('./paths');
 const envConfig = require('./.env');
 const webpackVendorCfg = require('./webpack.vendor');
 
-module.exports = ({ mode } = {}) => {
-	const devMode = mode !== 'production';
+module.exports = ({ devMode }) => {
 	return {
 		mode: devMode ? 'development' : 'production',
 		devtool: devMode ? 'cheap-module-source-map' : 'source-map',
-		devServer: {
-			hot: true,
-			contentBase: paths.appDist,
-		},
 		entry: [
 			'babel-polyfill',
 			'whatwg-fetch',
@@ -95,14 +89,10 @@ module.exports = ({ mode } = {}) => {
 			new webpack.EnvironmentPlugin(envConfig),
 			...Object.keys(webpackVendorCfg.entry).map((e) => {
 				return new webpack.DllReferencePlugin({
-					context: '..',
+					// context: paths.appRoot,
 					manifest: require(path.join(paths.appDist, paths.DLL_MANIFEST_FILE_NAME.replace(/\[name\]/g, e))),
 				});
 			}),
-			// new CleanWebpackPlugin([paths.appDist], {
-			// 	allowExternal: true,
-			// 	verbose: false, // logs
-			// }),
 			new HtmlWebpackPlugin({
 				inject: true,
 				template: paths.appHtml,
@@ -110,14 +100,14 @@ module.exports = ({ mode } = {}) => {
 				env: envConfig,
 				dll: {
 					paths: Object.keys(webpackVendorCfg.entry).map((e) => {
-						return `${paths.publicPath}/${paths.DLL_FILE.replace(/\[name\]/g, e)}`.replace('//', '/');
+						return `${paths.publicPath}/${paths.DLL_FILE.replace(/\[name\]/g, e)}`.replace('/', '');
 					}),
 				},
 			}),
-			new webpack.HotModuleReplacementPlugin(),
+			devMode && new webpack.HotModuleReplacementPlugin(),
 			new MiniCssExtractPlugin({
 				filename: devMode ? '[name].css' : '[name].[hash:8].css',
 			}),
-		],
+		].filter(Boolean),
 	};
 };
