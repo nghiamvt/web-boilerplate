@@ -12,7 +12,6 @@ module.exports = {
 	packageJSON: xPath('package.json'),
 	yarnLockFile: xPath('yarn.lock'),
 
-	vendorHashFileName: 'vendor_hash',
 	appBundle: 'app.[hash:8].js',
 	DLL_LIB: '[name]_dll',
 	DLL_FILE: '[name].dll.js',
@@ -24,6 +23,7 @@ module.exports = {
 	DLL_LIB_NAME: '[name]_dll',
 	DLL_FILE_NAME: '[name].dll.js',
 	DLL_MANIFEST_FILE_NAME: '[name]-manifest.json',
+	HASH_FILE_PATH: xPath('node_modules/.bin/_vendor_hash'),
 
 	// directories
 	appRoot: xPath(''),
@@ -33,7 +33,7 @@ module.exports = {
 	appDist: xPath('dist'),
 	appPublic: xPath('public'),
 
-	WEBPACK_CONFIG_VENDOR: xPath('configs/webpack.vendor'),
-	WEBPACK_CONFIG_SERVER: xPath('configs/webpack.server'),
-	WEBPACK_CONFIG: xPath('configs/webpack.client'),
+	WEBPACK_VENDOR_CONFIG: xPath('configs/webpack.vendor'),
+	WEBPACK_CONFIG: xPath('configs/webpack.config'),
+	DEV_SERVER_CONFIG: xPath('configs/webpackDevServer.config'),
 };

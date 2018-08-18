@@ -35,7 +35,7 @@ function prepareToBuild() {
 
 function buildVendors() {
 	return new Promise((resolve, reject) => {
-		const webpackConfigVendor = require(paths.WEBPACK_CONFIG_VENDOR)({ isProduction: true });
+		const webpackConfigVendor = require(paths.WEBPACK_VENDOR_CONFIG)({ isProduction: true });
 		webpack(webpackConfigVendor).run((err, stats) => {
 			if (err) return reject(err);
 
