@@ -62,7 +62,7 @@ function buildVendors({ packageJSON }) {
 		shouldBuildVendors = true;
 	}
 
-	const webpackConfigVendor = require(paths.WEBPACK_CONFIG_VENDOR)({ isProduction: false });
+	const webpackConfigVendor = require(paths.WEBPACK_VENDOR_CONFIG)({ isProduction: false });
 
 	return new Promise((resolve, reject) => {
 		if (!shouldBuildVendors || !packageJSON.dependencies) {
@@ -102,7 +102,7 @@ function startDevServer({ packageJSON }) {
 			// Create a webpack compiler that is configured with custom messages.
 			const compiler = createCompiler(webpack, webpackConfigDev, appName, urls, useYarn);
 
-			const webpackConfigDevServer = require(paths.WEBPACK_CONFIG_SERVER)({
+			const webpackConfigDevServer = require(paths.WEBPACK_SERVER_CONFIG)({
 				proxyConfig,
 				allowedHost: urls.lanUrlForConfig,
 			});

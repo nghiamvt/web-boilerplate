@@ -1,16 +1,18 @@
+const path = require('path');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
 const paths = require('./paths');
-const envConfig = require('./.env.js');
+const envConfig = require('./.env');
+const webpackVendorCfg = require('./webpack.vendor');
 
-module.exports = (env, argv) => {
-	const devMode = argv.mode !== 'production';
+module.exports = ({ mode } = {}) => {
+	const devMode = mode !== 'production';
 	return {
+		mode: devMode ? 'development' : 'production',
 		devtool: devMode ? 'cheap-module-source-map' : 'source-map',
 		devServer: {
 			hot: true,
@@ -90,17 +92,27 @@ module.exports = (env, argv) => {
 			],
 		},
 		plugins: [
-			// new ProgressBarPlugin(),
 			new webpack.EnvironmentPlugin(envConfig),
-			new CleanWebpackPlugin([paths.appDist], {
-				allowExternal: true,
-				verbose: false, // logs
+			...Object.keys(webpackVendorCfg.entry).map((e) => {
+				return new webpack.DllReferencePlugin({
+					context: '..',
+					manifest: require(path.join(paths.appDist, paths.DLL_MANIFEST_FILE_NAME.replace(/\[name\]/g, e))),
+				});
 			}),
+			// new CleanWebpackPlugin([paths.appDist], {
+			// 	allowExternal: true,
+			// 	verbose: false, // logs
+			// }),
 			new HtmlWebpackPlugin({
 				inject: true,
 				template: paths.appHtml,
 				favicon: paths.appFavicon,
 				env: envConfig,
+				dll: {
+					paths: Object.keys(webpackVendorCfg.entry).map((e) => {
+						return `${paths.publicPath}/${paths.DLL_FILE.replace(/\[name\]/g, e)}`.replace('//', '/');
+					}),
+				},
 			}),
 			new webpack.HotModuleReplacementPlugin(),
 			new MiniCssExtractPlugin({
