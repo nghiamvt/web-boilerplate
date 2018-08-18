@@ -8,10 +8,11 @@
 	"scripts": {
 		"eslint": "eslint src",
 		"dev": "webpack-dev-server --open --config configs/webpack.config.js --mode=development",
+		"vendor": "webpack --config configs/webpack.vendor.js",
 		"prod": "webpack --open --config configs/webpack.config.js --mode=production",
-		// "start": "node scripts/dev.js",
-		// "build": "node scripts/prod.js",
-		// "serve": "serve build/dist",
+		 "start": "node scripts/dev.js",
+		 "build": "node scripts/prod.js",
+		 "serve": "serve build/dist",
 		"test": "jest --config ./configs/jest.json --no-cache"
 	},
 	"keywords": [],

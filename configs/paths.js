@@ -20,6 +20,11 @@ module.exports = {
 	CSS_FILE: '[name].[md5:contenthash:base32:8].css',
 	publicPath: '',
 
+
+	DLL_LIB_NAME: '[name]_dll',
+	DLL_FILE_NAME: '[name].dll.js',
+	DLL_MANIFEST_FILE_NAME: '[name]-manifest.json',
+
 	// directories
 	appRoot: xPath(''),
 	appSrc: xPath('src'),
