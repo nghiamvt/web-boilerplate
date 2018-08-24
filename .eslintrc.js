@@ -17,12 +17,12 @@ module.exports = {
 	},
 	settings: {
 		"import/resolver": {
-			webpack: { config: "configs/webpack.client.js" }
+			webpack: { config: "configs/webpack.config.js" },
 		}
 	},
 	rules: {
 		"max-len": [1, 120],
-		"indent": [1, "tab", { "SwitchCase": 1 }],
+		"indent": [1, 2, { "SwitchCase": 1 }],
 		"no-tabs": 0,
 		"no-plusplus": 0,
 		"no-underscore-dangle": 0,
@@ -35,8 +35,6 @@ module.exports = {
 		"import/no-extraneous-dependencies": 0,
 		"import/prefer-default-export": 0,
 		"react/forbid-prop-types": [1, { "forbid": ["any"] }],
-		"react/jsx-indent": [1, "tab"],
-		"react/jsx-indent-props": [1, "tab"],
 		"react/jsx-filename-extension": [1, { "extensions": [".js"] }],
 		"react/no-unused-prop-types": 0,
 		"react/jsx-first-prop-new-line": 0,

@@ -1,20 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
+import { AppContainer } from 'react-hot-loader';
 
-import Routes from './routes';
+import App from './app';
 import configureStore from './store/configure-store';
 
 const history = createHistory();
 const store = configureStore({ history });
 
-ReactDOM.render(
-	<Provider store={store}>
-		<ConnectedRouter history={history}>
-			<Routes />
-		</ConnectedRouter>
-	</Provider>,
+const render = (Component) => {
+  ReactDOM.render(
+    <AppContainer>
+      <Provider store={store}>
+        <Component />
+      </Provider>
+    </AppContainer>,
 	document.getElementById('root'),
-);
+  );
+};
+
+render(App);
+
+if (module.hot) {
+  module.hot.accept('./app', () => {
+    render(App);
+  });
+}
