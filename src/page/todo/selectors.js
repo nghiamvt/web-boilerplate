@@ -12,28 +12,28 @@ export const activeCountSelector = createSelector(
 export const activeTodoListSelector = createSelector(
 	todoSelector,
 	(todoList) => Object.keys(todoList).reduce((result, key) => {
-		return todoList[key].completed ? result : { ...result, [key]: todoList[key] };
-	}, {}),
+  return todoList[key].completed ? result : { ...result, [key]: todoList[key] };
+}, {}),
 );
 
 export const completedTodoListSelector = createSelector(
 	todoSelector,
 	(todoList) => Object.keys(todoList).reduce((result, key) => {
-		return !todoList[key].completed ? result : { ...result, [key]: todoList[key] };
-	}, {}),
+  return !todoList[key].completed ? result : { ...result, [key]: todoList[key] };
+}, {}),
 );
 
 export const filteredTodoSelector = createSelector(
 	selectedFilterSelector, activeTodoListSelector, completedTodoListSelector, todoSelector,
 	(selectedFilter, activeTodoList, completedTodoList, todoList) => {
-		switch (selectedFilter) {
-			case SHOW_COMPLETED:
-				return completedTodoList;
-			case SHOW_ACTIVE:
-				return activeTodoList;
-			case SHOW_ALL:
-			default:
-				return todoList;
-		}
-	},
+  switch (selectedFilter) {
+    case SHOW_COMPLETED:
+      return completedTodoList;
+    case SHOW_ACTIVE:
+      return activeTodoList;
+    case SHOW_ALL:
+    default:
+      return todoList;
+  }
+},
 );
