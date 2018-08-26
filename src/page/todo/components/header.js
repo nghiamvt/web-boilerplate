@@ -11,16 +11,16 @@ export type Props = {
 }
 
 function Header(props: Props) {
-	return (
-		<header className="header">
-			<h1>Todos</h1>
-			<TodoTextInput
-				newTodo
-				onSave={props.addTodo}
-				placeholder="What needs to be done?"
-			/>
-		</header>
-	);
+  return (
+    <header className="header">
+      <h1>Todos</h1>
+      <TodoTextInput
+        newTodo
+        onSave={props.addTodo}
+        placeholder="What needs to be done?"
+      />
+    </header>
+  );
 }
 
 export default connect(

@@ -8,9 +8,7 @@ const paths = require('./paths');
 const envConfig = require('./.env');
 const webpackVendorCfg = require('./webpack.vendor');
 
-console.log('paths.appSrc', paths.appSrc);
-
-module.exports = ({ devMode }) => {
+module.exports = ({ devMode } = {}) => {
   return {
     mode: devMode ? 'development' : 'production',
     devtool: devMode ? 'cheap-module-source-map' : 'source-map',

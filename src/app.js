@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 // import { ConnectedRouter } from 'connected-react-router';
+import { DatePicker } from 'antd';
 
 import Todo from '@/page/todo';
 import Footer from '@/layout/footer';
@@ -15,11 +16,18 @@ class App extends React.Component {
     user: PropTypes.object.isRequired,
   };
 
+  componentDidMount() {
+    this.props.dispatch({
+      type: 'TEST_SAGA',
+    });
+  }
+
   render() {
     return (
       <div>
         <main className="app__main">
-          <span>hello world 123123</span>
+          <span>hello world 1</span>
+          <DatePicker />
           <BrowserRouter>
             <Switch>
               <Route path="/" component={Todo} />
@@ -28,7 +36,6 @@ class App extends React.Component {
           </BrowserRouter>
         </main>
         <Footer />
-        <SystemAlerts alerts={app.alerts} dispatch={dispatch} />
       </div>
     );
   }

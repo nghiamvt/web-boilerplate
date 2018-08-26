@@ -8,9 +8,9 @@ import { removeItems } from './object';
  * Convert path format to array
  */
 function pathToArray(path) {
-	if (isArray(path)) return path;
-	if (isEmpty(path)) return [];
-	return path
+  if (isArray(path)) return path;
+  if (isEmpty(path)) return [];
+  return path
 		.replace(/\\\./g, '@')
 		.replace(/\./g, '*')
 		.replace(/@/g, '.')
@@ -21,8 +21,8 @@ function pathToArray(path) {
  * Handle index of array
  */
 function getArrayIndex(head) {
-	invariant(isNumber(head), `Array index '${head}' has to be an integer`);
-	return head;
+  invariant(isNumber(head), `Array index '${head}' has to be an integer`);
+  return head;
 }
 
 
@@ -33,19 +33,19 @@ function getArrayIndex(head) {
  * @param value The value to set.
  */
 export function set_data(src, path, value) {
-	invariant(!isEmpty(path), 'path is required for setting data');
-	const pathArr = pathToArray(path);
+  invariant(!isEmpty(path), 'path is required for setting data');
+  const pathArr = pathToArray(path);
 
-	const setImmutable = (obj, pathList, val) => {
-		if (!pathList.length) return isFunction(value) ? val(obj, pathList[0]) : val;
-		const isArr = isArray(obj);
-		const clone = isArr ? obj.slice() : Object.assign({}, obj);
-		const curPath = isArr ? getArrayIndex(pathList[0]) : pathList[0];
-		clone[curPath] = setImmutable(!isUndefined(obj[curPath]) ? obj[curPath] : {}, pathList.slice(1), val);
-		return clone;
-	};
+  const setImmutable = (obj, pathList, val) => {
+    if (!pathList.length) return isFunction(value) ? val(obj, pathList[0]) : val;
+    const isArr = isArray(obj);
+    const clone = isArr ? obj.slice() : Object.assign({}, obj);
+    const curPath = isArr ? getArrayIndex(pathList[0]) : pathList[0];
+    clone[curPath] = setImmutable(!isUndefined(obj[curPath]) ? obj[curPath] : {}, pathList.slice(1), val);
+    return clone;
+  };
 
-	return setImmutable(src, pathArr, value);
+  return setImmutable(src, pathArr, value);
 }
 
 /**
@@ -54,11 +54,11 @@ export function set_data(src, path, value) {
  * @param path The path to value that should be returned.
  */
 export function get_data(src, path) {
-	const pathList = pathToArray(path);
-	if (pathList.length === 0) return src;
-	return pathList.reduce((result, pathFragment) => {
-		return result ? result[pathFragment] : src[pathFragment];
-	}, null);
+  const pathList = pathToArray(path);
+  if (pathList.length === 0) return src;
+  return pathList.reduce((result, pathFragment) => {
+    return result ? result[pathFragment] : src[pathFragment];
+  }, null);
 }
 
 /**
@@ -71,28 +71,28 @@ export function get_data(src, path) {
  * @param _ids The array of property or index which will be deleted.
  */
 export function remove_data(src, path, _ids) {
-	invariant(arguments.length >= 3, 'src, path and _ids are required');
-	invariant(isArray(_ids), `Expected _ids to be an array but got ${typeof _ids}`);
-	if (isEmpty(path)) {
-		if (isArray(src)) return src.filter((i, index) => !_ids.includes(index));
-		if (isObject(src)) return removeItems(src, _ids);
-		return src;
-	}
+  invariant(arguments.length >= 3, 'src, path and _ids are required');
+  invariant(isArray(_ids), `Expected _ids to be an array but got ${typeof _ids}`);
+  if (isEmpty(path)) {
+    if (isArray(src)) return src.filter((i, index) => !_ids.includes(index));
+    if (isObject(src)) return removeItems(src, _ids);
+    return src;
+  }
 
-	if (isUndefined(get_data(src, path))) return src;
+  if (isUndefined(get_data(src, path))) return src;
 
-	return set_data(src, path, (val) => {
-		if (isArray(val)) {
-			invariant(!(_ids.some((id) => !isNumber(id))), 'Array index has to be an integer');
-			return val.filter((v, i) => !_ids.includes(i));
-		} else if (isObject(val)) {
-			const idStrList = _ids.map(String);
-			return Object.keys(val).reduce((result, k) => {
-				return !idStrList.includes(k) ? { ...result, [k]: val[k] } : result;
-			}, {});
-		}
-		return val;
-	});
+  return set_data(src, path, (val) => {
+    if (isArray(val)) {
+      invariant(!(_ids.some((id) => !isNumber(id))), 'Array index has to be an integer');
+      return val.filter((v, i) => !_ids.includes(i));
+    } else if (isObject(val)) {
+      const idStrList = _ids.map(String);
+      return Object.keys(val).reduce((result, k) => {
+        return !idStrList.includes(k) ? { ...result, [k]: val[k] } : result;
+      }, {});
+    }
+    return val;
+  });
 }
 
 /**
@@ -105,14 +105,14 @@ export function remove_data(src, path, _ids) {
  * @param val The value to merge into the target value.
  */
 export function merge_data(src, path, val) {
-	return set_data(src, path, (curVal) => {
-		if (curVal === null || isUndefined(curVal)) {
-			return val;
-		} else if (isArray(curVal)) {
-			return curVal.concat(val);
-		} else if (isObject(curVal)) {
-			return Object.assign({}, curVal, val);
-		}
-		return src;
-	});
+  return set_data(src, path, (curVal) => {
+    if (curVal === null || isUndefined(curVal)) {
+      return val;
+    } else if (isArray(curVal)) {
+      return curVal.concat(val);
+    } else if (isObject(curVal)) {
+      return Object.assign({}, curVal, val);
+    }
+    return src;
+  });
 }

@@ -8,9 +8,9 @@ import { isArray, isString, isEmpty, isFunction, isUndefined } from '../utils/is
  * @return {Object} An object that contains the specified keys with truth-y values
  */
 function getSubsets(obj, paths) {
-	return Object.values(paths).reduce((result, key) => {
-		return obj[key] ? { ...result, [key]: obj[key] } : result;
-	}, {});
+  return Object.values(paths).reduce((result, key) => {
+    return obj[key] ? { ...result, [key]: obj[key] } : result;
+  }, {});
 }
 
 /**
@@ -19,14 +19,14 @@ function getSubsets(obj, paths) {
  * @return {Function} A slicer function, which returns the subset to store when called with Redux's store state.
  */
 function createSlicer(paths) {
-	if (isEmpty(paths)) return (state) => state;
-	if (isString(paths)) return (state) => getSubsets(state, [paths]);
-	if (isArray(paths)) return (state) => getSubsets(state, paths);
-	return console.error(`Expected paths to be String, Array or Void, but got ${typeof paths}`);
+  if (isEmpty(paths)) return (state) => state;
+  if (isString(paths)) return (state) => getSubsets(state, [paths]);
+  if (isArray(paths)) return (state) => getSubsets(state, paths);
+  return console.error(`Expected paths to be String, Array or Void, but got ${typeof paths}`);
 }
 
 function mergeState(initialState, persistedState) {
-	return persistedState ? { ...initialState, ...persistedState } : initialState;
+  return persistedState ? { ...initialState, ...persistedState } : initialState;
 }
 
 /**
@@ -45,47 +45,47 @@ function mergeState(initialState, persistedState) {
  * @return {Function} An enhanced store
  */
 export default function localStorageEnhancer(paths, config) {
-	const cfg = {
-		key: 'store',
-		merge: mergeState,
-		slicer: createSlicer,
-		serialize: JSON.stringify,
-		deserialize: JSON.parse,
-		...config,
-	};
+  const cfg = {
+    key: 'store',
+    merge: mergeState,
+    slicer: createSlicer,
+    serialize: JSON.stringify,
+    deserialize: JSON.parse,
+    ...config,
+  };
 
-	const { key, merge, slicer, serialize, deserialize } = cfg;
+  const { key, merge, slicer, serialize, deserialize } = cfg;
 
-	return next => (reducer, initialState, enhancer) => {
-		if (isFunction(initialState) && isUndefined(enhancer)) {
+  return next => (reducer, initialState, enhancer) => {
+    if (isFunction(initialState) && isUndefined(enhancer)) {
 			enhancer = initialState;  //eslint-disable-line
 			initialState = undefined; //eslint-disable-line
-		}
+    }
 
-		let persistedState;
-		let finalInitialState;
+    let persistedState;
+    let finalInitialState;
 
-		try {
-			persistedState = deserialize(localStorage.getItem(key));
-			finalInitialState = merge(initialState, persistedState);
-		} catch (e) {
-			console.warn('Failed to retrieve initialize state from localStorage:', e);
-		}
+    try {
+      persistedState = deserialize(localStorage.getItem(key));
+      finalInitialState = merge(initialState, persistedState);
+    } catch (e) {
+      console.warn('Failed to retrieve initialize state from localStorage:', e);
+    }
 
-		const store = next(reducer, finalInitialState, enhancer);
-		const slicerFn = slicer(paths);
+    const store = next(reducer, finalInitialState, enhancer);
+    const slicerFn = slicer(paths);
 
-		store.subscribe(() => {
-			const state = store.getState();
-			const subset = slicerFn(state);
+    store.subscribe(() => {
+      const state = store.getState();
+      const subset = slicerFn(state);
 
-			try {
-				localStorage.setItem(key, serialize(subset));
-			} catch (e) {
-				console.warn('Unable to save state to localStorage:', e);
-			}
-		});
+      try {
+        localStorage.setItem(key, serialize(subset));
+      } catch (e) {
+        console.warn('Unable to save state to localStorage:', e);
+      }
+    });
 
-		return store;
-	};
+    return store;
+  };
 }
