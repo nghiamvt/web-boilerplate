@@ -8,7 +8,6 @@
 		"transform-class-properties",
 		"transform-object-rest-spread",
 		"react-hot-loader/babel",
-    ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }]
 	],
 	"env": {
 		"test": {
