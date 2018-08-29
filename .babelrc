@@ -1,17 +1,19 @@
 {
-	"presets":[
-		["es2015", { "modules": false }],
-		"react",
-		"flow"
+  "presets": [
+    ["@babel/preset-env", {
+      "targets": {
+        "browsers": [
+          ">0.25%",
+          "not ie 11",
+          "not op_mini all"
+        ]
+      }
+    }],
+    "@babel/preset-react",
+    "@babel/preset-flow"
 	],
 	"plugins": [
-		"transform-class-properties",
-		"transform-object-rest-spread",
-		"react-hot-loader/babel",
-	],
-	"env": {
-		"test": {
-			"plugins": ["transform-es2015-modules-commonjs"]
-		}
-	}
+    "@babel/plugin-proposal-class-properties",
+    "react-hot-loader/babel"
+	]
 }
