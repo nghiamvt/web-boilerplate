@@ -12,17 +12,14 @@ module.exports = {
   packageJSON: xPath('package.json'),
   yarnLockFile: xPath('yarn.lock'),
 
-  appBundle: 'app.[hash:8].js',
-  DLL_LIB: '[name]_dll',
-  DLL_FILE: '[name].dll.js',
-  DLL_MANIFEST_FILE: '[name]-manifest.json',
-  CSS_FILE: '[name].[md5:contenthash:base32:8].css',
   publicPath: '',
-
-
   DLL_LIB_NAME: '[name]_dll',
-  DLL_FILE_NAME: '[name].dll.js',
-  DLL_MANIFEST_FILE_NAME: '[name]-manifest.json',
+  CSS_FILENAME_LOADER: 'assets/css/[name].[hash:8].css',
+  IMG_FILENAME_LOADER: 'assets/images/[name].[hash:8].[ext]',
+  FILENAME_LOADER: 'assets/files/[name].[hash:8].[ext]',
+  appBundle: 'assets/js/app.[hash:8].js',
+  DLL_FILENAME: 'assets/js/[name].dll.js',
+  DLL_MANIFEST_FILENAME: '[name]-manifest.json',
   HASH_FILE_PATH: xPath('node_modules/.bin/_vendor_hash'),
 
 	// directories

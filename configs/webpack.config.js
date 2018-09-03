@@ -18,7 +18,7 @@ module.exports = ({ devMode } = {}) => {
       paths.mainEntry,
     ],
     output: {
-      filename: 'app.[hash:8].js',
+      filename: paths.appBundle,
 			// dev use “in-memory” files
       path: paths.appDist,
       publicPath: paths.publicPath,
@@ -39,7 +39,7 @@ module.exports = ({ devMode } = {}) => {
               loader: 'url-loader',
               options: {
                 limit: 10000, // bytes
-                name: 'images/[name].[hash:8].[ext]',
+                name: paths.IMG_FILENAME_LOADER,
               },
             },
 						// Process JS with Babel.
@@ -78,7 +78,7 @@ module.exports = ({ devMode } = {}) => {
               exclude: [/\.(js|jsx|mjs)$/, /\.html$/, /\.json$/],
               loader: require.resolve('file-loader'),
               options: {
-                name: 'static/media/[name].[hash:8].[ext]',
+                name: paths.FILENAME_LOADER,
               },
             },
           ],
@@ -90,7 +90,7 @@ module.exports = ({ devMode } = {}) => {
       ...Object.keys(webpackVendorCfg.entry).map((e) => {
         return new webpack.DllReferencePlugin({
 					// context: paths.appRoot,
-          manifest: require(path.join(paths.appDist, paths.DLL_MANIFEST_FILE_NAME.replace(/\[name\]/g, e))),
+          manifest: require(path.join(paths.appDist, paths.DLL_MANIFEST_FILENAME.replace(/\[name\]/g, e))),
         });
       }),
       new HtmlWebpackPlugin({
@@ -100,13 +100,13 @@ module.exports = ({ devMode } = {}) => {
         env: envConfig,
         dll: {
           paths: Object.keys(webpackVendorCfg.entry).map((e) => {
-            return `${paths.publicPath}/${paths.DLL_FILE.replace(/\[name\]/g, e)}`.replace('/', '');
+            return `${paths.publicPath}/${paths.DLL_FILENAME.replace(/\[name\]/g, e)}`.replace('/', '');
           }),
         },
       }),
       devMode && new webpack.HotModuleReplacementPlugin(),
       new MiniCssExtractPlugin({
-        filename: devMode ? '[name].css' : '[name].[hash:8].css',
+        filename: paths.CSS_FILENAME_LOADER,
       }),
     ].filter(Boolean),
   };
