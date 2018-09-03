@@ -41,6 +41,7 @@ module.exports = {
 		"jsx-a11y/href-no-hash": 0,
 		"jsx-a11y/no-static-element-interactions": 0,
 		"jsx-a11y/no-noninteractive-element-interactions": 0,
+    "object-curly-newline": 0,
 		"react/sort-comp": [2, {
 			"order": [
 				"type-annotations",

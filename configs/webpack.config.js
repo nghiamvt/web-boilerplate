@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
@@ -19,7 +20,7 @@ module.exports = ({ devMode } = {}) => {
     ],
     output: {
       filename: paths.appBundle,
-			// dev use “in-memory” files
+      // dev use “in-memory” files
       path: paths.appDist,
       publicPath: paths.publicPath,
     },
@@ -32,8 +33,8 @@ module.exports = ({ devMode } = {}) => {
       rules: [
         {
           oneOf: [
-						// "url" loader works like "file" loader except that it embeds assets
-						// smaller than specified limit in bytes as data URLs to avoid requests.
+            // "url" loader works like "file" loader except that it embeds assets
+            // smaller than specified limit in bytes as data URLs to avoid requests.
             {
               test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
               loader: 'url-loader',
@@ -42,7 +43,7 @@ module.exports = ({ devMode } = {}) => {
                 name: paths.IMG_FILENAME_LOADER,
               },
             },
-						// Process JS with Babel.
+            // Process JS with Babel.
             {
               test: /\.(js|jsx)$/,
               exclude: /node_modules/,
@@ -55,7 +56,7 @@ module.exports = ({ devMode } = {}) => {
               test: /\.(sa|sc|c)ss$/,
               use: [
                 devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-								{ loader: 'css-loader', options: { importLoaders: 1, sourceMap: devMode } },
+                { loader: 'css-loader', options: { importLoaders: 1, sourceMap: devMode } },
 
                 {
                   loader: 'postcss-loader',
@@ -71,7 +72,7 @@ module.exports = ({ devMode } = {}) => {
                     sourceMap: devMode,
                   },
                 },
-								{ loader: 'sass-loader', options: { sourceMap: devMode } },
+                { loader: 'sass-loader', options: { sourceMap: devMode } },
               ],
             },
             {
@@ -88,9 +89,10 @@ module.exports = ({ devMode } = {}) => {
     plugins: [
       new webpack.EnvironmentPlugin(envConfig),
       ...Object.keys(webpackVendorCfg.entry).map((e) => {
+        const manifestFile = path.join(paths.appDist, paths.DLL_MANIFEST_FILENAME.replace(/\[name\]/g, e));
         return new webpack.DllReferencePlugin({
-					// context: paths.appRoot,
-          manifest: require(path.join(paths.appDist, paths.DLL_MANIFEST_FILENAME.replace(/\[name\]/g, e))),
+          // context: paths.appRoot,
+          manifest: fs.existsSync(manifestFile) ? require(manifestFile) : '',
         });
       }),
       new HtmlWebpackPlugin({

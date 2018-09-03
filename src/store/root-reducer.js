@@ -7,15 +7,15 @@ import defaultState from './default-state';
 
 // Put new reducers here
 const reducers = {
-	router: routerReducer,
+  router: routerReducer,
 };
 const defaultReducer = (s = {}) => s;
 const finalCombinedReducers = combineReducers(
-	Object.keys(defaultState).reduce((result, key) => {
-		return Object.assign({}, result, {
-			[key]: reducers[key] ? reducers[key] : defaultReducer,
-		});
-	}, reducers),
+  Object.keys(defaultState).reduce((result, key) => {
+    return Object.assign({}, result, {
+      [key]: reducers[key] ? reducers[key] : defaultReducer,
+    });
+  }, reducers),
 );
 const rootReducer = reduceReducers(finalCombinedReducers, dataReducer);
 export default rootReducer;

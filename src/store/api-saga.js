@@ -10,9 +10,10 @@ import apiAction from './api-action';
  * @param options Use to customize fetch's options such as headers, body or credentials
  * @returns {*}
  */
-function* callApi({ _path, url, method, data, options }) {
+function* callApi({ _path, type, url, method, data, options }) {
   if (!url) throw new Error('url required for ajax call');
-  if (_path) yield put(apiAction.preFetch({ _path }));
+  if (!type) throw new Error('Action type is required');
+  if (_path) yield put(apiAction.preFetch({ _path, type }));
   const fetchOptions = Object.assign({}, {
     credentials: 'same-origin',
     headers: {
@@ -38,7 +39,7 @@ function* callApi({ _path, url, method, data, options }) {
     return respond;
   } finally {
     if (_path) {
-      yield put(apiAction.postFetch({ _path, ...respond }));
+      yield put(apiAction.postFetch({ _path, type, ...respond }));
     }
   }
 }
