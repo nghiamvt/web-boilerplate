@@ -8,8 +8,8 @@
 	"scripts": {
 		"eslint": "eslint src",
 		"vendor": "webpack --config configs/webpack.vendor.js",
-		"dev": "node scripts/build.js --mode=development",
-		"prod": "node scripts/build.js --mode=production",
+		"start": "node scripts/build.js --mode=development",
+		"build": "node scripts/build.js --mode=production",
 		"serve": "serve dist",
 		"test": "jest --config ./configs/jest.json --no-cache"
 	},
