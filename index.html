@@ -14,7 +14,7 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
-</head>
+<link rel="shortcut icon" href="favicon.ico"><link href="assets/css/main.43c3527f.css" rel="stylesheet"></head>
 <body>
     <noscript>
         You need to enable JavaScript to run this app.
@@ -30,10 +30,10 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    <% if (htmlWebpackPlugin.options.dll && htmlWebpackPlugin.options.dll.paths) { %>
-        <% htmlWebpackPlugin.options.dll.paths.forEach(function (path) { %>
-            <script type="text/javascript" src="<%= path %>"></script>
-        <% }) %>
-    <% } %>
-    </body>
+    
+        
+            <script type="text/javascript" src="assets/js/vendor.dll.js"></script>
+        
+    
+    <script type="text/javascript" src="assets/js/app.43c3527f.js"></script></body>
 </html>
