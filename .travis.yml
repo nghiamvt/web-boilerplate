@@ -1,7 +1,6 @@
 language: node_js
 
 node_js:
-- 8
 - 10
 
 cache:
@@ -10,13 +9,12 @@ cache:
   - node_modules
 
 before_install:
-- curl -o- -L https://yarnpkg.com/install.sh | bash
-- export PATH="$HOME/.yarn/bin:$PATH"
+- yarn
 
 install: true
 
 script:
-- npm run build
+- yarn build
 
 notifications:
   email:
