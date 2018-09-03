@@ -18,7 +18,6 @@ class App extends React.Component {
     return (
       <div>
         <main className="app__main">
-          <span>hello world</span>
           <BrowserRouter>
             <Switch>
               <Route path="/" component={Todo} />
