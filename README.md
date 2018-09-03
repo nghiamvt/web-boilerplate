@@ -1,4 +1,6 @@
-# Web boilerplate
+<p align="center">
+    <img src="header.jpeg" alt="Web boilerplate" />
+</p>
 
 **Demo**: https://0xtatsu.github.io/web-boilerplate/
 
@@ -8,12 +10,12 @@
 
 <div align="center">
   <!-- Dependency Status -->
-  <a href="https://david-dm.org/0xtatsu/web-boilerplate">
-    <img src="https://david-dm.org/0xtatsu/web-boilerplate.svg" alt="Dependency Status" />
+  <a href="https://david-dm.org/0xtatsu/web-boilerplate" title="dependencies status">
+    <img src="https://david-dm.org/0xtatsu/web-boilerplate/status.svg"/>
   </a>
   <!-- devDependency Status -->
-  <a href="https://david-dm.org/0xtatsu/web-boilerplate#info=devDependencies">
-    <img src="https://david-dm.org/0xtatsu/web-boilerplate/dev-status.svg" alt="devDependency Status" />
+  <a href="https://david-dm.org/0xtatsu/web-boilerplate?type=dev" title="devDependencies status">
+    <img src="https://david-dm.org/0xtatsu/web-boilerplate/dev-status.svg"/>
   </a>
   <!-- Build Status -->
   <a href="https://travis-ci.org/0xtatsu/web-boilerplate">
