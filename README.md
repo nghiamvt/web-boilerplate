@@ -1,7 +1,3 @@
-# web-boilerplate
+# Web boilerplate
 
-# Dependencies
-- React
-- React-Router
-- Redux
-- Redux-Saga
+**Demo**: https://0xtatsu.github.io/web-boilerplate/
