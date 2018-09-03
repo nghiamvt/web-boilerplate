@@ -17,8 +17,4 @@
   <a href="https://travis-ci.org/0xtatsu/web-boilerplate" target="_blank">
     <img src="https://travis-ci.org/0xTatsu/web-boilerplate.svg?branch=master" alt="Build Status" />
   </a>
-  <!-- Test Coverage -->
-  <a href="https://coveralls.io/r/0xtatsu/web-boilerplate" target="_blank">
-    <img src="https://coveralls.io/repos/github/0xtatsu/web-boilerplate/badge.svg" alt="Test Coverage" />
-  </a>
 </div>
