@@ -46,7 +46,6 @@
 		"babel-eslint": "^9.0.0",
 		"babel-loader": "^8.0.0",
 		"chalk": "^2.4.1",
-		"compression-webpack-plugin": "^1.0.0",
 		"css-loader": "^1.0.0",
 		"eslint": "^5.5.0",
 		"eslint-config-airbnb": "^17.1.0",
@@ -56,7 +55,7 @@
 		"eslint-plugin-react": "^7.0.1",
 		"extract-text-webpack-plugin": "^4.0.0-beta.0",
 		"file-loader": "^2.0.0",
-		"flow-bin": "^0.80.0",
+		"flow-bin": "^0.81.0",
 		"html-webpack-plugin": "^3.2.0",
 		"jest": "^23.5.0",
 		"mini-css-extract-plugin": "^0.4.1",
@@ -71,6 +70,6 @@
 		"webpack": "^4.16.5",
 		"webpack-cli": "^3.1.0",
 		"webpack-dev-server": "^3.1.5",
-		"whatwg-fetch": "^2.0.3"
+		"whatwg-fetch": "^3.0.0"
 	}
 }
