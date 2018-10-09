@@ -4,6 +4,7 @@ import apiAction from './api-action';
 /**
  * Call API
  * @param _path The location of Store which will be updated
+ * @param type redux type
  * @param url The Url to call
  * @param method POST/GET (apiGet/apiPost)
  * @param data The data sent to server
@@ -24,6 +25,9 @@ function* callApi({ _path, type, url, method, data, options }) {
   let respond; // { status, result, error }
   try {
     const response = yield call(fetch, url, fetchOptions);
+    if (!response.ok) {
+      throw Error(response.statusText); // fetch("http://httpstat.us/500")
+    }
     const { status } = response;
     if (status === 200) {
       const json = yield response.json();
