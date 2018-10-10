@@ -107,7 +107,7 @@ module.exports = ({ devMode } = {}) => {
         },
       }),
       devMode && new webpack.HotModuleReplacementPlugin(),
-      new MiniCssExtractPlugin({
+      !devMode && new MiniCssExtractPlugin({
         filename: paths.CSS_FILENAME_LOADER,
       }),
     ].filter(Boolean),
