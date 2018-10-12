@@ -18,6 +18,7 @@ module.exports = {
   IMG_FILENAME_LOADER: 'assets/images/[name].[hash:8].[ext]',
   FILENAME_LOADER: 'assets/files/[name].[hash:8].[ext]',
   appBundle: 'assets/js/app.[hash:8].js',
+  chunkFilename: 'assets/js/[name].[hash:4].chunk.js',
   DLL_FILENAME: 'assets/js/[name].dll.js',
   DLL_MANIFEST_FILENAME: '[name]-manifest.json',
   HASH_FILE_PATH: xPath('node_modules/.bin/_vendor_hash'),

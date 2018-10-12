@@ -3,17 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
-import Todo from '@/page/todo';
-import Footer from '@/layout/footer';
+import asyncComponent from '@/utils/AsyncComponent';
+
 import './style/index.scss';
 
-class App extends React.Component {
-  componentDidMount() {
-    this.props.dispatch({
-      type: 'TEST_SAGA',
-    });
-  }
+const Todo = asyncComponent(() => import('@/page/todo'));
+const Footer = asyncComponent(() => import('@/layout/footer'));
 
+class App extends React.Component {
   render() {
     return (
       <div>

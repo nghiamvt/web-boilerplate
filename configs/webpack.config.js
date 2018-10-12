@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const AsyncChunkNames = require('webpack-async-chunk-names-plugin');
 
 const paths = require('./paths');
 const envConfig = require('./.env');
@@ -20,6 +21,8 @@ module.exports = ({ devMode } = {}) => {
     ],
     output: {
       filename: paths.appBundle,
+      // There are also additional JS chunk files if you use code splitting.
+      chunkFilename: paths.chunkFilename,
       // dev use “in-memory” files
       path: paths.appDist,
       publicPath: paths.publicPath,
@@ -106,6 +109,7 @@ module.exports = ({ devMode } = {}) => {
           }),
         },
       }),
+      new AsyncChunkNames(),
       devMode && new webpack.HotModuleReplacementPlugin(),
       !devMode && new MiniCssExtractPlugin({
         filename: paths.CSS_FILENAME_LOADER,
