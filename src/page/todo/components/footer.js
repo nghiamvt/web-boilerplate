@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -16,18 +15,18 @@ const FILTER_TITLES = {
 };
 
 export type Props = {
-	activeTodoList: Todos,
-	activeCount: number,
-	selectedFilter: string,
-	changeFilter: Function,
-	clearCompleted: Function,
+  activeTodoList: Todos,
+  activeCount: number,
+  selectedFilter: string,
+  changeFilter: Function,
+  clearCompleted: Function,
 }
 type State = {};
 
 class Footer extends Component<void, Props, State> {
-  props: Props;
-
   state: State;
+
+  props: Props;
 
   renderTodoCount = (props) => {
     const itemWord = props.activeCount === 1 ? 'item' : 'items';
@@ -43,31 +42,37 @@ class Footer extends Component<void, Props, State> {
     const selectedFilter = props.selectedFilter || Object.values(FILTER_TITLES)[0];
     const linkCls = classNames({ selected: filter === selectedFilter });
     return (
-      <a className={linkCls} onClick={() => props.changeFilter(filter)}>
+      <button
+        type="button"
+        className={linkCls}
+        onClick={() => props.changeFilter(filter)}
+      >
         {filter}
-      </a>
+      </button>
     );
   }
 
-  renderFilter = (props) => {
-    return (
-      <ul className="filters">
-        {
+  renderFilter = props => (
+    <ul className="filters">
+      {
           Object.keys(FILTER_TITLES).map(key => (
             <li key={key}>
               {this.renderFilterLink(FILTER_TITLES[key], props)}
             </li>
           ))
         }
-      </ul>
-    );
-  }
+    </ul>
+  )
 
   renderClearButton = (props) => {
     if (!props.activeCount) return null;
     return (
-      <button className="clear-completed" onClick={() => props.clearCompleted(props.activeTodoList)}>
-				Clear completed
+      <button
+        type="button"
+        className="clear-completed"
+        onClick={() => props.clearCompleted(props.activeTodoList)}
+      >
+        Clear completed
       </button>
     );
   }
@@ -88,12 +93,10 @@ class Footer extends Component<void, Props, State> {
 }
 
 export default connect(
-  (state) => {
-    return {
-      selectedFilter: selectedFilterSelector(state),
-      activeCount: activeCountSelector(state),
-      activeTodoList: activeTodoListSelector(state),
-    };
-  },
-  (dispatch) => bindActionCreators({ clearCompleted, changeFilter }, dispatch),
+  state => ({
+    selectedFilter: selectedFilterSelector(state),
+    activeCount: activeCountSelector(state),
+    activeTodoList: activeTodoListSelector(state),
+  }),
+  dispatch => bindActionCreators({ clearCompleted, changeFilter }, dispatch),
 )(Footer);

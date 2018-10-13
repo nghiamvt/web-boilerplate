@@ -15,7 +15,7 @@ module.exports = {
   historyApiFallback: {
     disableDotRule: true,
   },
-  // quiet: true,
+  quiet: true,
   stats: {
     assets: true,
     assetsSort: 'field',

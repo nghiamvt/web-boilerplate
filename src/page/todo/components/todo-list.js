@@ -9,13 +9,13 @@ import TodoItem from './todo-item';
 import type { Todos } from '../types';
 
 export type Props = {
-	todoList: Todos,
-	filteredTodoList: Todos,
-	activeCount: number,
-	editTodo: Function,
-	deleteTodo: Function,
-	toggleTodo: Function,
-	toggleAll: Function
+  todoList: Todos,
+  filteredTodoList: Todos,
+  activeCount: number,
+  editTodo: Function,
+  deleteTodo: Function,
+  toggleTodo: Function,
+  toggleAll: Function
 };
 
 const onToggleAll = (props: Props) => {
@@ -63,7 +63,7 @@ const TodoList = (props: Props) => {
     <div className="main">
       {renderToggleAll(props)}
       <ul className="todo-list">
-        {Object.keys(props.filteredTodoList).map((k) => renderTodoItem(props.filteredTodoList[k], props))}
+        {Object.keys(props.filteredTodoList).map(k => renderTodoItem(props.filteredTodoList[k], props))}
       </ul>
     </div>
   );

@@ -4,7 +4,7 @@ import { delay } from 'redux-saga';
 
 function* testSaga() {
   yield takeEvery('INIT_SAGA', () => {
-    console.log('init');
+    console.info('init');
   });
 }
 

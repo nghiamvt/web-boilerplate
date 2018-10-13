@@ -10,7 +10,7 @@ import defaultState from './default-state';
 export default function configureStore() {
   const sagaMiddleware = createSagaMiddleware();
   const routeMiddleWare = routerMiddleware(history);
-  const reduxDEC = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+  const reduxDEC = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__; // eslint-disable-line
   const composeEnhancers = (process.env.NODE_ENV !== 'production' && reduxDEC) ? reduxDEC({}) : compose;
   const store = createStore(rootReducer, defaultState, composeEnhancers(
     applyMiddleware(routeMiddleWare, sagaMiddleware),

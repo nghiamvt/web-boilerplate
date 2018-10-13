@@ -33,7 +33,28 @@ module.exports = ({ devMode } = {}) => {
       modules: [paths.appSrc, 'node_modules'],
     },
     module: {
+      strictExportPresence: true,
       rules: [
+        // Disable require.ensure as it's not a standard language feature.
+        { parser: { requireEnsure: false } },
+
+        // First, run the linter.
+        // It's important to do this before Babel processes the JS.
+        {
+          test: /\.(js|jsx)$/,
+          enforce: 'pre',
+          use: [
+            {
+              options: {
+                formatter: 'react-dev-utils/eslintFormatter',
+                eslintPath: 'eslint',
+
+              },
+              loader: 'eslint-loader',
+            },
+          ],
+          include: paths.appSrc,
+        },
         {
           oneOf: [
             // "url" loader works like "file" loader except that it embeds assets

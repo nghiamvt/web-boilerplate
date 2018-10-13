@@ -8,19 +8,19 @@ import asyncComponent from '@/hoc/AsyncComponent';
 import './css/index.scss';
 
 const Todo = asyncComponent(() => import('@/page/todo'));
+const Home = asyncComponent(() => import('@/page/home'));
 
-const App = ({ history }) => {
-  return (
-    <ConnectedRouter history={history}>
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/" component={Todo} />
-          <Route component={() => (<div>404 Not found</div>)} />
-        </Switch>
-      </BrowserRouter>
-    </ConnectedRouter>
-  );
-};
+const App = ({ history }) => (
+  <ConnectedRouter history={history}>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/todo" component={Todo} />
+        <Route component={() => (<div>404 Not found</div>)} />
+      </Switch>
+    </BrowserRouter>
+  </ConnectedRouter>
+);
 
 App.propTypes = {
   history: PropTypes.object.isRequired,

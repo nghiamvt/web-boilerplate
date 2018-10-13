@@ -2,20 +2,18 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 
 export type Props = {
-	onSave?: Function,
-	text?: string,
-	placeholder?: string,
-	editing?: boolean,
-	newTodo?: boolean,
+  onSave?: Function,
+  text?: string,
+  placeholder?: string,
+  editing?: boolean,
+  newTodo?: boolean,
 }
 type State = {};
 export default class TodoTextInput extends Component<void, Props, State> {
   props: Props;
-  state: State;
 
   static defaultProps = {
-    onSave: () => {
-    },
+    onSave: () => {},
     text: '',
     placeholder: '',
     editing: false,
@@ -28,6 +26,8 @@ export default class TodoTextInput extends Component<void, Props, State> {
       text: props.text || '',
     };
   }
+
+  state: State;
 
   handleSubmit = e => {
     const text = e.target.value.trim();
@@ -55,7 +55,8 @@ export default class TodoTextInput extends Component<void, Props, State> {
       'new-todo': this.props.newTodo,
     });
     return (
-      <input className={cls}
+      <input
+        className={cls}
         type="text"
         placeholder={this.props.placeholder}
         value={this.state.text}

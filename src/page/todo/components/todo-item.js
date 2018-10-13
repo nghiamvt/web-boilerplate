@@ -17,6 +17,7 @@ type State = {
 
 export default class TodoItem extends Component {
   props: Props;
+
   state: State;
 
   constructor(props: Props) {
@@ -52,15 +53,17 @@ export default class TodoItem extends Component {
   renderTodoView = (props: Props) => {
     return (
       <div className="view">
-        <input
-          id={props.todo.id}
-          className="toggle"
-          type="checkbox"
-          checked={props.todo.completed}
-          onChange={() => props.onToggleTodo(props.todo)}
-        />
-        <label htmlFor={props.todo.id} onDoubleClick={this.handleDoubleClick}>{props.todo.text}</label>
-        <button className="destroy" onClick={() => props.onDeleteTodo([props.todo.id])} />
+        <label htmlFor={props.todo.id} onDoubleClick={this.handleDoubleClick}>
+          <input
+            id={props.todo.id}
+            className="toggle"
+            type="checkbox"
+            checked={props.todo.completed}
+            onChange={() => props.onToggleTodo(props.todo)}
+          />
+          {props.todo.text}
+        </label>
+        <button type="button" className="destroy" onClick={() => props.onDeleteTodo([props.todo.id])} />
       </div>
     );
   }
