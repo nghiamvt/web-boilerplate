@@ -11,10 +11,10 @@ function pathToArray(path) {
   if (isArray(path)) return path;
   if (isEmpty(path)) return [];
   return path
-		.replace(/\\\./g, '@')
-		.replace(/\./g, '*')
-		.replace(/@/g, '.')
-		.split('*');
+    .replace(/\\\./g, '@')
+    .replace(/\./g, '*')
+    .replace(/@/g, '.')
+    .split('*');
 }
 
 /**
@@ -85,7 +85,7 @@ export function remove_data(src, path, _ids) {
     if (isArray(val)) {
       invariant(!(_ids.some((id) => !isNumber(id))), 'Array index has to be an integer');
       return val.filter((v, i) => !_ids.includes(i));
-    } else if (isObject(val)) {
+    } if (isObject(val)) {
       const idStrList = _ids.map(String);
       return Object.keys(val).reduce((result, k) => {
         return !idStrList.includes(k) ? { ...result, [k]: val[k] } : result;
@@ -108,9 +108,9 @@ export function merge_data(src, path, val) {
   return set_data(src, path, (curVal) => {
     if (curVal === null || isUndefined(curVal)) {
       return val;
-    } else if (isArray(curVal)) {
+    } if (isArray(curVal)) {
       return curVal.concat(val);
-    } else if (isObject(curVal)) {
+    } if (isObject(curVal)) {
       return Object.assign({}, curVal, val);
     }
     return src;

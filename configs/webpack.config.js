@@ -29,7 +29,7 @@ module.exports = ({ devMode } = {}) => {
     },
     resolve: {
       alias: { '@': paths.appSrc },
-      extensions: ['.js', '.json', '.jsx'],
+      extensions: ['.js', '.json', '.jsx', '.scss'],
       modules: [paths.appSrc, 'node_modules'],
     },
     module: {
@@ -60,16 +60,17 @@ module.exports = ({ devMode } = {}) => {
               use: [
                 devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
                 { loader: 'css-loader', options: { importLoaders: 1, sourceMap: devMode } },
-
                 {
                   loader: 'postcss-loader',
                   options: {
                     ident: 'postcss',
                     plugins: () => [
                       require('postcss-flexbugs-fixes'),
-                      autoprefixer({ // React doesn't support IE8 anyway
-                        browsers: ['>1%', 'last 4 versions', 'Firefox ESR', 'not ie < 9'],
-                        flexbox: 'no-2009',
+                      require('postcss-preset-env')({
+                        autoprefixer: {
+                          flexbox: 'no-2009',
+                        },
+                        stage: 3,
                       }),
                     ],
                     sourceMap: devMode,

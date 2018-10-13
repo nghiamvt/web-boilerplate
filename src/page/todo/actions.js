@@ -1,13 +1,12 @@
-// @flow
-import { SET_DATA, REMOVE_DATA } from '../../store/data-action';
+import { SET_DATA, REMOVE_DATA, MERGE_DATA } from '@/store/data-action';
 import type { Todo } from './types';
 
-const path = 'todo.todos';
+const path = 'todo';
 
 export const addTodo = (text: string) => {
   const id = Math.floor(Date.now());
-  return SET_DATA({
-    _path: `${path}.${id}`,
+  return MERGE_DATA({
+    _path: path,
     _value: {
       id,
       text,
@@ -28,6 +27,7 @@ export const toggleTodo = (todo: Todo) => {
   return SET_DATA({
     _path: `${path}.${todo.id}.completed`,
     _value: !todo.completed,
+    type: `TOGGLE_${todo.id}`,
   });
 };
 
@@ -35,6 +35,7 @@ export const clearCompleted = (todoList: Todo) => {
   return SET_DATA({
     _path: path,
     _value: todoList,
+    type: 'CLEAR_COMPLETED',
   });
 };
 

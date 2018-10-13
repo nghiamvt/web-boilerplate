@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { ConnectedRouter } from 'connected-react-router';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
-import asyncComponent from '@/utils/AsyncComponent';
+import asyncComponent from '@/hoc/AsyncComponent';
 
-import './style/index.scss';
+import './css/index.scss';
 
 const Todo = asyncComponent(() => import('@/page/todo'));
 
@@ -14,7 +14,7 @@ const App = ({ history }) => {
     <ConnectedRouter history={history}>
       <BrowserRouter>
         <Switch>
-          <Route path="/" component={Todo} />
+          <Route exact path="/" component={Todo} />
           <Route component={() => (<div>404 Not found</div>)} />
         </Switch>
       </BrowserRouter>

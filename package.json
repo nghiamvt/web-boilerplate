@@ -1,6 +1,6 @@
 {
 	"name": "web-boilerplate",
-	"version": "0.0.1",
+	"version": "1.0.1",
 	"description": "A boilerplate to start building websites, which was written in ReactJS",
 	"main": "index.js",
 	"author": "Nghia Mai <mvtnghia@gmail.com>",
@@ -26,6 +26,7 @@
 		"history": "^4.7.2",
 		"prop-types": "^15.6.2",
 		"react": "^16.4.2",
+		"react-components": "https://github.com/0xTatsu/react-components.git",
 		"react-dom": "^16.4.2",
 		"react-hot-loader": "^4.3.4",
 		"react-redux": "^5.0.7",
@@ -63,6 +64,7 @@
 		"node-sass": "^4.5.3",
 		"postcss-flexbugs-fixes": "^4.1.0",
 		"postcss-loader": "^3.0.0",
+		"postcss-preset-env": "^6.1.1",
 		"react-dev-utils": "^6.0.4",
 		"sass-loader": "^7.1.0",
 		"serve": "^10.0.0",

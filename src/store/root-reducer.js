@@ -3,8 +3,9 @@ import { reduceReducers } from '@/utils/store';
 import { connectRouter } from 'connected-react-router';
 
 import history from './history';
-import dataReducer from './data-reducer';
 import defaultState from './default-state';
+import { dataActionConst } from './data-action';
+import * as immutable from '../utils/immutable';
 
 // Put new reducers here
 const reducers = {};
@@ -16,6 +17,17 @@ const combinedReducers = combineReducers(
     });
   }, reducers),
 );
+
+const DataKey = '_DATA/';
+function dataReducer(state = defaultState, action) {
+  const rIndex = action.type.indexOf(DataKey);
+  const type = (rIndex >= 0) ? action.type.substring(0, rIndex + (DataKey.length - 1)) : action.type;
+  if (Object.keys(dataActionConst).includes(type)) {
+    return immutable[type.toLowerCase()](state, action.meta._path, action.payload);
+  }
+  return state;
+}
+
 const reducedReducers = reduceReducers(combinedReducers, dataReducer);
 
 export default connectRouter(history)(reducedReducers);

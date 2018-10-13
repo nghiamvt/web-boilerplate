@@ -25,7 +25,7 @@ export default function createAction(_type, payloadCreator = v => v, metaCreator
 
   return (args) => {
     const payload = finalPayLoadCreator(args);
-    const action = { type: `${_type}/${args.type}` };
+    const action = { type: args.type ? `${_type}/${args.type}` : _type };
 
     if (payload instanceof Error) {
       action.error = true;

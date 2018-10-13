@@ -24,6 +24,6 @@ function Header(props: Props) {
 }
 
 export default connect(
-	null,
-	(dispatch) => bindActionCreators({ addTodo }, dispatch),
+  null,
+  (dispatch) => bindActionCreators({ addTodo }, dispatch),
 )(Header);

@@ -1,10 +1,9 @@
 import createAction from '@/utils/create-action';
-import invariant from '@/utils/invariant';
-import { isEmpty } from '@/utils/is';
 
 const dataPayloadCreator = ({ _value }) => _value;
 const dataMetaCreator = data => {
-  invariant(!isEmpty(data._path), '_path is required');
+  if (!data._path) throw Error('_path is required in dataAction');
+  if (!data.type) throw Error('type is required in dataAction');
   return { _path: data._path };
 };
 const createDataAction = (type) => {

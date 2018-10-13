@@ -8,5 +8,5 @@ function removeItems(obj, keys) {
 }
 
 export {
-	removeItems,
+  removeItems,
 };
