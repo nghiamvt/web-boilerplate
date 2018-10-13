@@ -3,7 +3,9 @@ import { takeEvery, spawn, call } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 
 function* testSaga() {
-  yield takeEvery('TEST_SAGA', () => console.info(123));
+  yield takeEvery('INIT_SAGA', () => {
+    console.log('init');
+  });
 }
 
 export default function* rootSaga() {
@@ -11,17 +13,15 @@ export default function* rootSaga() {
     testSaga,
   ];
 
-  yield sagaList.map(saga =>
-    spawn(function* () {
-      while (true) {
-        try {
-          yield call(saga);
-          console.error('Unexpected root saga termination!');
-        } catch (e) {
-          console.error('[Error] The saga will be restarted \n', e);
-        }
-        yield delay(3000);
+  yield sagaList.map(saga => spawn(function* () {
+    while (true) {
+      try {
+        yield call(saga);
+        console.error('Unexpected root saga termination!');
+      } catch (e) {
+        console.error('[Error] The saga will be restarted \n', e);
       }
-    }),
-  );
+      yield delay(3000);
+    }
+  }));
 }

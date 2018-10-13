@@ -1,21 +1,21 @@
 import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux';
 import { reduceReducers } from '@/utils/store';
+import { connectRouter } from 'connected-react-router';
 
+import history from './history';
 import dataReducer from './data-reducer';
 import defaultState from './default-state';
 
 // Put new reducers here
-const reducers = {
-  router: routerReducer,
-};
+const reducers = {};
 const defaultReducer = (s = {}) => s;
-const finalCombinedReducers = combineReducers(
+const combinedReducers = combineReducers(
   Object.keys(defaultState).reduce((result, key) => {
     return Object.assign({}, result, {
       [key]: reducers[key] ? reducers[key] : defaultReducer,
     });
   }, reducers),
 );
-const rootReducer = reduceReducers(finalCombinedReducers, dataReducer);
-export default rootReducer;
+const reducedReducers = reduceReducers(combinedReducers, dataReducer);
+
+export default connectRouter(history)(reducedReducers);

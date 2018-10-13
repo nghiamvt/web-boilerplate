@@ -4,8 +4,7 @@
  * make sure that the first reducer in the list defines the initial state
  */
 function reduceReducers(...reducers) {
-  return (store, action) =>
-		reducers.reduce((result, reducer) => reducer(result, action), store);
+  return (store, action) => reducers.reduce((result, reducer) => reducer(result, action), store);
 }
 
 function getValueByPath(obj, location) {
@@ -24,7 +23,7 @@ function rebuildObjectByPath(location, newValue) {
 }
 
 export {
-	reduceReducers,
-	getValueByPath,
-	rebuildObjectByPath,
+  reduceReducers,
+  getValueByPath,
+  rebuildObjectByPath,
 };

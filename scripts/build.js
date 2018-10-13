@@ -39,7 +39,7 @@ function buildVendors({ devMode }) {
     dependencies: packageJSON.dependencies ? packageJSON.dependencies : null,
     devDependencies: packageJSON.devDependencies ? packageJSON.devDependencies : null,
   });
-	// create md5 hash from a string
+  // create md5 hash from a string
   const currentHash = crypto.createHash('md5').update(JSON.stringify(jsonStr)).digest('hex');
 
   let rebuildVendors = true;
@@ -124,8 +124,8 @@ function buildClient({ devMode }) {
 
       const messages = formatWebpackMessages(stats.toJson({}, true));
       if (messages.errors.length) {
-				// Only keep the first error. Others are often indicative
-				// of the same problem, but confuse the reader with noise.
+        // Only keep the first error. Others are often indicative
+        // of the same problem, but confuse the reader with noise.
         if (messages.errors.length > 1) {
           messages.errors.length = 1;
         }
@@ -146,10 +146,10 @@ function buildBaseOnEnv({ devMode }) {
 }
 
 prepareToBuild()
-	.then(buildVendors)
-	.then(buildBaseOnEnv)
-	.catch((err) => {
-  console.info(chalk.red('Failed to compile.\n'));
-  console.error(err);
-  process.exit(1);
-});
+  .then(buildVendors)
+  .then(buildBaseOnEnv)
+  .catch((err) => {
+    console.info(chalk.red('Failed to compile.\n'));
+    console.error(err);
+    process.exit(1);
+  });

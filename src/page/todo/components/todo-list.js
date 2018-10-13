@@ -70,19 +70,19 @@ const TodoList = (props: Props) => {
 };
 
 export default connect(
-	(state) => {
-  return {
-    todoList: todoSelector(state),
-    filteredTodoList: filteredTodoSelector(state),
-    activeCount: activeCountSelector(state),
-  };
-},
-	(dispatch) => {
-  return bindActionCreators({
-    editTodo,
-    deleteTodo,
-    toggleTodo,
-    toggleAll,
-  }, dispatch);
-},
+  (state) => {
+    return {
+      todoList: todoSelector(state),
+      filteredTodoList: filteredTodoSelector(state),
+      activeCount: activeCountSelector(state),
+    };
+  },
+  (dispatch) => {
+    return bindActionCreators({
+      editTodo,
+      deleteTodo,
+      toggleTodo,
+      toggleAll,
+    }, dispatch);
+  },
 )(TodoList);
