@@ -6,7 +6,7 @@ const xPath = relativePath => path.resolve(appDirectory, relativePath);
 
 module.exports = {
 	// files
-  mainEntry: xPath('src/index.js'),
+  mainEntry: xPath('src/modalManager.js'),
   appHtml: xPath('public/index.html'),
   appFavicon: xPath('public/favicon.ico'),
   packageJSON: xPath('package.json'),
