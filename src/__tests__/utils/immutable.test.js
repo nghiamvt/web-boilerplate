@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import * as immutable from '../../utils/immutable';
 
 describe('Immutable', () => {
@@ -32,8 +33,8 @@ describe('Immutable', () => {
 
   function arrInvariant() {
     expect(arr).toEqual(
-			[1, { a: false }],
-		);
+      [1, { a: false }],
+    );
   }
 
   describe('when set', () => {
@@ -263,8 +264,8 @@ describe('Immutable', () => {
 
         test('should replace path', () => {
           expect(result).toEqual(
-						[3, { a: false }],
-					);
+            [3, { a: false }],
+          );
         });
 
         test('invariant', arrInvariant);
@@ -277,8 +278,8 @@ describe('Immutable', () => {
 
         test('should replace path', () => {
           expect(result).toEqual(
-						[1, { a: true }],
-					);
+            [1, { a: true }],
+          );
         });
 
         test('invariant', arrInvariant);
@@ -397,7 +398,8 @@ describe('Immutable', () => {
 
         test('should toggle prop', () => {
           expect(result).toEqual(
-						[1, { a: true }]);
+            [1, { a: true }],
+          );
         });
 
         test('invariant', arrInvariant);
@@ -611,8 +613,8 @@ describe('Immutable', () => {
 
         test('should remove path', () => {
           expect(result).toEqual(
-						[{ a: false }],
-					);
+            [{ a: false }],
+          );
         });
 
         test('invariant', arrInvariant);
@@ -625,8 +627,8 @@ describe('Immutable', () => {
 
         test('should remove path', () => {
           expect(result).toEqual(
-						[1, {}],
-					);
+            [1, {}],
+          );
         });
 
         test('invariant', arrInvariant);

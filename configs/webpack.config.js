@@ -1,10 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
-const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const AsyncChunkNames = require('webpack-async-chunk-names-plugin');
 
 const paths = require('./paths');
 const envConfig = require('./.env');
@@ -86,8 +84,8 @@ module.exports = ({ devMode } = {}) => {
                   options: {
                     ident: 'postcss',
                     plugins: () => [
-                      require('postcss-flexbugs-fixes'),
-                      require('postcss-preset-env')({
+                      require('postcss-flexbugs-fixes'), // eslint-disable-line
+                      require('postcss-preset-env')({    // eslint-disable-line
                         autoprefixer: {
                           flexbox: 'no-2009',
                         },
@@ -131,7 +129,6 @@ module.exports = ({ devMode } = {}) => {
           }),
         },
       }),
-      new AsyncChunkNames(),
       devMode && new webpack.HotModuleReplacementPlugin(),
       !devMode && new MiniCssExtractPlugin({
         filename: paths.CSS_FILENAME_LOADER,
