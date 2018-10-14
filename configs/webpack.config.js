@@ -3,6 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const paths = require('./paths');
 const envConfig = require('./.env');
@@ -116,7 +117,7 @@ module.exports = ({ devMode } = {}) => {
         const manifestFile = path.join(paths.appDist, paths.DLL_MANIFEST_FILENAME.replace(/\[name\]/g, e));
         return new webpack.DllReferencePlugin({
           // context: paths.appRoot,
-          manifest: fs.existsSync(manifestFile) ? require(manifestFile) : '',
+          manifest: fs.existsSync(manifestFile) ? require(manifestFile) : '', // eslint-disable-line
         });
       }),
       new HtmlWebpackPlugin({
@@ -134,6 +135,7 @@ module.exports = ({ devMode } = {}) => {
       !devMode && new MiniCssExtractPlugin({
         filename: paths.CSS_FILENAME_LOADER,
       }),
+      // new BundleAnalyzerPlugin(),
     ].filter(Boolean),
   };
 };
