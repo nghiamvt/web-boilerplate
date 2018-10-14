@@ -6,9 +6,12 @@ import history from './history';
 import defaultState from './default-state';
 import { dataActionConst } from './data-action';
 import * as immutable from '../utils/immutable';
+import userUpdate from '@/pages/auth/reducers/user';
 
 // Put new reducers here
-const reducers = {};
+const reducers = {
+  user: userUpdate,
+};
 const defaultReducer = (s = {}) => s;
 const combinedReducers = combineReducers(
   Object.keys(defaultState).reduce((result, key) => {

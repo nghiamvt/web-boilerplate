@@ -6,7 +6,6 @@ import { AppContainer } from 'react-hot-loader';
 import App from './app';
 import history from './store/history';
 import configureStore from './store/configure-store';
-import rootReducer from './store/root-reducer';
 
 const store = configureStore();
 
@@ -26,9 +25,5 @@ render(App);
 if (module.hot) {
   module.hot.accept('./app', () => {
     render(App);
-  });
-
-  module.hot.accept('./store/root-reducer', () => {
-    store.replaceReducer(rootReducer);
   });
 }

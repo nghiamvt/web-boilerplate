@@ -1,6 +1,7 @@
 import createSagaMiddleware from 'redux-saga';
 import { routerMiddleware } from 'connected-react-router';
 import { createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
 
 import history from './history';
 import rootReducer from './root-reducer';
@@ -13,8 +14,13 @@ export default function configureStore() {
   const reduxDEC = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__; // eslint-disable-line
   const composeEnhancers = (process.env.NODE_ENV !== 'production' && reduxDEC) ? reduxDEC({}) : compose;
   const store = createStore(rootReducer, defaultState, composeEnhancers(
-    applyMiddleware(routeMiddleWare, sagaMiddleware),
+    applyMiddleware(thunk, routeMiddleWare, sagaMiddleware),
   ));
+  if (module.hot) {
+    module.hot.accept('./root-reducer', () => {
+      store.replaceReducer(rootReducer);
+    });
+  }
   sagaMiddleware.run(rootSaga);
   return store;
 }

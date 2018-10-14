@@ -24,9 +24,10 @@
 		"classnames": "^2.2.6",
 		"connected-react-router": "^4.5.0",
 		"history": "^4.7.2",
+		"hoist-non-react-statics": "^3.0.1",
 		"prop-types": "^15.6.2",
+		"query-string": "^6.2.0",
 		"react": "^16.4.2",
-		"react-components": "https://github.com/0xTatsu/react-components.git",
 		"react-dom": "^16.4.2",
 		"react-hot-loader": "^4.3.4",
 		"react-redux": "^5.0.7",
@@ -34,7 +35,11 @@
 		"react-router-dom": "^4.3.1",
 		"redux": "^4.0.0",
 		"redux-saga": "^0.16.0",
-		"reselect": "^4.0.0"
+		"redux-thunk": "^2.3.0",
+		"reselect": "^4.0.0",
+		"resolve-url-loader": "^3.0.0",
+		"semantic-ui-css": "^2.4.1",
+		"semantic-ui-react": "^0.82.5"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.0.0",
