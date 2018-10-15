@@ -18,9 +18,9 @@ class ModalManager extends Component {
     });
   }
 }
-//
-// export default connect(
-//   (state) => ({
-//     currentModals: state.modals,
-//   }),
-// )(ModalManager);
+
+export default connect(
+  (state) => ({
+    currentModals: state.modals,
+  }),
+)(ModalManager);

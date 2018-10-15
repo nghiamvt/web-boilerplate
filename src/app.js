@@ -4,7 +4,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 import asyncComponent from '@/hoc/AsyncComponent';
-// import ModalManager from '@/modules/modals/modalManager';
+import ModalManager from '@/modules/modals/modalManager';
 
 import './css/index.scss';
 
@@ -20,6 +20,7 @@ const App = ({ history }) => (
           <Route exact path="/home" component={Home} />
           <Route component={() => (<div>404 Not found</div>)} />
         </Switch>
+        <ModalManager />
       </div>
     </BrowserRouter>
   </ConnectedRouter>

@@ -5,8 +5,8 @@ const appDirectory = fs.realpathSync(process.cwd());
 const xPath = relativePath => path.resolve(appDirectory, relativePath);
 
 module.exports = {
-	// files
-  mainEntry: xPath('src/modalManager.js'),
+  // files
+  mainEntry: xPath('src/index.js'),
   appHtml: xPath('public/index.html'),
   appFavicon: xPath('public/favicon.ico'),
   packageJSON: xPath('package.json'),
@@ -23,7 +23,7 @@ module.exports = {
   DLL_MANIFEST_FILENAME: '[name]-manifest.json',
   HASH_FILE_PATH: xPath('node_modules/.bin/_vendor_hash'),
 
-	// directories
+  // directories
   appRoot: xPath(''),
   appSrc: xPath('src'),
   appBuild: xPath('build'),
