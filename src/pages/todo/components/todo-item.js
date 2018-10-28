@@ -1,6 +1,9 @@
 // @flow
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
+
+import { ADD_DATA } from '@/store/data-action';
 import TodoTextInput from './todo-text-input';
 import type { Todo } from '../types';
 
@@ -15,7 +18,7 @@ type State = {
 	editing: boolean,
 }
 
-export default class TodoItem extends Component {
+class TodoItem extends Component {
   props: Props;
 
   state: State;
@@ -59,7 +62,20 @@ export default class TodoItem extends Component {
             className="toggle"
             type="checkbox"
             checked={props.todo.completed}
-            onChange={() => props.onToggleTodo(props.todo)}
+            onChange={() => {
+              props.dispatch(ADD_DATA({
+                type: 'THEM_TODO',
+                payload: {
+                  id: 3,
+                  text: 'Integrate Immer',
+                  completed: false,
+                },
+                meta: {
+                  _path: 'app.test.a',
+                },
+              }));
+              // props.onToggleTodo(props.todo);
+            }}
           />
           {props.todo.text}
         </label>
@@ -84,3 +100,5 @@ export default class TodoItem extends Component {
     return this.renderComponent(this.props, this.state);
   }
 }
+
+export default connect()(TodoItem);

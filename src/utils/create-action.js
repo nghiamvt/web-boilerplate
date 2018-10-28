@@ -19,7 +19,7 @@ export default function createAction(_type, payloadCreator = v => v, metaCreator
     'Expected metaCreator to be a function or object or undefined',
   );
 
-  const finalPayLoadCreator = (firstArgs, ...args) => {
+  const finalPayLoadCreator = (!payloadCreator) ? v => v : (firstArgs, ...args) => {
     return (firstArgs instanceof Error) ? firstArgs : payloadCreator(firstArgs, ...args);
   };
 

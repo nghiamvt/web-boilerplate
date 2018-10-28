@@ -3,19 +3,7 @@
 import { isArray, isFunction, isNumber, isObject, isEmpty, isUndefined } from './is';
 import invariant from './invariant';
 import { removeItems } from './object';
-
-/**
- * Convert path format to array
- */
-function pathToArray(path) {
-  if (isArray(path)) return path;
-  if (isEmpty(path)) return [];
-  return path
-    .replace(/\\\./g, '@')
-    .replace(/\./g, '*')
-    .replace(/@/g, '.')
-    .split('*');
-}
+import { pathToArray } from './array';
 
 /**
  * Handle index of array

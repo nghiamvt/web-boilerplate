@@ -1,5 +1,7 @@
 export default {
-  app: {},
+  app: {
+    test: {},
+  },
   todo: [
     {
       id: 0,

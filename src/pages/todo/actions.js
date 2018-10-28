@@ -1,4 +1,4 @@
-import { SET_DATA, REMOVE_DATA, MERGE_DATA } from '@/store/data-action';
+import { SET_DATA, REMOVE_DATA, MERGE_DATA } from '@/store/data-action_bk';
 import type { Todo } from './types';
 
 const path = 'todo';

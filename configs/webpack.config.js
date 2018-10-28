@@ -3,7 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const paths = require('./paths');
 const envConfig = require('./.env');
@@ -28,7 +28,7 @@ module.exports = ({ devMode } = {}) => {
     },
     resolve: {
       alias: { '@': paths.appSrc },
-      extensions: ['.js', '.json', '.jsx', '.scss'],
+      extensions: ['.js', '.json', '.jsx'],
       modules: [paths.appSrc, 'node_modules'],
     },
     module: {

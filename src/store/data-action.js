@@ -1,23 +1,24 @@
 import createAction from '@/utils/create-action';
 
-const dataPayloadCreator = ({ _value }) => _value;
-const dataMetaCreator = data => {
-  if (!data._path) throw Error('_path is required in dataAction');
-  if (!data.type) throw Error('type is required in dataAction');
-  return { _path: data._path };
-};
-const createDataAction = (type) => {
-  return createAction(type, dataPayloadCreator, dataMetaCreator);
-};
-
 export const dataActionConst = {
-  SET_DATA: 'SET_DATA',
+  ADD_DATA: 'ADD_DATA',
   REMOVE_DATA: 'REMOVE_DATA',
-  MERGE_DATA: 'MERGE_DATA',
-  TOGGLE_DATA: 'TOGGLE_DATA',
+  UPDATE_DATA: 'UPDATE_DATA',
 };
 
-export const SET_DATA = createDataAction(dataActionConst.SET_DATA);
+const payloadCreator = (data) => data.payload;
+const metaCreator = (data) => {
+  if (!(data.meta || {})._path) throw Error('_path is required in meta');
+  return {
+    _type: data.type,
+    ...data.meta,
+  };
+};
+
+const createDataAction = (_type) => {
+  return createAction(_type, payloadCreator, metaCreator);
+};
+
+export const ADD_DATA = createDataAction(dataActionConst.ADD_DATA);
 export const REMOVE_DATA = createDataAction(dataActionConst.REMOVE_DATA);
-export const MERGE_DATA = createDataAction(dataActionConst.MERGE_DATA);
-export const TOGGLE_DATA = createDataAction(dataActionConst.TOGGLE_DATA);
+export const UPDATE_DATA = createDataAction(dataActionConst.UPDATE_DATA);

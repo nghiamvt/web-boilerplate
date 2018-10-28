@@ -1,4 +1,4 @@
-function removeItems(obj, keys) {
+export function removeItems(obj, keys) {
   return Object.keys(obj).reduce((result, key) => {
     return keys.includes(key) ? result : {
       ...result,
@@ -7,6 +7,6 @@ function removeItems(obj, keys) {
   }, {});
 }
 
-export {
-  removeItems,
-};
+export function isPlainObject(o) {
+  return Object.prototype.toString.call(o) === '[object Object]';
+}

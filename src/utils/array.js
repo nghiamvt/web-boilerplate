@@ -20,3 +20,17 @@ export function groupArrayByField(array, fieldName, original = false) {
 
   return original ? result : Array.from(result);
 }
+
+/**
+ * Convert path format to array
+ */
+export function pathToArray(path) {
+  // if (typeof path !== 'string') throw new Error('path must be string');
+  if (Array.isArray(path)) return path;
+  if (!path) return [];
+  return path
+    .replace(/\\\./g, '@')
+    .replace(/\./g, '*')
+    .replace(/@/g, '.')
+    .split('*');
+}

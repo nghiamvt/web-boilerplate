@@ -16,9 +16,7 @@ const invariant = (condition, format, a, b, c, d, e, f) => {
       const args = [a, b, c, d, e, f];
       let argIndex = 0;
       error = new Error(
-        format.replace(/%s/g, () => {
-          return args[argIndex++];
-        }),
+        format.replace(/%s/g, () => args[argIndex++]),
       );
       error.name = 'Invariant Violation';
     }

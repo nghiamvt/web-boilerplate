@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { editTodo, deleteTodo, toggleTodo, toggleAll } from '../actions';
 import { todoSelector, filteredTodoSelector, activeCountSelector } from '../selectors';
 
@@ -77,12 +76,10 @@ export default connect(
       activeCount: activeCountSelector(state),
     };
   },
-  (dispatch) => {
-    return bindActionCreators({
-      editTodo,
-      deleteTodo,
-      toggleTodo,
-      toggleAll,
-    }, dispatch);
+  {
+    editTodo,
+    deleteTodo,
+    toggleTodo,
+    toggleAll,
   },
 )(TodoList);
