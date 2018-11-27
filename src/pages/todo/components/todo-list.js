@@ -15,7 +15,7 @@ export type Props = {
   editTodo: Function,
   deleteTodo: Function,
   toggleTodo: Function,
-  toggleAll: Function
+  toggleAll: Function,
 };
 
 const onToggleAll = (props: Props) => {
@@ -63,26 +63,31 @@ const TodoList = (props: Props) => {
     <div className="main">
       {renderToggleAll(props)}
       <ul className="todo-list">
-        {Object.keys(props.filteredTodoList).map(k => renderTodoItem(props.filteredTodoList[k], props))}
+        {Object.keys(props.filteredTodoList).map(k => {
+          return renderTodoItem(props.filteredTodoList[k], props);
+        })}
       </ul>
     </div>
   );
 };
 
 export default connect(
-  (state) => {
+  state => {
     return {
       todoList: todoSelector(state),
       filteredTodoList: filteredTodoSelector(state),
       activeCount: activeCountSelector(state),
     };
   },
-  (dispatch) => {
-    return bindActionCreators({
-      editTodo,
-      deleteTodo,
-      toggleTodo,
-      toggleAll,
-    }, dispatch);
+  dispatch => {
+    return bindActionCreators(
+      {
+        editTodo,
+        deleteTodo,
+        toggleTodo,
+        toggleAll,
+      },
+      dispatch,
+    );
   },
 )(TodoList);
