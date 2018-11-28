@@ -7,13 +7,23 @@ import LoanForm from './LoanForm';
 class LoanContainer extends Component {
   buildInitialValues = () => {
     return {
-      amount: 0,
+      amount: '',
+      loanTerm: '',
+      paymentFrequency: '',
+      interestRate: '',
+      arrangementFee: '',
     };
   };
 
   buildValidationSchema = () => {
     return Yup.object({
-      amount: Yup.number().required('Required'),
+      amount: Yup.number('invalid number').required('Required'),
+      loanTerm: Yup.object()
+        .required('Required')
+        .nullable(),
+      paymentFrequency: Yup.object()
+        .required('Required')
+        .nullable(),
     });
   };
 

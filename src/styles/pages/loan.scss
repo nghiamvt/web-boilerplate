@@ -1,0 +1,37 @@
+.LoanForm {
+  display: flex;
+  justify-content: center;
+
+  form {
+    width: 100%;
+    margin: 0 100px;
+    max-width: 600px;
+  }
+
+  .FormTitle {
+    text-align: center;
+  }
+
+  .FormField {
+    margin: 25px 0;
+  }
+
+  .FieldLabel {
+    min-width: 170px;
+    display: inline-flex;
+  }
+
+  .ErrMsg {
+    padding: 0 20px;
+  }
+
+  button[type='submit'] {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .ReactSelect {
+    width: 320px;
+    display: inline-block;
+  }
+}

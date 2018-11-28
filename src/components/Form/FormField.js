@@ -7,22 +7,24 @@ import ErrMsg from './ErrMsg';
 
 function selectField(props) {
   return (
-    <Select
-      classNamePrefix="select"
-      name="color"
-      isClearable
-      {...props.field}
-      onChange={option => {
-        if (props.onFieldChange) {
-          props.onFieldChange(option);
-        }
-        props.form.setFieldValue(props.field.name, option);
-      }}
-      onBlur={() => props.form.setFieldTouched(props.field.name)}
-      options={props.options}
-      placeholder={props.placeholder}
-      isDisabled={props.disabled}
-    />
+    <div className="ReactSelect">
+      <Select
+        classNamePrefix="ReactSelect"
+        name="color"
+        isClearable
+        {...props.field}
+        onChange={option => {
+          if (props.onFieldChange) {
+            props.onFieldChange(option);
+          }
+          props.form.setFieldValue(props.field.name, option);
+        }}
+        onBlur={() => props.form.setFieldTouched(props.field.name)}
+        options={props.options}
+        placeholder={props.placeholder}
+        isDisabled={props.disabled}
+      />
+    </div>
   );
 }
 
@@ -40,17 +42,16 @@ function fieldByType(props) {
 }
 
 export default function FormField(props) {
-  console.log('props', props);
   const { errors, touched } = props.form;
   const { name } = props.field;
   const cls = cx({
-    [`${capitalize(name)}Field`]: true,
+    [`${capitalize(name)}Field FormField`]: true,
     [`${capitalize(props.type || 'input')}Field`]: true,
     FieldErr: errors[name] && touched[name],
   });
   return (
     <div className={cls}>
-      {props.label ? <span>{props.label}</span> : ''}
+      {props.label ? <span className="FieldLabel">{props.label}</span> : ''}
       {fieldByType(props)}
       <ErrMsg name={name} />
     </div>
