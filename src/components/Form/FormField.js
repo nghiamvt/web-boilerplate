@@ -10,8 +10,7 @@ function selectField(props) {
     <div className="ReactSelect">
       <Select
         classNamePrefix="ReactSelect"
-        name="color"
-        isClearable
+        // isClearable
         {...props.field}
         onChange={option => {
           if (props.onFieldChange) {
@@ -22,6 +21,7 @@ function selectField(props) {
         onBlur={() => props.form.setFieldTouched(props.field.name)}
         options={props.options}
         placeholder={props.placeholder}
+        defaultValue={props.defaultValue}
         isDisabled={props.disabled}
       />
     </div>

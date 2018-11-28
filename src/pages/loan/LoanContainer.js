@@ -17,7 +17,10 @@ class LoanContainer extends Component {
 
   buildValidationSchema = () => {
     return Yup.object({
-      amount: Yup.number('invalid number').required('Required'),
+      amount: Yup.number()
+        .required('Require')
+        .typeError('invalid amount')
+        .positive('Amount must be a positive number'),
       loanTerm: Yup.object()
         .required('Required')
         .nullable(),
