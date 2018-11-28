@@ -1,0 +1,21 @@
+.InputField {
+  input {
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    padding: 0 10px;
+    height: 37px;
+    outline: none;
+    font-size: 16px;
+  }
+  &.FieldErr {
+    input {
+      border: 1px solid $error-color;
+    }
+
+    .ErrMsg {
+      color: $error-color;
+      font-style: italic;
+      font-size: 12px;
+    }
+  }
+}

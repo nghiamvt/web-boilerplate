@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ConnectedRouter } from 'connected-react-router';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
-import './css/index.scss';
+import './styles/index.scss';
 
 const Todo = lazy(() => import('@/pages/todo'));
 const Loan = lazy(() => import('@/pages/loan'));
