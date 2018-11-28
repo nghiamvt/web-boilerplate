@@ -9,7 +9,13 @@ export const loanTermOptions = [
   { value: '24', label: '24 Months' },
 ];
 
-export const repaymentFrequencyOptions = ({ loanTerm }) => {
+export const loanTypeOptions = [
+  { value: 5, label: 'Personal Loan' },
+  { value: 2, label: 'Student Loan' },
+  { value: 10, label: 'Mortgages Loan' },
+];
+
+export const frequencyOptions = ({ loanTerm }) => {
   return Object.values(frequency).map(i => ({
     value: i,
     label: i,

@@ -1,16 +1,16 @@
 /* eslint-disable no-constant-condition,func-names */
 import { takeEvery, spawn, call } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
-import { apiGet, apiPost } from '@/store/api-saga';
+import { apiGet } from '@/store/api-saga';
 
 function* testSaga() {
   yield takeEvery('INIT_SAGA', function* () {
-    const data = yield call(apiGet, {
+    const res = yield call(apiGet, {
       pathUrl: 'https://reqres.in/api/users?delay=3',
       type: 'test_api',
     });
-    console.log('data', data);
-    console.info('init');
+    // eslint-disable-next-line
+    console.log('res', res);
   });
 }
 // eslint-disable-next-line
