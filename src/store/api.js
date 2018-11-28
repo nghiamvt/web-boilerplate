@@ -9,7 +9,7 @@ const APICreator = ({ type, method = 'GET', data, pathUrl, baseUrl, headers = {}
     const finalHeaders = Object.assign({}, { 'Content-Type': 'application/json' }, headers);
     return axios({ url, data, method, headers: finalHeaders })
       .then(res => {
-        if ([200, 201].includes(res.status) && res.data.status === 1) {
+        if ([200, 201].includes(res.status) && res.data.success) {
           dispatch(apiActionSuccess({ type, payload: res.data }));
           resolve(res.data);
         } else {

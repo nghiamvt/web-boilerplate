@@ -7,11 +7,11 @@ import { frequency } from './constant';
 
 import { loanTypeOptions, loanTermOptions } from './data';
 import LoanForm from './LoanForm';
-import { submitLoanRequest } from './actions';
+import { apiLoanRequest } from './actions';
 
 class LoanContainer extends Component {
   static propTypes = {
-    submitLoanRequest: PropTypes.func.isRequired,
+    apiLoanRequest: PropTypes.func.isRequired,
   };
 
   buildInitialValues = () => {
@@ -41,8 +41,19 @@ class LoanContainer extends Component {
     });
   };
 
-  handleOnSubmit = (values, props) => {
-    props.submitLoanRequest(values);
+  handleOnSubmit = (values, { setSubmitting }, props) => {
+    props
+      .apiLoanRequest({
+        pathUrl: 'http://localhost:4000/loan',
+        data: values,
+      })
+      .then(res => {
+        console.log('res', res);
+      })
+      .catch(e => {
+        console.error('e', e);
+      })
+      .finally(() => setSubmitting(false));
   };
 
   renderForm = formProps => {
@@ -55,7 +66,7 @@ class LoanContainer extends Component {
         initialValues={this.buildInitialValues()}
         validationSchema={this.buildValidationSchema()}
         render={this.renderForm}
-        onSubmit={values => this.handleOnSubmit(values, props)}
+        onSubmit={(values, actions) => this.handleOnSubmit(values, actions, props)}
       />
     );
   };
@@ -67,5 +78,5 @@ class LoanContainer extends Component {
 
 export default connect(
   null,
-  { submitLoanRequest },
+  { apiLoanRequest },
 )(LoanContainer);

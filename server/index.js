@@ -18,16 +18,16 @@ app.get('/', (req, res) => {
 
 app.post('/loan', (req, res) => {
   setTimeout(() => {
-    console.log('res', res);
     res.json({
       success: true,
       data: {
         id: randomId(),
+        ...req.body,
       },
     });
   }, 1000);
 });
 
 app.listen(port, () => {
-  console.log(`Listening on port ${port}!`);
+  console.log(`Listening on port ${port}!`); // eslint-disable-line
 });
