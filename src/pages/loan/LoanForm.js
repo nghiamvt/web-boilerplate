@@ -11,11 +11,12 @@ class LoanForm extends React.PureComponent {
   };
 
   renderComponent = ({ formProps }) => {
-    const { isSubmitting, dirty } = formProps;
+    const { isSubmitting, dirty, values } = formProps;
+    const frequencyOptions = repaymentFrequencyOptions(values);
     return (
       <Form>
         <h1 className="FormTitle">Loan Request</h1>
-        <Field name="amount" label="Amount" component={FormField} />
+        <Field name="amount" label="Amount (SGD)" component={FormField} />
         <Field
           name="loanTerm"
           label="Loan Term"
@@ -28,7 +29,8 @@ class LoanForm extends React.PureComponent {
           label="Repayment Frequency"
           component={FormField}
           type="select"
-          options={repaymentFrequencyOptions}
+          defaultValue={frequencyOptions[0]}
+          options={frequencyOptions}
         />
         <Field name="interestRate" label="Interest Rate" component={FormField} />
         <Field name="arrangementFee" label="Arrangement Fee" component={FormField} />

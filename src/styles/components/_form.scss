@@ -3,11 +3,6 @@
     width: 300px;
   }
 
-  .ReactSelect {
-    width: 300px;
-    display: inline-block;
-  }
-
   &.FieldErr {
     input,
     .ReactSelect__control,
@@ -18,7 +13,7 @@
     .ErrMsg {
       color: $error-color;
       font-style: italic;
-      font-size: 12px;
+      font-size: 13px;
       display: inline-flex;
     }
   }

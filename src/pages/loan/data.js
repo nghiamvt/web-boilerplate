@@ -9,7 +9,10 @@ export const loanTermOptions = [
   { value: '24', label: '24 Months' },
 ];
 
-export const repaymentFrequencyOptions = Object.values(frequency).map(i => ({
-  value: i,
-  label: i,
-}));
+export const repaymentFrequencyOptions = ({ loanTerm }) => {
+  return Object.values(frequency).map(i => ({
+    value: i,
+    label: i,
+    isDisabled: (loanTerm || {}).value < 12 && i === frequency.YEARLY,
+  }));
+};
