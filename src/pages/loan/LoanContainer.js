@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { frequency } from './constant';
 
 import { loanTypeOptions, loanTermOptions } from './data';
 import LoanForm from './LoanForm';
+import { submitLoanRequest } from './actions';
 
 class LoanContainer extends Component {
+  static propTypes = {
+    submitLoanRequest: PropTypes.func.isRequired,
+  };
+
   buildInitialValues = () => {
     return {
       amount: '',
@@ -21,39 +28,34 @@ class LoanContainer extends Component {
   };
 
   buildValidationSchema = () => {
+    const objValidate = Yup.object()
+      .required('Required')
+      .nullable();
     return Yup.object({
       amount: Yup.string()
         .required('Require')
         .matches(/^(?=.)(([0-9]*)(\.([0-9]+))?)$/, 'invalid amount'),
-      loanTerm: Yup.object()
-        .required('Required')
-        .nullable(),
-      repaymentFrequency: Yup.object()
-        .required('Required')
-        .nullable(),
-      loanType: Yup.object()
-        .required('Required')
-        .nullable(),
-      interestRate: Yup.number()
-        .required('Require')
-        .typeError('invalid amount')
-        .positive('Amount must be a positive number'),
+      loanTerm: objValidate,
+      repaymentFrequency: objValidate,
+      loanType: objValidate,
     });
   };
 
-  handleOnSubmit = () => {};
+  handleOnSubmit = (values, props) => {
+    props.submitLoanRequest(values);
+  };
 
   renderForm = formProps => {
     return <LoanForm formProps={formProps} />;
   };
 
-  renderComponent = () => {
+  renderComponent = props => {
     return (
       <Formik
         initialValues={this.buildInitialValues()}
         validationSchema={this.buildValidationSchema()}
         render={this.renderForm}
-        onSubmit={this.handleOnSubmit}
+        onSubmit={values => this.handleOnSubmit(values, props)}
       />
     );
   };
@@ -63,4 +65,7 @@ class LoanContainer extends Component {
   }
 }
 
-export default LoanContainer;
+export default connect(
+  null,
+  { submitLoanRequest },
+)(LoanContainer);
