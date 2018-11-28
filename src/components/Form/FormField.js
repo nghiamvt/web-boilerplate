@@ -29,7 +29,7 @@ function selectField(props) {
 }
 
 function inputField(props) {
-  return <input {...props.field} placeHolder={props.placeHolder} />;
+  return <input {...props.field} placeHolder={props.placeHolder} disabled={props.disabled} />;
 }
 
 function fieldByType(props) {
