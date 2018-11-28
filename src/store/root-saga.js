@@ -1,17 +1,21 @@
 /* eslint-disable no-constant-condition,func-names */
 import { takeEvery, spawn, call } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
+import { apiGet, apiPost } from '@/store/api-saga';
 
 function* testSaga() {
-  yield takeEvery('INIT_SAGA', () => {
+  yield takeEvery('INIT_SAGA', function* () {
+    const data = yield call(apiGet, {
+      pathUrl: 'https://reqres.in/api/users?delay=3',
+      type: 'test_api',
+    });
+    console.log('data', data);
     console.info('init');
   });
 }
-
-export default function* rootSaga() {
-  const sagaList = [
-    testSaga,
-  ];
+// eslint-disable-next-line
+function* rootSagaRestartable() {
+  const sagaList = [testSaga];
 
   yield sagaList.map(saga => spawn(function* () {
     while (true) {
@@ -24,4 +28,8 @@ export default function* rootSaga() {
       yield delay(3000);
     }
   }));
+}
+
+export default function* rootSaga() {
+  yield spawn(testSaga);
 }

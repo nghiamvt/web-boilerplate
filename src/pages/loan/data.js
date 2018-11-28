@@ -13,6 +13,7 @@ export const repaymentFrequencyOptions = ({ loanTerm }) => {
   return Object.values(frequency).map(i => ({
     value: i,
     label: i,
+    // disable yearly frequency when loan tearn < 12 months
     isDisabled: (loanTerm || {}).value < 12 && i === frequency.YEARLY,
   }));
 };
