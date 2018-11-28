@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import Select from 'react-select';
+import cx from 'classnames';
+import { capitalize } from '@/utils/string';
 import ErrMsg from './ErrMsg';
 
 function selectField(props) {
@@ -38,9 +40,16 @@ function fieldByType(props) {
 }
 
 export default function FormField(props) {
+  console.log('props', props);
+  const { errors, touched } = props.form;
   const { name } = props.field;
+  const cls = cx({
+    [`${capitalize(name)}Field`]: true,
+    [`${capitalize(props.type || 'input')}Field`]: true,
+    FieldErr: errors[name] && touched[name],
+  });
   return (
-    <div className={`${name}Field`}>
+    <div className={cls}>
       {props.label ? <span>{props.label}</span> : ''}
       {fieldByType(props)}
       <ErrMsg name={name} />
