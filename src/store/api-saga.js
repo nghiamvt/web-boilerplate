@@ -1,50 +1,37 @@
+import axios from 'axios';
 import { call, put } from 'redux-saga/effects';
-import apiAction from './api-action';
+import { apiActionRequest, apiActionSuccess, apiActionFailed } from './api-action';
 
 /**
  * Call API
  * @param _path The location of Store which will be updated
  * @param type redux type
- * @param url The Url to call
  * @param method POST/GET (apiGet/apiPost)
  * @param data The data sent to server
- * @param options Use to customize fetch's options such as headers, body or credentials
+ * @param url The Url to call
  * @returns {*}
  */
-function* callApi({ _path, type, url, method, data, options }) {
-  if (!url) throw new Error('url required for ajax call');
-  if (!type) throw new Error('Action type is required');
-  if (_path) yield put(apiAction.preFetch({ _path, type }));
-  const fetchOptions = Object.assign({}, {
-    credentials: 'same-origin',
-    headers: {
-      Accept: 'application/json',
-    },
-    body: data ? JSON.stringify(data) : undefined,
-  }, options, { method });
-  let respond; // { status, result, error }
+function* callApi({ type, method = 'GET', data, pathUrl, baseUrl, headers = {} }) {
+  if (!pathUrl || !type) throw new Error('path_url & type are required');
+  yield put(apiActionRequest({ type }));
+  const url = baseUrl ? `${baseUrl}/${pathUrl}` : pathUrl;
+
   try {
-    const response = yield call(fetch, url, fetchOptions);
-    if (!response.ok) {
-      throw Error(response.statusText); // fetch("http://httpstat.us/500")
+    const finalHeaders = Object.assign({}, { 'Content-Type': 'application/json' }, headers);
+    // if (url.startsWith(BASE_API.BASE_URL) && local.get(APP.AUTH_TOKEN)) {
+    //   completedHeaders.Payload = token;
+    // }
+    const response = yield call(axios, { url, data, method, headers: finalHeaders });
+    if ([200, 201].includes(response.status)) {
+      yield put(apiActionSuccess({ type }));
+      return response.data;
     }
-    const { status } = response;
-    if (status === 200) {
-      const json = yield response.json();
-      respond = { status, result: json };
-    } else {
-      console.error('callAPI: ', response);
-      respond = { status, error: response.statusText };
-    }
-    return respond;
-  } catch (error) {
-    console.error('callAPI: ', error);
-    respond = { error };
-    return respond;
-  } finally {
-    if (_path) {
-      yield put(apiAction.postFetch({ _path, type, ...respond }));
-    }
+    console.error('callAPI (status): ', response);
+    return { status: 0, message: response.statusText };
+  } catch (e) {
+    console.error('failed to callAPI: ', e);
+    yield put(apiActionFailed({ type }));
+    return { status: 0, message: e };
   }
 }
 
