@@ -20,7 +20,7 @@ class LoanContainer extends Component {
   handleOnSubmit = () => {};
 
   renderForm = formProps => {
-    return <LoanForm {...formProps} />;
+    return <LoanForm formProps={formProps} />;
   };
 
   renderComponent = () => {
