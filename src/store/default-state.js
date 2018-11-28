@@ -1,5 +1,5 @@
 export default {
-  app: {},
+  loan: {},
   todo: [
     {
       id: 0,
