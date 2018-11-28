@@ -33,7 +33,7 @@ class LoanForm extends React.PureComponent {
       })
       : 0;
     return (
-      <div className="AmountTobePaid">{`${frequency.label} amount to be paid: ${amount}`}</div>
+      <div className="AmountTobePaid">{`${frequency.label} amount to be paid: $ ${amount}`}</div>
     );
   };
 
@@ -42,7 +42,7 @@ class LoanForm extends React.PureComponent {
     return (
       <Form>
         <h1 className="FormTitle">Loan Request</h1>
-        <Field name="amount" label="Amount (&#36;)" placeHolder={0} component={FormField} />
+        <Field name="amount" label="Amount ($)" placeHolder={0} component={FormField} />
         <Field
           name="loanTerm"
           label="Loan Term"

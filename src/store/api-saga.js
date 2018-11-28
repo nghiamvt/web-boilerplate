@@ -4,15 +4,16 @@ import { apiActionRequest, apiActionSuccess, apiActionFailed } from './api-actio
 
 /**
  * Call API
- * @param _path The location of Store which will be updated
  * @param type redux type
  * @param method POST/GET (apiGet/apiPost)
  * @param data The data sent to server
- * @param url The Url to call
+ * @param pathUrl The relative url to call
+ * @param baseUrl The root url to call
+ * @param headers customize http headers
  * @returns {*}
  */
 function* callApi({ type, method = 'GET', data, pathUrl, baseUrl, headers = {} }) {
-  if (!pathUrl || !type) throw new Error('path_url & type are required');
+  if (!pathUrl || !type) throw new Error('pathUrl & type are required');
   yield put(apiActionRequest({ type }));
   const url = baseUrl ? `${baseUrl}/${pathUrl}` : pathUrl;
 
@@ -23,14 +24,14 @@ function* callApi({ type, method = 'GET', data, pathUrl, baseUrl, headers = {} }
     // }
     const response = yield call(axios, { url, data, method, headers: finalHeaders });
     if ([200, 201].includes(response.status)) {
-      yield put(apiActionSuccess({ type }));
+      yield put(apiActionSuccess({ type, payload: response.data }));
       return response.data;
     }
     console.error('callAPI (status): ', response);
-    return { status: 0, message: response.statusText };
+    throw response.statusText;
   } catch (e) {
     console.error('failed to callAPI: ', e);
-    yield put(apiActionFailed({ type }));
+    yield put(apiActionFailed({ type, payload: e }));
     return { status: 0, message: e };
   }
 }

@@ -52,3 +52,5 @@ export const APIFormCreator = ({ type, url }) => payload => {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };
+
+// https://reqres.in/api/users?delay=3
