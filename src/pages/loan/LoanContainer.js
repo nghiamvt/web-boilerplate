@@ -7,23 +7,24 @@ import { frequency } from './constant';
 
 import { loanTypeOptions, loanTermOptions } from './data';
 import LoanForm from './LoanForm';
-import { apiLoanRequest } from './actions';
+import { apiLoanRequest, addLoanRequest } from './actions';
 
 class LoanContainer extends Component {
   static propTypes = {
     apiLoanRequest: PropTypes.func.isRequired,
+    loan: PropTypes.func.isRequired,
   };
 
-  buildInitialValues = () => {
+  buildInitialValues = ({ loan = {} }) => {
     return {
-      amount: '',
-      loanTerm: loanTermOptions[0],
-      repaymentFrequency: {
+      amount: loan.amount || '',
+      loanTerm: loan.loanTerm || loanTermOptions[0],
+      repaymentFrequency: loan.repaymentFrequency || {
         label: frequency.WEEKLY,
         value: frequency.WEEKLY,
       },
-      loanType: loanTypeOptions[0],
-      interestRate: loanTypeOptions[0].value,
+      loanType: loan.loanType || loanTypeOptions[0],
+      interestRate: loan.interestRate || loanTypeOptions[0].value,
     };
   };
 
@@ -48,7 +49,7 @@ class LoanContainer extends Component {
         data: values,
       })
       .then(res => {
-        console.log('res', res);
+        props.addLoanRequest(res.data);
       })
       .catch(e => {
         console.error('e', e);
@@ -57,13 +58,13 @@ class LoanContainer extends Component {
   };
 
   renderForm = formProps => {
-    return <LoanForm formProps={formProps} />;
+    return <LoanForm formProps={formProps} disabled={this.props.loan} />;
   };
 
   renderComponent = props => {
     return (
       <Formik
-        initialValues={this.buildInitialValues()}
+        initialValues={this.buildInitialValues(props)}
         validationSchema={this.buildValidationSchema()}
         render={this.renderForm}
         onSubmit={(values, actions) => this.handleOnSubmit(values, actions, props)}
@@ -77,6 +78,9 @@ class LoanContainer extends Component {
 }
 
 export default connect(
-  null,
-  { apiLoanRequest },
+  state => ({
+    // only have 1 user for this mini app
+    loan: state.loan[0],
+  }),
+  { apiLoanRequest, addLoanRequest },
 )(LoanContainer);
