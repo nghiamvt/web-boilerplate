@@ -73,6 +73,7 @@
 		"postcss-flexbugs-fixes": "^4.1.0",
 		"postcss-loader": "^3.0.0",
 		"postcss-preset-env": "^6.1.1",
+		"prettier": "1.15.2",
 		"react-dev-utils": "^6.0.4",
 		"sass-loader": "^7.1.0",
 		"serve": "^10.0.0",

@@ -1,11 +1,13 @@
 import React from 'react';
 import { Prompt } from 'react-router';
-import { Form, Field, withFormik } from 'formik';
+import { Form, Field } from 'formik';
 import { FormField, FormDebug } from '@/components/Form';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 class LoanForm extends React.PureComponent {
-  static propTypes = {};
+  static propTypes = {
+    formProps: PropTypes.object.isRequired,
+  };
 
   renderLoanTerm = () => {
     const options = [
@@ -26,7 +28,6 @@ class LoanForm extends React.PureComponent {
   };
 
   renderRepaymentFrequency = () => {
-    console.log('FormikProps', withFormik);
     const options = [
       { value: 'ocean', label: 'Ocean' },
       { value: 'blue', label: 'Blue' },
@@ -44,20 +45,20 @@ class LoanForm extends React.PureComponent {
     );
   };
 
-  renderComponent = props => {
-    const { isSubmitting, dirty } = props;
+  renderComponent = ({ formProps }) => {
+    const { isSubmitting, dirty } = formProps;
     return (
       <Form>
         <Field name="amount" label="Amount" component={FormField} />
-        {this.renderLoanTerm(props)}
-        {this.renderRepaymentFrequency(props)}
+        {this.renderLoanTerm(formProps)}
+        {this.renderRepaymentFrequency(formProps)}
         <Field name="interestRate" label="Interest Rate" component={FormField} />
         <Field name="arrangementFee" label="Arrangement Fee" component={FormField} />
         <button className="SubmitBtn btn-primary" type="submit" disabled={isSubmitting || !dirty}>
           Create
         </button>
         <Prompt when={dirty} message="Are you sure you want to leave?" />
-        <FormDebug props={props} />
+        <FormDebug props={formProps} />
       </Form>
     );
   };
