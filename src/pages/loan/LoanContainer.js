@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { loanTypeOptions, loanTermOptions, frequency } from '@/data';
+import { loanTypeOptions, loanTermOptions, frequency, URL } from '@/data';
+
 import LoanForm from './LoanForm';
 import { apiLoanRequest, addLoanRequest } from './actions';
 
@@ -12,6 +13,21 @@ class LoanContainer extends Component {
   static propTypes = {
     apiLoanRequest: PropTypes.func.isRequired,
     requestedLoan: PropTypes.array.isRequired,
+  };
+
+  handleOnSubmit = (values, { setSubmitting }, props) => {
+    props
+      .apiLoanRequest({
+        pathUrl: URL.LOAN,
+        data: values,
+      })
+      .then(res => {
+        props.addLoanRequest(res.data);
+      })
+      .catch(e => {
+        console.error('e', e);
+      })
+      .finally(() => setSubmitting(false));
   };
 
   buildInitialValues = ({ requestedLoan = {} }) => {
@@ -44,23 +60,8 @@ class LoanContainer extends Component {
     });
   };
 
-  handleOnSubmit = (values, { setSubmitting }, props) => {
-    props
-      .apiLoanRequest({
-        pathUrl: 'http://localhost:4000/loan',
-        data: values,
-      })
-      .then(res => {
-        props.addLoanRequest(res.data);
-      })
-      .catch(e => {
-        console.error('e', e);
-      })
-      .finally(() => setSubmitting(false));
-  };
-
   renderForm = formProps => {
-    return <LoanForm formProps={formProps} requested={!!this.props.requestedLoan.length} />;
+    return <LoanForm formProps={formProps} requested={!!this.props.requestedLoan} />;
   };
 
   renderComponent = props => {
@@ -82,7 +83,7 @@ class LoanContainer extends Component {
 export default connect(
   state => ({
     // only 1 user for this mini app
-    requestedLoan: state.loan.requests,
+    requestedLoan: state.loan.requests[0],
   }),
   { apiLoanRequest, addLoanRequest },
 )(LoanContainer);

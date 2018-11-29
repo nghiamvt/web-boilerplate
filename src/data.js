@@ -1,3 +1,10 @@
+export const BASE_URL = 'http://localhost:4000';
+
+export const URL = {
+  LOAN: 'loan',
+  REPAYMENT: 'repayment',
+};
+
 export const frequency = {
   WEEKLY: 'Weekly',
   MONTHLY: 'Monthly',

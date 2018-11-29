@@ -1,7 +1,15 @@
 import axios from 'axios';
 import { apiActionRequest, apiActionSuccess, apiActionFailed } from './api-action';
+import { BASE_URL } from '@/data';
 
-const APICreator = ({ type, method = 'GET', data, pathUrl, baseUrl, headers = {} }) => dispatch => {
+const APICreator = ({
+  type,
+  method = 'GET',
+  data,
+  pathUrl,
+  baseUrl = BASE_URL,
+  headers = {},
+}) => dispatch => {
   return new Promise((resolve, reject) => {
     if (!pathUrl || !type) reject(new Error('pathUrl and type are required'));
     dispatch(apiActionRequest({ type }));
