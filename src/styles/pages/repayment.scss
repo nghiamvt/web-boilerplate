@@ -1,0 +1,54 @@
+.RepaymentContainer {
+  .ImageUpload {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    .BlockLeft {
+      flex-basis: 40%;
+    }
+
+    .BlockRight {
+      flex-basis: 50%;
+    }
+
+    .ErrMsg {
+      text-align: right;
+      width: 100%;
+    }
+
+    .AddBtn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 90px;
+      overflow: hidden;
+    }
+
+    .FileInput {
+      background-image: url('../../assets/images/add-btn.svg');
+      background-repeat: no-repeat;
+      background-position: center;
+      width: 160px;
+      height: 90px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-size: 0;
+      transform: translate(-50%, -50%);
+
+      &.Loaded {
+        background-image: none !important;
+      }
+
+      &::-webkit-file-upload-button {
+        visibility: hidden;
+      }
+    }
+  }
+}

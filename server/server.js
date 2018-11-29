@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 const randomId = () => Math.floor(new Date().valueOf() * Math.random());
 
-app.get('/', (req, res) => {
+app.get('/repayment', (req, res) => {
   res.json({
     success: true,
     data: 'Hello!',

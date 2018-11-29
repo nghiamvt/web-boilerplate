@@ -7,7 +7,7 @@ export const apiLoanRequest = APIPostCreator({
 
 export const addLoanRequest = payload => {
   return SET_DATA({
-    _path: 'loan',
+    _path: 'loan.requests',
     _value: [payload],
     type: 'ADD_LOAN_REQUEST',
   });

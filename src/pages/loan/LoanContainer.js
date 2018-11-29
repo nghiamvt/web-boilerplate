@@ -12,19 +12,19 @@ import { apiLoanRequest, addLoanRequest } from './actions';
 class LoanContainer extends Component {
   static propTypes = {
     apiLoanRequest: PropTypes.func.isRequired,
-    loan: PropTypes.func.isRequired,
+    requestedLoan: PropTypes.array.isRequired,
   };
 
-  buildInitialValues = ({ loan = {} }) => {
+  buildInitialValues = ({ requestedLoan = {} }) => {
     return {
-      amount: loan.amount || '',
-      loanTerm: loan.loanTerm || loanTermOptions[0],
-      repaymentFrequency: loan.repaymentFrequency || {
+      amount: requestedLoan.amount || '',
+      loanTerm: requestedLoan.loanTerm || loanTermOptions[0],
+      repaymentFrequency: requestedLoan.repaymentFrequency || {
         label: frequency.WEEKLY,
         value: frequency.WEEKLY,
       },
-      loanType: loan.loanType || loanTypeOptions[0],
-      interestRate: loan.interestRate || loanTypeOptions[0].value,
+      loanType: requestedLoan.loanType || loanTypeOptions[0],
+      interestRate: requestedLoan.interestRate || loanTypeOptions[0].value,
     };
   };
 
@@ -58,7 +58,7 @@ class LoanContainer extends Component {
   };
 
   renderForm = formProps => {
-    return <LoanForm formProps={formProps} disabled={this.props.loan} />;
+    return <LoanForm formProps={formProps} disabled={this.props.requestedLoan.length} />;
   };
 
   renderComponent = props => {
@@ -79,8 +79,8 @@ class LoanContainer extends Component {
 
 export default connect(
   state => ({
-    // only have 1 user for this mini app
-    loan: state.loan[0],
+    // only 1 user for this mini app
+    requestedLoan: state.loan.requests,
   }),
   { apiLoanRequest, addLoanRequest },
 )(LoanContainer);
