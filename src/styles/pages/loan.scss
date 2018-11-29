@@ -6,7 +6,7 @@
     .FormTitle {
       text-align: center;
       color: $primary-color;
-      text-transform: capitalize;
+      margin: 50px 0;
     }
   }
 
@@ -35,7 +35,7 @@
 
   .ButtonWrapper {
     text-align: center;
-    margin-top: 30px;
+    margin: 20px 0 50px;
 
     button[type='submit'] {
       margin-right: 30px;
