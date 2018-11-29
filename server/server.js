@@ -22,6 +22,7 @@ app.post('/loan', (req, res) => {
       success: true,
       data: {
         id: randomId(),
+        appliedDate: Date.now(),
         ...req.body,
       },
     });

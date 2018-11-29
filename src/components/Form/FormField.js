@@ -48,6 +48,7 @@ export default function FormField(props) {
     [`${capitalize(name)}Field FormField`]: true,
     [`${capitalize(props.type || 'input')}Field`]: true,
     FieldErr: errors[name] && touched[name],
+    [props.className]: props.className,
   });
   return (
     <div className={cls}>

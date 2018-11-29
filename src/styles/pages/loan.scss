@@ -3,12 +3,11 @@
 
   form {
     margin: 0 auto;
-  }
-
-  .FormTitle {
-    text-align: center;
-    color: $primary-color;
-    text-transform: capitalize;
+    .FormTitle {
+      text-align: center;
+      color: $primary-color;
+      text-transform: capitalize;
+    }
   }
 
   .FormField {
@@ -46,10 +45,8 @@
   .AmountTobePaid {
     text-align: center;
   }
-}
 
-@media only screen and (max-width: 767px) {
-  .LoanForm {
+  @media only screen and (max-width: 767px) {
     .FormField {
       display: flex;
       justify-content: center;
