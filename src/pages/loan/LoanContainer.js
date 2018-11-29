@@ -34,7 +34,10 @@ class LoanContainer extends Component {
     return Yup.object({
       amount: Yup.string()
         .required('Require')
-        .matches(/^(?=.)(([0-9]*)(\.([0-9]+))?)$/, 'invalid amount'),
+        .matches(/^(?=.)(([0-9]*)(\.([0-9]+))?)$/, 'invalid amount')
+        .test('amount', 'Minimum is 100$', a => {
+          return a >= 100;
+        }),
       loanTerm: objValidate,
       repaymentFrequency: objValidate,
       loanType: objValidate,
@@ -57,7 +60,7 @@ class LoanContainer extends Component {
   };
 
   renderForm = formProps => {
-    return <LoanForm formProps={formProps} disabled={this.props.requestedLoan.length} />;
+    return <LoanForm formProps={formProps} requested={!!this.props.requestedLoan.length} />;
   };
 
   renderComponent = props => {

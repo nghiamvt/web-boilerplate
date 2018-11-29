@@ -2,18 +2,20 @@ import React from 'react';
 import { Prompt } from 'react-router';
 import { Form, Field } from 'formik';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { FormField, FormDebug } from '@/components/Form';
 import Loading from '@/components/Loading';
-import { loanTermOptions, frequencyOptions, loanTypeOptions, frequencyPeriodMap } from '@/data';
+import AmountToBePaid from '@/modules/AmountToBePaid/AmountToBePaid';
+import { loanTermOptions, frequencyOptions, loanTypeOptions } from '@/data';
 
 class LoanForm extends React.PureComponent {
   static propTypes = {
     formProps: PropTypes.object.isRequired,
-    disabled: PropTypes.bool,
+    requested: PropTypes.bool,
   };
 
   static defaultProps = {
-    disabled: false,
+    requested: false,
   };
 
   handleResetForm = () => {
@@ -21,43 +23,43 @@ class LoanForm extends React.PureComponent {
     location.reload();
   };
 
-  calculateAmountTobePaid = ({ amount, interestRate, repaymentFrequency, loanTerm, periodMap }) => {
-    const period = periodMap[repaymentFrequency];
-    const numberOfPeriod = +loanTerm * period;
-    const numerator = +interestRate / numberOfPeriod;
-    const denominator = 1 - Math.pow(numerator + 1, -numberOfPeriod); // eslint-disable-line
-    const result = (numerator / denominator) * amount;
-    return result.toFixed(2);
-  };
-
   renderAmountTobePaid = (values, errors) => {
-    const frequency = values.repaymentFrequency;
     const isValid = !Object.keys(errors).length;
-    const amount = isValid
-      ? this.calculateAmountTobePaid({
-        amount: values.amount,
+    const frequency = values.repaymentFrequency.value;
+    const prop = isValid
+      ? {
+        amount: +values.amount,
         interestRate: +values.interestRate / 100,
-        repaymentFrequency: values.repaymentFrequency.value,
-        loanTerm: values.loanTerm.value,
-        periodMap: frequencyPeriodMap,
-      })
-      : 0;
+        repaymentFrequency: frequency,
+        loanTerm: +values.loanTerm.value,
+      }
+      : {};
     return (
-      <div className="AmountTobePaid">{`${frequency.label} amount to be paid: $ ${amount}`}</div>
+      <div className="AmountToBePaidWrapper">
+        {`${frequency} amount to be paid `}
+        <AmountToBePaid {...prop} />
+      </div>
     );
   };
 
-  renderComponent = ({ formProps, disabled }) => {
+  renderComponent = ({ formProps, requested }) => {
     const { isSubmitting, dirty, values, errors, setFieldValue } = formProps;
     return (
       <Form>
         <h1 className="FormTitle">Loan Request</h1>
+        {requested && (
+          <p className="ApproveMsg">
+            Your loan request has been approved,
+            {' '}
+            <Link to="/repayment">make a repayment</Link>
+          </p>
+        )}
         <Field
           name="amount"
-          label="Amount ($)"
+          label="Amount (SGD)"
           placeHolder={0}
           component={FormField}
-          disabled={disabled}
+          disabled={requested}
         />
         <Field
           name="loanTerm"
@@ -65,7 +67,7 @@ class LoanForm extends React.PureComponent {
           type="select"
           component={FormField}
           options={loanTermOptions}
-          disabled={disabled}
+          disabled={requested}
         />
         <Field
           name="repaymentFrequency"
@@ -73,7 +75,7 @@ class LoanForm extends React.PureComponent {
           type="select"
           component={FormField}
           options={frequencyOptions(values)}
-          disabled={disabled}
+          disabled={requested}
         />
         <Field
           name="loanType"
@@ -82,21 +84,18 @@ class LoanForm extends React.PureComponent {
           onFieldChange={({ value }) => setFieldValue('interestRate', value)}
           component={FormField}
           options={loanTypeOptions}
-          disabled={disabled}
+          disabled={requested}
         />
         <Field name="interestRate" label="Interest Rate (%)" component={FormField} disabled />
         {this.renderAmountTobePaid(values, errors)}
         <div className="ButtonWrapper">
-          <button
-            className="Btn PrimaryBtn"
-            type="submit"
-            disabled={isSubmitting || !dirty || disabled}
-          >
-            {isSubmitting ? 'Loading...' : 'Create'}
-          </button>
-          {!!disabled && (
+          {requested ? (
             <button className="Btn PrimaryBtn" type="button" onClick={this.handleResetForm}>
               Reset
+            </button>
+          ) : (
+            <button className="Btn PrimaryBtn" type="submit" disabled={isSubmitting || !dirty}>
+              {isSubmitting ? 'Loading...' : 'Submit'}
             </button>
           )}
         </div>

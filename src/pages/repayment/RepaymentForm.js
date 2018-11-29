@@ -1,4 +1,5 @@
 import React from 'react';
+import { Prompt } from 'react-router';
 import PropTypes from 'prop-types';
 import { Form, Field } from 'formik';
 import { FormField, FormDebug } from '@/components/Form';
@@ -20,26 +21,7 @@ class RepaymentForm extends React.PureComponent {
   renderComponent = ({ formProps }) => {
     const { isSubmitting, dirty, values } = formProps;
     return (
-      <Form>
-        <Field name="appliedDate" label="Applied Date" component={FormField} disabled />
-        <Field name="toDate" label="To Date" component={FormField} disabled />
-        <Field name="principalAmount" label="Principal Amount" component={FormField} disabled />
-        <Field name="balanceLoan" label="Balance Loan" component={FormField} disabled />
-        <Field name="loanTerm" label="Loan Term" type="select" component={FormField} disabled />
-        <Field
-          name="repaymentFrequency"
-          label="Repayment Frequency"
-          type="select"
-          component={FormField}
-          disabled
-        />
-        <Field name="nextDeadline" label="Make a payment before" component={FormField} disabled />
-        <Field
-          name="amountTobePaid"
-          label={`${values.repaymentFrequency.label} amount to be paid`}
-          component={FormField}
-          disabled
-        />
+      <Form className="RepaymentForm">
         <Field
           name="paymentMethods"
           label="Payment Methods"
@@ -47,25 +29,21 @@ class RepaymentForm extends React.PureComponent {
           component={FormField}
           options={paymentMethodOptions}
         />
-        <ImageUpload form={formProps} className="FieldBlock" />
+        {values.paymentMethods && <ImageUpload form={formProps} className="FormField" />}
         <div className="ButtonWrapper">
           <button className="Btn PrimaryBtn" type="submit" disabled={isSubmitting || !dirty}>
-            {isSubmitting ? 'Loading...' : 'Create'}
+            {isSubmitting ? 'Loading...' : 'Submit'}
           </button>
         </div>
         <Loading isLoading={isSubmitting} />
+        <Prompt when={dirty} message="Are you sure you want to leave?" />
         <FormDebug props={formProps} hide />
       </Form>
     );
   };
 
   render() {
-    return (
-      <div className="RepaymentForm">
-        <h1 className="FormTitle">Repayment</h1>
-        {this.renderComponent(this.props)}
-      </div>
-    );
+    return this.renderComponent(this.props);
   }
 }
 
