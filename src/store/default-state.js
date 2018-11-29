@@ -1,6 +1,7 @@
 export default {
   loan: {
     requests: [],
+    repayments: [],
   },
   todo: [
     {

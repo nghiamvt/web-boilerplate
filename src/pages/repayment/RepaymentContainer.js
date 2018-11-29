@@ -53,9 +53,13 @@ export class RepaymentContainer extends Component {
   };
 
   renderComponent = props => {
+    const info = {
+      ...props.requestedLoan,
+      repayments: props.repayments,
+    };
     return (
       <React.Fragment>
-        <RepaymentInfo info={props.requestedLoan} />
+        <RepaymentInfo info={info} />
         <Formik
           initialValues={{
             image: '',
@@ -89,6 +93,7 @@ export default connect(
   state => ({
     // only 1 user for this mini app
     requestedLoan: state.loan.requests[0],
+    repayments: state.loan.repayments,
   }),
   { apiRepaymentSubmit, addRepayment },
 )(RepaymentContainer);
