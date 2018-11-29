@@ -9,6 +9,30 @@ class RepaymentInfo extends React.PureComponent {
     info: PropTypes.object.isRequired,
   };
 
+  getPropAmountToBePaid = ({ amount, interestRate, repaymentFrequency, loanTerm }) => {
+    return {
+      amount: +amount,
+      interestRate: +interestRate / 100,
+      repaymentFrequency: repaymentFrequency.value,
+      loanTerm: +loanTerm.value,
+    };
+  };
+
+  calculateAmountToBePaid = ({ amount, interestRate, repaymentFrequency, loanTerm }) => {
+    const prop = this.getPropAmountToBePaid({ amount, interestRate, repaymentFrequency, loanTerm });
+    return AmountToBePaid.calculateAmountTobePaid({
+      ...prop,
+      periodMap: AmountToBePaid.frequencyPeriodMap,
+    });
+  };
+
+  calculateLoanBalance = ({ interestRate, amount, amountToBePaid, paidCount }) => {
+    const result = paidCount
+      ? amount + (interestRate / 48) * amount - amountToBePaid * paidCount
+      : 0;
+    return result;
+  };
+
   renderField = (label, value) => {
     return (
       <div className="Field">
@@ -18,27 +42,42 @@ class RepaymentInfo extends React.PureComponent {
     );
   };
 
-  renderAmountToBePaid = ({ amount, interestRate, repaymentFrequency, loanTerm }) => {
-    const prop = {
-      amount: +amount,
-      interestRate: +interestRate / 100,
-      repaymentFrequency: repaymentFrequency.value,
-      loanTerm: +loanTerm.value,
-    };
+  renderAmountToBePaid = data => {
+    const prop = this.getPropAmountToBePaid(data);
     return this.renderField('Amount to be paid', <AmountToBePaid {...prop} />);
   };
 
-  renderComponent = ({ appliedDate, loanTerm, amount, repaymentFrequency, interestRate }) => {
+  renderComponent = ({
+    appliedDate,
+    loanTerm,
+    amount,
+    repaymentFrequency,
+    interestRate,
+    repayments,
+  }) => {
     const dateFormat = 'DD MMMM, YYYY';
     // convert weekly to weeks, monthly to months, yearly to years
     const nextDeadlineUnit = repaymentFrequency.value.replace('ly', 's').toLowerCase();
+    const amountToBePaid = this.calculateAmountToBePaid({
+      amount,
+      interestRate,
+      repaymentFrequency,
+      loanTerm,
+    });
     const data = {
       appliedDate: moment(appliedDate).format(dateFormat),
       toDate: moment(appliedDate)
         .add(loanTerm.value, 'M')
         .format(dateFormat),
       amount: formatCurrency(amount),
-      balanceLoan: 0,
+      balanceLoan: formatCurrency(
+        this.calculateLoanBalance({
+          interestRate: +interestRate / 100,
+          amount: +amount,
+          amountToBePaid,
+          paidCount: repayments.length,
+        }),
+      ),
       loanTerm: loanTerm.value > 1 ? `${loanTerm.value} months` : `${loanTerm.value} month`,
       repaymentFrequency: repaymentFrequency.value,
       nextDeadline: moment(appliedDate)

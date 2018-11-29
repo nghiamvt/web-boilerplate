@@ -15,7 +15,7 @@ app.post('/repayment', (req, res) => {
       success: true,
       data: {
         id: randomId(),
-        ...req.body,
+        paidDate: Date.now(),
       },
     });
   }, 1000);
