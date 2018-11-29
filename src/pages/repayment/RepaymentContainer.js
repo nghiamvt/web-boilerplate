@@ -5,15 +5,32 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 
+import { URL } from '@/data';
+
 import RepaymentInfo from './RepaymentInfo';
 import RepaymentForm from './RepaymentForm';
+import { apiRepaymentSubmit, addRepayment } from './actions';
 
 export class RepaymentContainer extends Component {
   static propTypes = {
     requestedLoan: PropTypes.array.isRequired,
+    apiRepaymentSubmit: PropTypes.func.isRequired,
   };
 
-  handleOnSubmit = () => {};
+  handleOnSubmit = (values, { setSubmitting }, props) => {
+    props
+      .apiRepaymentSubmit({
+        pathUrl: URL.REPAYMENT,
+        data: values,
+      })
+      .then(res => {
+        props.addRepayment(res.data);
+      })
+      .catch(e => {
+        console.error('e', e);
+      })
+      .finally(() => setSubmitting(false));
+  };
 
   buildValidationSchema = () => {
     return Yup.object({
@@ -73,5 +90,5 @@ export default connect(
     // only 1 user for this mini app
     requestedLoan: state.loan.requests[0],
   }),
-  {},
+  { apiRepaymentSubmit, addRepayment },
 )(RepaymentContainer);
