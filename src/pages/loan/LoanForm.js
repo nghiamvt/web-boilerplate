@@ -88,12 +88,18 @@ class LoanForm extends React.PureComponent {
         <Field name="interestRate" label="Interest Rate (%)" component={FormField} disabled />
         {this.renderAmountTobePaid(values, errors)}
         <div className="ButtonWrapper">
-          <button className="Btn PrimaryBtn" type="submit" disabled={isSubmitting || !dirty}>
+          <button
+            className="Btn PrimaryBtn"
+            type="submit"
+            disabled={isSubmitting || !dirty || disabled}
+          >
             {isSubmitting ? 'Loading...' : 'Create'}
           </button>
-          <button className="Btn PrimaryBtn" type="button" onClick={this.handleResetForm}>
-            Reset
-          </button>
+          {disabled && (
+            <button className="Btn PrimaryBtn" type="button" onClick={this.handleResetForm}>
+              Reset
+            </button>
+          )}
         </div>
         <Prompt when={dirty} message="Are you sure you want to leave?" />
         <Loading isLoading={isSubmitting} />
