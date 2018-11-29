@@ -43,7 +43,7 @@ class ImageUpload extends Component {
           />
           <Thumbnail file={values.image} defaultImage={DefaultImage} />
         </div>
-        <div className="FieldNote">Upload a photo as proof of repayment (gif/jpeg/jpg/png)</div>
+        <div className="FieldNote">(gif/jpeg/jpg/png)</div>
         <ErrMsg name="image" />
       </div>
     );

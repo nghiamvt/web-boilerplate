@@ -8,6 +8,10 @@
       color: $primary-color;
       margin: 50px 0;
     }
+
+    .ApproveMsg {
+      text-align: center;
+    }
   }
 
   .FormField {
@@ -42,8 +46,13 @@
     }
   }
 
-  .AmountTobePaid {
+  .AmountToBePaidWrapper {
     text-align: center;
+
+    .AmountToBePaid {
+      font-weight: bold;
+      color: $primary-color;
+    }
   }
 
   @media only screen and (max-width: 767px) {

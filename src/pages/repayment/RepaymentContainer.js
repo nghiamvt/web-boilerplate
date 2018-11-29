@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import moment from 'moment';
+import { Link } from 'react-router-dom';
+
+import RepaymentInfo from './RepaymentInfo';
 import RepaymentForm from './RepaymentForm';
 
 export class RepaymentContainer extends Component {
@@ -13,30 +15,13 @@ export class RepaymentContainer extends Component {
 
   handleOnSubmit = () => {};
 
-  buildInitialValues = ({ requestedLoan }) => {
-    const { appliedDate, loanTerm, amount, repaymentFrequency } = requestedLoan;
-    const nextDeadlineUnit = repaymentFrequency.value.replace('ly', 's').toLowerCase();
-    const dateFormat = 'DD MMMM, YYYY';
-    return {
-      ...requestedLoan,
-      paymentMethods: '',
-      appliedDate: moment(appliedDate).format(dateFormat),
-      toDate: moment(appliedDate)
-        .add(loanTerm.value, 'M')
-        .format(dateFormat),
-      nextDeadline: moment(appliedDate)
-        .add(1, nextDeadlineUnit)
-        .format(dateFormat),
-      principalAmount: amount,
-    };
-  };
-
   buildValidationSchema = () => {
     return Yup.object({
       paymentMethods: Yup.object()
         .required('Required')
         .nullable(),
       image: Yup.mixed()
+        .required()
         .test('image', 'invalid file type', f => {
           return !f ? true : /(gif|jpe?g|png)$/i.test(f.type);
         })
@@ -52,17 +37,34 @@ export class RepaymentContainer extends Component {
 
   renderComponent = props => {
     return (
-      <Formik
-        initialValues={this.buildInitialValues(props)}
-        validationSchema={this.buildValidationSchema()}
-        render={this.renderForm}
-        onSubmit={(values, actions) => this.handleOnSubmit(values, actions, props)}
-      />
+      <React.Fragment>
+        <RepaymentInfo info={props.requestedLoan} />
+        <Formik
+          initialValues={{
+            image: '',
+          }}
+          validationSchema={this.buildValidationSchema()}
+          render={this.renderForm}
+          onSubmit={(values, actions) => this.handleOnSubmit(values, actions, props)}
+        />
+      </React.Fragment>
     );
   };
 
   render() {
-    return <div className="RepaymentContainer">{this.renderComponent(this.props, this.state)}</div>;
+    return (
+      <div className="RepaymentContainer RepaymentContainer2">
+        <h1 className="FormTitle">Repayment</h1>
+        {this.props.requestedLoan ? (
+          this.renderComponent(this.props, this.state)
+        ) : (
+          <div className="NoLoanRequested">
+            <p>You have not have any loan request yet, please submit a loan request first</p>
+            <Link to="/">Submit a loan request form</Link>
+          </div>
+        )}
+      </div>
+    );
   }
 }
 

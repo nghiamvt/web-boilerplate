@@ -16,13 +16,13 @@
     .ReactSelect__control:hover {
       border: 1px solid $error-color;
     }
+  }
 
-    .ErrMsg {
-      color: $error-color;
-      font-style: italic;
-      font-size: 13px;
-      display: inline-flex;
-    }
+  .ErrMsg {
+    color: $error-color;
+    font-style: italic;
+    font-size: 13px;
+    display: inline-flex;
   }
 }
 
