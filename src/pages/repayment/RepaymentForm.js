@@ -21,7 +21,6 @@ class RepaymentForm extends React.PureComponent {
     const { isSubmitting, dirty, values } = formProps;
     return (
       <Form>
-        <h1 className="FormTitle">Repayment</h1>
         <Field name="appliedDate" label="Applied Date" component={FormField} disabled />
         <Field name="toDate" label="To Date" component={FormField} disabled />
         <Field name="principleAmount" label="Principle Amount" component={FormField} disabled />
@@ -48,7 +47,7 @@ class RepaymentForm extends React.PureComponent {
           component={FormField}
           disabled
         />
-        <ImageUpload form={formProps} />
+        <ImageUpload form={formProps} className="FieldBlock" />
         <button className="Btn PrimaryBtn" type="submit" disabled={isSubmitting || !dirty}>
           {isSubmitting ? 'Loading...' : 'Create'}
         </button>
@@ -59,7 +58,12 @@ class RepaymentForm extends React.PureComponent {
   };
 
   render() {
-    return <div className="RepaymentForm">{this.renderComponent(this.props)}</div>;
+    return (
+      <div className="RepaymentForm">
+        {/* <h1 className="FormTitle">Repayment</h1> */}
+        {this.renderComponent(this.props)}
+      </div>
+    );
   }
 }
 

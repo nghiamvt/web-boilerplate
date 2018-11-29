@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-
+import moment from 'moment';
 import RepaymentForm from './RepaymentForm';
 
 export class RepaymentContainer extends Component {
@@ -21,6 +21,7 @@ export class RepaymentContainer extends Component {
     const initialValues = {
       ...props.requestedLoan,
       paymentMethods: '',
+      appliedDate: moment(props.requestedLoan.appliedDate).format('DD MMMM YYYY'),
     };
     const validationSchema = Yup.object({
       paymentMethods: Yup.object()

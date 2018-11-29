@@ -9,6 +9,11 @@ class ImageUpload extends Component {
 
   static propTypes = {
     form: PropTypes.object.isRequired,
+    className: PropTypes.string,
+  };
+
+  static defaultProps = {
+    className: '',
   };
 
   constructor(props) {
@@ -20,13 +25,13 @@ class ImageUpload extends Component {
 
   renderComponent = (props, state) => {
     const { values, setFieldValue, setFieldTouched } = props.form;
+    const cls = cx('ImageUpload', {
+      [props.className]: props.className,
+    });
     return (
-      <div className="ImageUpload">
-        <div className="BlockLeft">
-          <div className="GroupTitle">Upload Receipt</div>
-          <div className="GroupNote">Upload a photo as proof of repayment (gif/jpeg/jpg/png)</div>
-        </div>
-        <div className="BlockRight">
+      <div className={cls}>
+        <div className="FieldLabel">Upload Receipt</div>
+        <div className="ImageControl">
           <input
             name="image"
             type="file"
@@ -38,6 +43,7 @@ class ImageUpload extends Component {
           />
           <Thumbnail file={values.image} defaultImage={DefaultImage} />
         </div>
+        <div className="FieldNote">Upload a photo as proof of repayment (gif/jpeg/jpg/png)</div>
         <ErrMsg name="image" />
       </div>
     );

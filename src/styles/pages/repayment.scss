@@ -1,33 +1,54 @@
 .RepaymentContainer {
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    justify-content: space-between;
+    max-width: 950px;
+
+    input {
+      width: 230px;
+    }
+    .ReactSelect {
+      width: 250px;
+    }
+
+    .FormField {
+      margin-bottom: 15px;
+    }
+
+    .FieldBlock {
+      flex-basis: 100%;
+    }
+
+    .FieldLabel {
+      padding: 10px 0;
+      min-width: 200px;
+    }
+  }
+
   .ImageUpload {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-
-    .BlockLeft {
-      flex-basis: 40%;
-    }
-
-    .BlockRight {
-      flex-basis: 50%;
-    }
+    flex-direction: column;
 
     .ErrMsg {
       text-align: right;
       width: 100%;
     }
 
-    .AddBtn {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+    .ImageControl {
+      display: inline-block;
+      position: relative;
     }
 
     img {
-      max-width: 100%;
+      max-width: 155px;
       max-height: 90px;
-      overflow: hidden;
+    }
+
+    .FieldNote {
+      width: 200px;
+      font-size: 12px;
     }
 
     .FileInput {
@@ -36,11 +57,9 @@
       background-position: center;
       width: 160px;
       height: 90px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
       font-size: 0;
-      transform: translate(-50%, -50%);
+      position: absolute;
+      outline: none;
 
       &.Loaded {
         background-image: none !important;
@@ -49,6 +68,25 @@
       &::-webkit-file-upload-button {
         visibility: hidden;
       }
+    }
+  }
+  @media only screen and (min-width: 670px) and (max-width: 960px) {
+    form {
+      max-width: 550px;
+    }
+    .FormField {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  @media only screen and (max-width: 669px) {
+    form {
+      max-width: 300px;
+    }
+    .FormField {
+      display: flex;
+      flex-direction: column;
     }
   }
 }
