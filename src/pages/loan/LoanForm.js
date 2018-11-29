@@ -95,7 +95,7 @@ class LoanForm extends React.PureComponent {
           >
             {isSubmitting ? 'Loading...' : 'Create'}
           </button>
-          {disabled && (
+          {!!disabled && (
             <button className="Btn PrimaryBtn" type="button" onClick={this.handleResetForm}>
               Reset
             </button>

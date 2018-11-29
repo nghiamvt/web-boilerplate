@@ -6,6 +6,10 @@
     width: 300px;
   }
 
+  .ReactSelect {
+    min-width: 200px;
+  }
+
   &.FieldErr {
     input,
     .ReactSelect__control,

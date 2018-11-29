@@ -5,7 +5,7 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import Loading from '@/components/Loading';
 import './styles/index.scss';
 
-const Todo = lazy(() => import('@/pages/todo'));
+const Repayment = lazy(() => import('@/pages/repayment'));
 const Loan = lazy(() => import('@/pages/loan'));
 
 const App = ({ history }) => (
@@ -13,7 +13,7 @@ const App = ({ history }) => (
     <BrowserRouter>
       <Suspense fallback={<Loading isLoading />}>
         <Switch>
-          <Route exact path="/todo" component={Todo} />
+          <Route exact path="/repayment" component={Repayment} />
           <Route exact path="/" component={Loan} />
           <Route component={() => <div>404 Not found</div>} />
         </Switch>

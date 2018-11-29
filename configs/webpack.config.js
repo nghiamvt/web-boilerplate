@@ -92,6 +92,9 @@ module.exports = ({ devMode } = {}) => {
                     sourceMap: devMode,
                   },
                 },
+                {
+                  loader: 'resolve-url-loader',
+                },
                 { loader: 'sass-loader', options: { sourceMap: devMode } },
               ],
             },
