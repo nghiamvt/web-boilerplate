@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { FormField, FormDebug } from '@/components/Form';
 import { loanTermOptions, frequencyOptions, loanTypeOptions } from './data';
 import { frequencyPeriodMap } from './constant';
+import Loading from '@/components/Loading';
 
 class LoanForm extends React.PureComponent {
   static propTypes = {
@@ -16,14 +17,13 @@ class LoanForm extends React.PureComponent {
     disabled: false,
   };
 
-  handleResetForm = handleReset => {
+  handleResetForm = () => {
     localStorage.clear();
-    handleReset();
     location.reload();
   };
 
-  calculateAmountTobePaid = ({ amount, interestRate, repaymentFrequency, loanTerm }) => {
-    const period = frequencyPeriodMap[repaymentFrequency];
+  calculateAmountTobePaid = ({ amount, interestRate, repaymentFrequency, loanTerm, periodMap }) => {
+    const period = periodMap[repaymentFrequency];
     const numberOfPeriod = +loanTerm * period;
     const numerator = +interestRate / numberOfPeriod;
     const denominator = 1 - Math.pow(numerator + 1, -numberOfPeriod); // eslint-disable-line
@@ -40,7 +40,7 @@ class LoanForm extends React.PureComponent {
         interestRate: +values.interestRate / 100,
         repaymentFrequency: values.repaymentFrequency.value,
         loanTerm: values.loanTerm.value,
-        frequencyPeriodMap,
+        periodMap: frequencyPeriodMap,
       })
       : 0;
     return (
@@ -49,7 +49,7 @@ class LoanForm extends React.PureComponent {
   };
 
   renderComponent = ({ formProps, disabled }) => {
-    const { isSubmitting, dirty, values, errors, setFieldValue, handleReset } = formProps;
+    const { isSubmitting, dirty, values, errors, setFieldValue } = formProps;
     return (
       <Form>
         <h1 className="FormTitle">Loan Request</h1>
@@ -87,18 +87,17 @@ class LoanForm extends React.PureComponent {
         />
         <Field name="interestRate" label="Interest Rate (%)" component={FormField} disabled />
         {this.renderAmountTobePaid(values, errors)}
-        <button className="Btn PrimaryBtn" type="submit" disabled={isSubmitting || !dirty}>
-          {isSubmitting ? 'Loading...' : 'Create'}
-        </button>
-        <button
-          className="Btn PrimaryBtn"
-          type="button"
-          onClick={() => this.handleResetForm(handleReset)}
-        >
-          Reset
-        </button>
+        <div className="ButtonWrapper">
+          <button className="Btn PrimaryBtn" type="submit" disabled={isSubmitting || !dirty}>
+            {isSubmitting ? 'Loading...' : 'Create'}
+          </button>
+          <button className="Btn PrimaryBtn" type="button" onClick={this.handleResetForm}>
+            Reset
+          </button>
+        </div>
         <Prompt when={dirty} message="Are you sure you want to leave?" />
-        <FormDebug props={formProps} />
+        <Loading isLoading={isSubmitting} />
+        <FormDebug props={formProps} hide />
       </Form>
     );
   };

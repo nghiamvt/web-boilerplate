@@ -52,8 +52,10 @@ export default function FormField(props) {
   return (
     <div className={cls}>
       {props.label ? <span className="FieldLabel">{props.label}</span> : ''}
-      {fieldByType(props)}
-      <ErrMsg name={name} />
+      <div className="FieldControl">
+        {fieldByType(props)}
+        <ErrMsg name={name} />
+      </div>
     </div>
   );
 }
