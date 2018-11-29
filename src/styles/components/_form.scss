@@ -1,4 +1,7 @@
 .FormField {
+  display: flex;
+  flex-wrap: wrap;
+
   input {
     width: 300px;
   }

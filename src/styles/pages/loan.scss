@@ -1,11 +1,8 @@
 .LoanForm {
   display: flex;
-  justify-content: center;
-  // margin: 0 100px;
 
   form {
-    width: 100%;
-    // margin: 0 100px;
+    margin: 0 auto;
   }
 
   .FormTitle {
@@ -14,24 +11,60 @@
 
   .FormField {
     margin: 25px 0;
+
+    input {
+      margin-right: 20px;
+    }
+
+    .ErrMsg {
+      padding: 10px 0;
+    }
   }
 
   .FieldLabel {
     min-width: 170px;
     display: inline-flex;
-  }
-
-  .ErrMsg {
-    padding: 0 20px;
-  }
-
-  button[type='submit'] {
-    display: block;
-    margin: 0 auto;
+    padding: 10px 0;
   }
 
   .ReactSelect {
     width: 320px;
     display: inline-block;
+  }
+
+  .ButtonWrapper {
+    text-align: center;
+    margin-top: 30px;
+
+    button[type='submit'] {
+      margin-right: 30px;
+    }
+  }
+
+  .AmountTobePaid {
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .LoanForm {
+    .FormField {
+      display: flex;
+      justify-content: center;
+      max-width: 320px;
+      margin: 0 0 15px;
+      .ErrMsg {
+        padding: 10px 0 0;
+      }
+    }
+    .FieldLabel {
+      display: block;
+      width: 100%;
+    }
+    .InputField {
+      input {
+        margin-right: 0;
+      }
+    }
   }
 }
