@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { frequency } from './constant';
 
-import { loanTypeOptions, loanTermOptions } from './data';
+import { loanTypeOptions, loanTermOptions, frequency } from '@/data';
 import LoanForm from './LoanForm';
 import { apiLoanRequest, addLoanRequest } from './actions';
 

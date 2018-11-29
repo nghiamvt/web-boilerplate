@@ -23,7 +23,7 @@ class RepaymentForm extends React.PureComponent {
       <Form>
         <Field name="appliedDate" label="Applied Date" component={FormField} disabled />
         <Field name="toDate" label="To Date" component={FormField} disabled />
-        <Field name="principleAmount" label="Principle Amount" component={FormField} disabled />
+        <Field name="principalAmount" label="Principal Amount" component={FormField} disabled />
         <Field name="balanceLoan" label="Balance Loan" component={FormField} disabled />
         <Field name="loanTerm" label="Loan Term" type="select" component={FormField} disabled />
         <Field
@@ -33,7 +33,13 @@ class RepaymentForm extends React.PureComponent {
           component={FormField}
           disabled
         />
-        <Field name="deadline" label="Make a payment before" component={FormField} disabled />
+        <Field name="nextDeadline" label="Make a payment before" component={FormField} disabled />
+        <Field
+          name="amountTobePaid"
+          label={`${values.repaymentFrequency.label} amount to be paid`}
+          component={FormField}
+          disabled
+        />
         <Field
           name="paymentMethods"
           label="Payment Methods"
@@ -41,16 +47,12 @@ class RepaymentForm extends React.PureComponent {
           component={FormField}
           options={paymentMethodOptions}
         />
-        <Field
-          name="amountTobePaid"
-          label={`${values.repaymentFrequency.label} amount to be paid`}
-          component={FormField}
-          disabled
-        />
         <ImageUpload form={formProps} className="FieldBlock" />
-        <button className="Btn PrimaryBtn" type="submit" disabled={isSubmitting || !dirty}>
-          {isSubmitting ? 'Loading...' : 'Create'}
-        </button>
+        <div className="ButtonWrapper">
+          <button className="Btn PrimaryBtn" type="submit" disabled={isSubmitting || !dirty}>
+            {isSubmitting ? 'Loading...' : 'Create'}
+          </button>
+        </div>
         <Loading isLoading={isSubmitting} />
         <FormDebug props={formProps} hide />
       </Form>
@@ -60,7 +62,7 @@ class RepaymentForm extends React.PureComponent {
   render() {
     return (
       <div className="RepaymentForm">
-        {/* <h1 className="FormTitle">Repayment</h1> */}
+        <h1 className="FormTitle">Repayment</h1>
         {this.renderComponent(this.props)}
       </div>
     );

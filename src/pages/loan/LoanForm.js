@@ -3,9 +3,8 @@ import { Prompt } from 'react-router';
 import { Form, Field } from 'formik';
 import PropTypes from 'prop-types';
 import { FormField, FormDebug } from '@/components/Form';
-import { loanTermOptions, frequencyOptions, loanTypeOptions } from './data';
-import { frequencyPeriodMap } from './constant';
 import Loading from '@/components/Loading';
+import { loanTermOptions, frequencyOptions, loanTypeOptions, frequencyPeriodMap } from '@/data';
 
 class LoanForm extends React.PureComponent {
   static propTypes = {
