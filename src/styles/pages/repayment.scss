@@ -104,4 +104,16 @@
   .NoLoanRequested {
     text-align: center;
   }
+
+  @media only screen and (max-width: 500px) {
+    .LoanInfo,
+    .RepaymentForm {
+      max-width: 250px;
+    }
+
+    .ImageUpload {
+      flex-direction: column;
+      width: 200px;
+    }
+  }
 }

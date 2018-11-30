@@ -75,4 +75,10 @@
       }
     }
   }
+
+  @media only screen and (max-width: 770px) {
+    form {
+      width: 300px;
+    }
+  }
 }
