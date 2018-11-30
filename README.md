@@ -13,7 +13,8 @@ Based on this code, I only need to write a reducer for all actions (/src/store/r
 Here is how I use my action. Only need to point out a path, and it will automatically update at that place in store
 
 
-# SET_DATA:  set a value (new or existing) to a particular path provided
+## SET_DATA
+set a value (new or existing) to a particular path provided
 
 ```
 import { SET_DATA } from 'src/store/data-action';
@@ -27,7 +28,8 @@ export const updateNote = (id, text) => {
 ```
 
 
-# REMOVE_DATA: Delete an item of an array or a field of an object (The recursion will detect itself)
+## REMOVE_DATA
+Delete an item of an array or a field of an object (The recursion will detect itself)
 
 ```
 import { REMOVE_DATA } from 'src/store/data-action';
@@ -40,7 +42,9 @@ export const deleteNote = (ids) => {
 };
 ```
 
-# REMOVE_DATA: Insert, Update data into an existing path. If it is an array, it will use concat. If it is an object, it will use Object.assign()
+## REMOVE_DATA
+Insert, Update data into an existing path. If it is an array, it will use concat. If it is an object, it will use Object.assign()
+
 ```
 import { MERGE_DATA } from 'src/store/data-action';
 const path = 'noteList';
