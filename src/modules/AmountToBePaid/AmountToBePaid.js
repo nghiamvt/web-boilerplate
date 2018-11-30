@@ -17,6 +17,7 @@ class AmountToBePaid extends React.PureComponent {
     [frequency.YEARLY]: 1 / 12, // 1 month has 1/12 year
   };
 
+  // The below magic comes from the internet, Not my own creativity
   static calculateAmountTobePaid({
     amount,
     interestRate,

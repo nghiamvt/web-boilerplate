@@ -9,6 +9,7 @@ class RepaymentInfo extends React.PureComponent {
     info: PropTypes.object.isRequired,
   };
 
+  // The below magic comes from the internet, Not my own creativity
   static calculateLoanBalance({ interestRate, amount, amountToBePaid, paidCount, frequency }) {
     if (!paidCount) return 0;
     const n = { Weekly: 48, Monthly: 12, Yearly: 1 }[frequency];
