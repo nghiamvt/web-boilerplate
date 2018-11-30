@@ -26,7 +26,7 @@ export const loanTypeOptions = [
   { value: 10, label: 'Mortgages Loan' },
 ];
 
-export const frequencyOptions = ({ loanTerm }) => {
+export const frequencyOptions = ({ loanTerm } = {}) => {
   return Object.values(frequency).map(i => ({
     value: i,
     label: i,
