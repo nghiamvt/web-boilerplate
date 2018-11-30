@@ -24,6 +24,7 @@ class AmountToBePaid extends React.PureComponent {
     loanTerm,
     periodMap,
   }) {
+    if (+amount <= 0) return 0;
     const period = periodMap[repaymentFrequency];
     const numberOfPeriod = +loanTerm * period;
     const numerator = +interestRate / numberOfPeriod;

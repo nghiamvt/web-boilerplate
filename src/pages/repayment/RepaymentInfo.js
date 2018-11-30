@@ -9,6 +9,12 @@ class RepaymentInfo extends React.PureComponent {
     info: PropTypes.object.isRequired,
   };
 
+  static calculateLoanBalance({ interestRate, amount, amountToBePaid, paidCount, frequency }) {
+    if (!paidCount) return 0;
+    const n = { Weekly: 48, Monthly: 12, Yearly: 1 }[frequency];
+    return +amount + (+interestRate / n) * +amount - amountToBePaid * paidCount;
+  }
+
   getPropAmountToBePaid = ({ amount, interestRate, repaymentFrequency, loanTerm }) => {
     return {
       amount: +amount,
@@ -24,11 +30,6 @@ class RepaymentInfo extends React.PureComponent {
       ...prop,
       periodMap: AmountToBePaid.frequencyPeriodMap,
     });
-  };
-
-  calculateLoanBalance = ({ interestRate, amount, amountToBePaid, paidCount }) => {
-    if (!paidCount) return 0;
-    return +amount + (+interestRate / 48) * +amount - amountToBePaid * paidCount;
   };
 
   renderField = (label, value) => {
@@ -58,11 +59,12 @@ class RepaymentInfo extends React.PureComponent {
         .format(dateFormat),
       amount: formatCurrency(amount),
       balanceLoan: formatCurrency(
-        this.calculateLoanBalance({
+        RepaymentInfo.calculateLoanBalance({
           interestRate: +interestRate / 100,
           amount,
           amountToBePaid,
           paidCount: repayments.length,
+          frequency: repaymentFrequency.value,
         }),
       ),
       loanTerm: loanTerm.value > 1 ? `${loanTerm.value} months` : `${loanTerm.value} month`,

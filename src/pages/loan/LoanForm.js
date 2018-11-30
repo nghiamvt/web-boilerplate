@@ -1,5 +1,4 @@
 import React from 'react';
-import { Prompt } from 'react-router';
 import { Form, Field } from 'formik';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -23,7 +22,7 @@ class LoanForm extends React.PureComponent {
     location.reload();
   };
 
-  renderAmountTobePaid = (values, errors) => {
+  renderAmountTobePaid = (values = {}, errors = {}) => {
     const isValid = !Object.keys(errors).length;
     const frequency = values.repaymentFrequency.value;
     const prop = isValid
@@ -57,7 +56,7 @@ class LoanForm extends React.PureComponent {
         <Field
           name="amount"
           label="Amount (SGD)"
-          placeHolder={0}
+          placeholder={0}
           component={FormField}
           disabled={requested}
         />
@@ -99,7 +98,6 @@ class LoanForm extends React.PureComponent {
             </button>
           )}
         </div>
-        <Prompt when={dirty} message="Are you sure you want to leave?" />
         <Loading isLoading={isSubmitting} />
         <FormDebug props={formProps} hide />
       </Form>

@@ -1,11 +1,12 @@
 {
-	"rootDir": "..",
-	"verbose": false,
-	"testMatch": [
-		"**/__tests__/**/*.test.js"
-	],
-	"moduleFileExtensions": [
-		"js",
-		"json"
-	]
+  "rootDir": "..",
+  "verbose": false,
+  "testMatch": ["**/__tests__/**/*.test.js"],
+  "moduleFileExtensions": ["js", "json"],
+  "resolver": "jest-webpack-resolver",
+  "moduleDirectories": ["node_modules"],
+  "moduleNameMapper": {
+    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/configs/__mocks__/fileMock.js",
+    "\\.(css|less|scss)$": "<rootDir>/configs/__mocks__/styleMock.js"
+  }
 }
