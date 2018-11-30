@@ -27,10 +27,8 @@ class RepaymentInfo extends React.PureComponent {
   };
 
   calculateLoanBalance = ({ interestRate, amount, amountToBePaid, paidCount }) => {
-    const result = paidCount
-      ? amount + (interestRate / 48) * amount - amountToBePaid * paidCount
-      : 0;
-    return result;
+    if (!paidCount) return 0;
+    return +amount + (+interestRate / 48) * +amount - amountToBePaid * paidCount;
   };
 
   renderField = (label, value) => {
@@ -47,23 +45,12 @@ class RepaymentInfo extends React.PureComponent {
     return this.renderField('Amount to be paid', <AmountToBePaid {...prop} />);
   };
 
-  renderComponent = ({
-    appliedDate,
-    loanTerm,
-    amount,
-    repaymentFrequency,
-    interestRate,
-    repayments,
-  }) => {
+  renderComponent = props => {
+    const { appliedDate, loanTerm, amount, repaymentFrequency, interestRate, repayments } = props;
     const dateFormat = 'DD MMMM, YYYY';
     // convert weekly to weeks, monthly to months, yearly to years
     const nextDeadlineUnit = repaymentFrequency.value.replace('ly', 's').toLowerCase();
-    const amountToBePaid = this.calculateAmountToBePaid({
-      amount,
-      interestRate,
-      repaymentFrequency,
-      loanTerm,
-    });
+    const amountToBePaid = this.calculateAmountToBePaid(props);
     const data = {
       appliedDate: moment(appliedDate).format(dateFormat),
       toDate: moment(appliedDate)
@@ -73,7 +60,7 @@ class RepaymentInfo extends React.PureComponent {
       balanceLoan: formatCurrency(
         this.calculateLoanBalance({
           interestRate: +interestRate / 100,
-          amount: +amount,
+          amount,
           amountToBePaid,
           paidCount: repayments.length,
         }),

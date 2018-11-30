@@ -57,13 +57,12 @@ export class RepaymentContainer extends Component {
       ...props.requestedLoan,
       repayments: props.repayments,
     };
+    const intialValues = { image: '' };
     return (
       <React.Fragment>
         <RepaymentInfo info={info} />
         <Formik
-          initialValues={{
-            image: '',
-          }}
+          initialValues={intialValues}
           validationSchema={this.buildValidationSchema()}
           render={this.renderForm}
           onSubmit={(values, actions) => this.handleOnSubmit(values, actions, props)}
