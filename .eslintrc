@@ -1,7 +1,7 @@
 {
-  "extends": ["eslint:recommended", "airbnb"],
+  "extends": ["plugin:prettier/recommended", "airbnb"],
   "parser": "babel-eslint",
-  "plugins": ["react"],
+  "plugins": ["react", "prettier"],
   "env": {
     "browser": true
   },
@@ -11,6 +11,7 @@
     }
   },
   "rules": {
+    "prettier/prettier": "error",
     "max-len": [1, 120],
     "no-tabs": 0,
     "no-console": [1, { "allow": ["info", "warn", "error"] }],

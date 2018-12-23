@@ -15,13 +15,18 @@ function* callApi({ _path, type, url, method, data, options }) {
   if (!url) throw new Error('url required for ajax call');
   if (!type) throw new Error('Action type is required');
   if (_path) yield put(apiAction.preFetch({ _path, type }));
-  const fetchOptions = Object.assign({}, {
-    credentials: 'same-origin',
-    headers: {
-      Accept: 'application/json',
+  const fetchOptions = Object.assign(
+    {},
+    {
+      credentials: 'same-origin',
+      headers: {
+        Accept: 'application/json',
+      },
+      body: data ? JSON.stringify(data) : undefined,
     },
-    body: data ? JSON.stringify(data) : undefined,
-  }, options, { method });
+    options,
+    { method },
+  );
   let respond; // { status, result, error }
   try {
     const response = yield call(fetch, url, fetchOptions);

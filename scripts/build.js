@@ -9,12 +9,7 @@ const clearConsole = require('react-dev-utils/clearConsole');
 const openBrowser = require('react-dev-utils/openBrowser');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const { checkBrowsers } = require('react-dev-utils/browsersHelper');
-const {
-  choosePort,
-  createCompiler,
-  prepareProxy,
-  prepareUrls,
-} = require('react-dev-utils/WebpackDevServerUtils');
+const { choosePort, createCompiler, prepareProxy, prepareUrls } = require('react-dev-utils/WebpackDevServerUtils');
 
 const paths = require('../configs/paths');
 const env = require('../configs/.env');
@@ -31,7 +26,7 @@ const useYarn = fs.existsSync(paths.packageJSON);
  * @returns {Promise}
  */
 function prepareToBuild() {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const devMode = process.argv[2].split('=').includes('development');
     if (!devMode && fs.existsSync(paths.appDist)) {
       rmDir(paths.appDist);
@@ -51,13 +46,16 @@ function buildVendors({ devMode }) {
     devDependencies: packageJSON.devDependencies ? packageJSON.devDependencies : null,
   });
   // create md5 hash from a string
-  const currentHash = crypto.createHash('md5').update(JSON.stringify(jsonStr)).digest('hex');
+  const currentHash = crypto
+    .createHash('md5')
+    .update(JSON.stringify(jsonStr))
+    .digest('hex');
 
   let rebuildVendors = true;
   try {
     if (fs.existsSync(paths.HASH_FILE_PATH) && !isDirEmpty(paths.appDist)) {
       const prevHash = fs.readFileSync(paths.HASH_FILE_PATH, 'utf8');
-      rebuildVendors = (prevHash !== currentHash);
+      rebuildVendors = prevHash !== currentHash;
     }
   } catch (err) {
     console.info(chalk.red('[ERR] read hash file.'));
@@ -69,7 +67,7 @@ function buildVendors({ devMode }) {
     if (rebuildVendors) {
       console.info(chalk.gray('Rebuilding vendor dll...'));
       const webpackVendorCfg = require(paths.WEBPACK_VENDOR_CONFIG);
-      webpack(webpackVendorCfg).run((err) => {
+      webpack(webpackVendorCfg).run(err => {
         if (err) {
           console.info(chalk.red('[ERR] build webpack vendor.\n'));
           reject(err);
@@ -113,7 +111,7 @@ function startDevServer({ devMode }) {
         //   urls.lanUrlForConfig,
         // );
         const devServer = new WebpackDevServer(compiler, devServerCfg);
-        devServer.listen(port, HOST, (err) => {
+        devServer.listen(port, HOST, err => {
           if (err) {
             console.info(chalk.red('[ERR] failed to start dev server.\n'));
           }
@@ -125,7 +123,7 @@ function startDevServer({ devMode }) {
           resolve();
         });
 
-        ['SIGINT', 'SIGTERM'].forEach((sig) => {
+        ['SIGINT', 'SIGTERM'].forEach(sig => {
           process.on(sig, () => {
             devServer.close();
             process.exit();
@@ -142,7 +140,6 @@ function startDevServer({ devMode }) {
   });
 }
 
-
 function startDevServerBK({ devMode }) {
   return new Promise((resolve, reject) => {
     const protocol = env.HTTPS ? 'https' : 'http';
@@ -153,7 +150,7 @@ function startDevServerBK({ devMode }) {
     WebpackDevServer.addDevServerEntrypoints(webpackCfg, devServerCfg);
     const compiler = webpack(webpackCfg);
     const devServer = new WebpackDevServer(compiler, devServerCfg);
-    devServer.listen(env.PORT, env.HOST, (err) => {
+    devServer.listen(env.PORT, env.HOST, err => {
       if (err) {
         console.info(chalk.red('[ERR] failed to start dev server.\n'));
         reject(err);
@@ -163,7 +160,7 @@ function startDevServerBK({ devMode }) {
       resolve();
     });
 
-    ['SIGINT', 'SIGTERM'].forEach((sig) => {
+    ['SIGINT', 'SIGTERM'].forEach(sig => {
       process.on(sig, () => {
         devServer.close();
         process.exit();
@@ -209,7 +206,7 @@ function buildBaseOnEnv({ devMode }) {
 prepareToBuild()
   .then(buildVendors)
   .then(buildBaseOnEnv)
-  .catch((err) => {
+  .catch(err => {
     console.info(chalk.red('Failed to compile.\n'));
     console.error(err);
     process.exit(1);
