@@ -21,9 +21,16 @@ const combinedReducers = combineReducers(
 const DTKey = '_DATA/';
 function dataReducer(state = defaultState, action) {
   const rIndex = action.type.indexOf(DTKey);
-  const type = (rIndex >= 0) ? action.type.substring(0, rIndex + (DTKey.length - 1)) : action.type;
+  const type =
+    rIndex >= 0
+      ? action.type.substring(0, rIndex + (DTKey.length - 1))
+      : action.type;
   if (Object.keys(dataActionConst).includes(type)) {
-    return immutable[type.toLowerCase()](state, action.meta._path, action.payload);
+    return immutable[type.toLowerCase()](
+      state,
+      action.meta._path,
+      action.payload,
+    );
   }
   return state;
 }

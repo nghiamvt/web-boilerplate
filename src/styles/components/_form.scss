@@ -1,0 +1,81 @@
+.FormField {
+  display: flex;
+  flex-wrap: wrap;
+
+  input {
+    width: 300px;
+  }
+
+  .ReactSelect {
+    min-width: 200px;
+  }
+
+  &.FieldErr {
+    input,
+    .ReactSelect__control,
+    .ReactSelect__control:hover {
+      border: 1px solid $error-color;
+    }
+  }
+
+  .ErrMsg {
+    color: $error-color;
+    font-style: italic;
+    font-size: 13px;
+    display: inline-flex;
+  }
+}
+
+.InputField {
+  input {
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    padding: 0 10px;
+    height: 37px;
+    outline: none;
+    font-size: 16px;
+
+    &:disabled {
+      border-color: #e9e9e9;
+      background-color: #f4f4f4;
+      color: #a3a3a3;
+    }
+  }
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+.Btn {
+  font-size: 18px;
+  line-height: 30px;
+  padding: 10px 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  border-style: none;
+  outline: none;
+
+  &:disabled,
+  &:disabled:hover {
+    color: #fff;
+    background-color: #4bbd83;
+    cursor: not-allowed;
+    text-shadow: none;
+    box-shadow: none;
+  }
+}
+
+.PrimaryBtn {
+  color: #fff;
+  background-color: $primary-color;
+  border-color: $primary-color;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.035);
+
+  &:hover {
+    background-color: $primary-light-color;
+    border-color: $primary-light-color;
+  }
+}

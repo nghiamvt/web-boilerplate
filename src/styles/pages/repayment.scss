@@ -1,0 +1,119 @@
+.RepaymentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .FormTitle {
+    color: $primary-color;
+    margin: 50px 0;
+  }
+
+  .RepaymentForm {
+    max-width: 850px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .LoanInfo {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 850px;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #d9dee3;
+
+    .Field {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+      margin-right: 60px;
+      align-items: center;
+
+      .FieldValue {
+        width: 170px;
+      }
+    }
+  }
+
+  .FieldLabel {
+    padding: 10px 0;
+    min-width: 190px;
+    font-weight: bold;
+  }
+
+  .ImageUpload {
+    display: flex;
+    flex-wrap: wrap;
+    width: 400px;
+    align-items: center;
+    margin-top: 20px;
+
+    .ErrMsg {
+      text-align: right;
+      width: 100%;
+    }
+
+    .ImageControl {
+      display: inline-block;
+      position: relative;
+    }
+
+    img {
+      max-height: 120px;
+    }
+
+    .FieldNote {
+      width: 100%;
+      font-size: 12px;
+      text-align: right;
+    }
+
+    .FileInput {
+      background-image: url('../../assets/images/add-btn.svg');
+      background-repeat: no-repeat;
+      background-position: center;
+      width: 200px;
+      height: 120px;
+      font-size: 0;
+      position: absolute;
+      outline: none;
+      cursor: pointer;
+
+      &.Loaded {
+        background-image: none !important;
+      }
+
+      &::-webkit-file-upload-button {
+        visibility: hidden;
+      }
+    }
+  }
+
+  .ButtonWrapper {
+    flex-basis: 100%;
+    text-align: center;
+    margin: 20px 0 50px;
+  }
+
+  .ErrMsg {
+    text-align: right;
+    display: block;
+  }
+
+  .NoLoanRequested {
+    text-align: center;
+  }
+
+  @media only screen and (max-width: 500px) {
+    .LoanInfo,
+    .RepaymentForm {
+      max-width: 250px;
+    }
+
+    .ImageUpload {
+      flex-direction: column;
+      width: 200px;
+    }
+  }
+}

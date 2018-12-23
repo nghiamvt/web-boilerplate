@@ -17,7 +17,6 @@ describe('Immutable', () => {
 
   let result;
 
-
   function objInvariant() {
     expect(obj).toEqual({
       a: 1,
@@ -32,16 +31,14 @@ describe('Immutable', () => {
   }
 
   function arrInvariant() {
-    expect(arr).toEqual(
-      [1, { a: false }],
-    );
+    expect(arr).toEqual([1, { a: false }]);
   }
 
   describe('when set', () => {
     describe('when have an object', () => {
       describe('when set path', () => {
         beforeEach(() => {
-          result = immutable.set(obj, 'b', 3);
+          result = immutable.set_data(obj, 'b', 3);
         });
 
         test('should replace path', () => {
@@ -59,7 +56,7 @@ describe('Immutable', () => {
 
       describe('when set path empty object', () => {
         beforeEach(() => {
-          result = immutable.set({}, 'b', 3);
+          result = immutable.set_data({}, 'b', 3);
         });
 
         test('should replace path', () => {
@@ -74,7 +71,7 @@ describe('Immutable', () => {
 
         beforeEach(() => {
           try {
-            immutable.set({}, '', 3);
+            immutable.set_data({}, '', 3);
           } catch (err) {
             error = err;
           }
@@ -87,7 +84,7 @@ describe('Immutable', () => {
 
       describe('when set path with function', () => {
         beforeEach(() => {
-          result = immutable.set(obj, 'a', v => v + 1);
+          result = immutable.set_data(obj, 'a', v => v + 1);
         });
 
         test('should replace path', () => {
@@ -108,7 +105,7 @@ describe('Immutable', () => {
 
       describe('when set deep path', () => {
         beforeEach(() => {
-          result = immutable.set(obj, 'b.x', 3);
+          result = immutable.set_data(obj, 'b.x', 3);
         });
 
         test('should replace path', () => {
@@ -129,7 +126,7 @@ describe('Immutable', () => {
 
       describe('when set deep path not defined', () => {
         beforeEach(() => {
-          result = immutable.set(obj, 'b.z.w', 3);
+          result = immutable.set_data(obj, 'b.z.w', 3);
         });
 
         test('should replace path', () => {
@@ -153,7 +150,7 @@ describe('Immutable', () => {
 
       describe('when set array[index]', () => {
         beforeEach(() => {
-          result = immutable.set(obj, 'c.0', 3);
+          result = immutable.set_data(obj, 'c.0', 3);
         });
 
         test('should replace path', () => {
@@ -174,7 +171,7 @@ describe('Immutable', () => {
 
       describe('when set array[index] with function', () => {
         beforeEach(() => {
-          result = immutable.set(obj, 'c.0', v => v * 3);
+          result = immutable.set_data(obj, 'c.0', v => v * 3);
         });
 
         test('should replace path', () => {
@@ -195,7 +192,7 @@ describe('Immutable', () => {
 
       describe('when set array[index] path not defined', () => {
         beforeEach(() => {
-          result = immutable.set(obj, 'c.1.z.w', 3);
+          result = immutable.set_data(obj, 'c.1.z.w', 3);
         });
 
         test('should replace path', () => {
@@ -216,7 +213,7 @@ describe('Immutable', () => {
 
       describe('when set array[index] out of index', () => {
         beforeEach(() => {
-          result = immutable.set(obj, 'c.3', 3);
+          result = immutable.set_data(obj, 'c.3', 3);
         });
 
         test('should replace path', () => {
@@ -242,14 +239,14 @@ describe('Immutable', () => {
 
         beforeEach(() => {
           try {
-            immutable.set(obj, 'c.w', 3);
+            immutable.set_data(obj, 'c.w', 3);
           } catch (err) {
             error = err;
           }
         });
 
         test('should throw an error', () => {
-          expect(error.message).toEqual('Array index \'w\' has to be an integer');
+          expect(error.message).toEqual("Array index 'w' has to be an integer");
         });
 
         test('invariant', objInvariant);
@@ -259,13 +256,11 @@ describe('Immutable', () => {
     describe('when have an array', () => {
       describe('when set array[index]', () => {
         beforeEach(() => {
-          result = immutable.set(arr, '0', 3);
+          result = immutable.set_data(arr, '0', 3);
         });
 
         test('should replace path', () => {
-          expect(result).toEqual(
-            [3, { a: false }],
-          );
+          expect(result).toEqual([3, { a: false }]);
         });
 
         test('invariant', arrInvariant);
@@ -273,13 +268,11 @@ describe('Immutable', () => {
 
       describe('when set array[index] deep path', () => {
         beforeEach(() => {
-          result = immutable.set(arr, '1.a', v => !v);
+          result = immutable.set_data(arr, '1.a', v => !v);
         });
 
         test('should replace path', () => {
-          expect(result).toEqual(
-            [1, { a: true }],
-          );
+          expect(result).toEqual([1, { a: true }]);
         });
 
         test('invariant', arrInvariant);
@@ -288,7 +281,7 @@ describe('Immutable', () => {
 
     describe('when set array[index] with function', () => {
       beforeEach(() => {
-        result = immutable.set(obj, 'c.0', v => v * 3);
+        result = immutable.set_data(obj, 'c.0', v => v * 3);
       });
 
       test('should remove path', () => {
@@ -312,19 +305,19 @@ describe('Immutable', () => {
     describe('when have an object', () => {
       describe('when get path', () => {
         test('should get path', () => {
-          expect(immutable.get(obj, 'b')).toEqual({ x: 1, y: 2 });
+          expect(immutable.get_data(obj, 'b')).toEqual({ x: 1, y: 2 });
         });
       });
 
       describe('when get path empty object', () => {
         test('should get path', () => {
-          expect(immutable.get({}, 'b')).toBeUndefined();
+          expect(immutable.get_data({}, 'b')).toBeUndefined();
         });
       });
 
       describe('when get path empty path', () => {
         test('should get path', () => {
-          expect(immutable.get(obj, '')).toEqual({
+          expect(immutable.get_data(obj, '')).toEqual({
             a: 1,
             b: {
               x: 1,
@@ -339,37 +332,37 @@ describe('Immutable', () => {
 
       describe('when get deep path', () => {
         test('should get path', () => {
-          expect(immutable.get(obj, 'b.x')).toBe(1);
+          expect(immutable.get_data(obj, 'b.x')).toBe(1);
         });
       });
 
       describe('when get deep path not defined', () => {
         test('should return undefined', () => {
-          expect(immutable.get(obj, 'b.z.w')).toBeUndefined();
+          expect(immutable.get_data(obj, 'b.z.w')).toBeUndefined();
         });
       });
 
       describe('when get array[index]', () => {
         test('should get index', () => {
-          expect(immutable.get(obj, 'c.0')).toBe(1);
+          expect(immutable.get_data(obj, 'c.0')).toBe(1);
         });
       });
 
       describe('when get array[index] path not defined', () => {
         test('should return undefined', () => {
-          expect(immutable.get(obj, 'c.1.z.w')).toBeUndefined();
+          expect(immutable.get_data(obj, 'c.1.z.w')).toBeUndefined();
         });
       });
 
       describe('when get array[index] out of index', () => {
         test('should return undefined', () => {
-          expect(immutable.get(obj, 'c.3')).toBeUndefined();
+          expect(immutable.get_data(obj, 'c.3')).toBeUndefined();
         });
       });
 
       describe('when get undefined path on array', () => {
         test('should return undefined', () => {
-          expect(immutable.get(obj, 'c.w')).toBeUndefined();
+          expect(immutable.get_data(obj, 'c.w')).toBeUndefined();
         });
       });
     });
@@ -377,13 +370,13 @@ describe('Immutable', () => {
     describe('when have an array', () => {
       describe('when get array[index]', () => {
         test('should get index', () => {
-          expect(immutable.get(arr, '0')).toBe(1);
+          expect(immutable.get_data(arr, '0')).toBe(1);
         });
       });
 
       describe('when get array[index] deep path', () => {
         test('should replace path', () => {
-          expect(immutable.get(arr, '1.a')).toBe(false);
+          expect(immutable.get_data(arr, '1.a')).toBe(false);
         });
       });
     });
@@ -393,13 +386,11 @@ describe('Immutable', () => {
     describe('when have an array', () => {
       describe('toggle a value', () => {
         beforeEach(() => {
-          result = immutable.toggle(arr, '1.a');
+          result = immutable.toggle_data(arr, '1.a');
         });
 
         test('should toggle prop', () => {
-          expect(result).toEqual(
-            [1, { a: true }],
-          );
+          expect(result).toEqual([1, { a: true }]);
         });
 
         test('invariant', arrInvariant);
@@ -414,7 +405,7 @@ describe('Immutable', () => {
 
         beforeEach(() => {
           try {
-            immutable.remove(obj, ['b']);
+            immutable.remove_data(obj, ['b']);
           } catch (err) {
             error = err;
           }
@@ -433,14 +424,16 @@ describe('Immutable', () => {
 
         beforeEach(() => {
           try {
-            immutable.remove(obj, ['b'], _ids);
+            immutable.remove_data(obj, ['b'], _ids);
           } catch (err) {
             error = err;
           }
         });
 
         test('should throw an error', () => {
-          expect(error.message).toEqual(`Expected _ids to be an array but got ${typeof _ids}`);
+          expect(error.message).toEqual(
+            `Expected _ids to be an array but got ${typeof _ids}`,
+          );
         });
 
         test('invariant', objInvariant);
@@ -448,7 +441,7 @@ describe('Immutable', () => {
 
       describe('when remove path', () => {
         beforeEach(() => {
-          result = immutable.remove(obj, '', ['b']);
+          result = immutable.remove_data(obj, '', ['b']);
         });
 
         test('should remove path', () => {
@@ -465,7 +458,7 @@ describe('Immutable', () => {
 
       describe('when remove path empty object', () => {
         beforeEach(() => {
-          result = immutable.remove({}, '', ['b']);
+          result = immutable.remove_data({}, '', ['b']);
         });
 
         test('should remove path', () => {
@@ -475,16 +468,15 @@ describe('Immutable', () => {
 
       describe('when remove path empty path', () => {
         beforeEach(() => {
-          result = immutable.remove({}, '', ['']);
+          result = immutable.remove_data({}, '', ['']);
         });
 
-        test('should remove path', () => {
-        });
+        test('should remove path', () => {});
       });
 
       describe('when remove deep path', () => {
         beforeEach(() => {
-          result = immutable.remove(obj, 'b', ['x']);
+          result = immutable.remove_data(obj, 'b', ['x']);
         });
 
         test('should remove path', () => {
@@ -504,7 +496,7 @@ describe('Immutable', () => {
 
       describe('when remove deep path not defined', () => {
         beforeEach(() => {
-          result = immutable.remove(obj, 'b.z', ['w']);
+          result = immutable.remove_data(obj, 'b.z', ['w']);
         });
 
         test('should remove path', () => {
@@ -525,7 +517,7 @@ describe('Immutable', () => {
 
       describe('when remove array[index]', () => {
         beforeEach(() => {
-          result = immutable.remove(obj, 'c', [0]);
+          result = immutable.remove_data(obj, 'c', [0]);
         });
 
         test('should remove path', () => {
@@ -546,7 +538,7 @@ describe('Immutable', () => {
 
       describe('when remove array[index] path not defined', () => {
         beforeEach(() => {
-          result = immutable.remove(obj, 'c.1.z', ['w']);
+          result = immutable.remove_data(obj, 'c.1.z', ['w']);
         });
 
         test('should remove path', () => {
@@ -567,7 +559,7 @@ describe('Immutable', () => {
 
       describe('when remove array[index] out of index', () => {
         beforeEach(() => {
-          result = immutable.remove(obj, 'c', [3]);
+          result = immutable.remove_data(obj, 'c', [3]);
         });
 
         test('should remove path', () => {
@@ -591,7 +583,7 @@ describe('Immutable', () => {
 
         beforeEach(() => {
           try {
-            immutable.remove(obj, 'c', ['w']);
+            immutable.remove_data(obj, 'c', ['w']);
           } catch (err) {
             error = err;
           }
@@ -608,13 +600,11 @@ describe('Immutable', () => {
     describe('when have an array', () => {
       describe('when remove array[index]', () => {
         beforeEach(() => {
-          result = immutable.remove(arr, '', [0]);
+          result = immutable.remove_data(arr, '', [0]);
         });
 
         test('should remove path', () => {
-          expect(result).toEqual(
-            [{ a: false }],
-          );
+          expect(result).toEqual([{ a: false }]);
         });
 
         test('invariant', arrInvariant);
@@ -622,13 +612,11 @@ describe('Immutable', () => {
 
       describe('when remove array[index] deep path', () => {
         beforeEach(() => {
-          result = immutable.remove(arr, '1', ['a']);
+          result = immutable.remove_data(arr, '1', ['a']);
         });
 
         test('should remove path', () => {
-          expect(result).toEqual(
-            [1, {}],
-          );
+          expect(result).toEqual([1, {}]);
         });
 
         test('invariant', arrInvariant);
@@ -640,7 +628,7 @@ describe('Immutable', () => {
     describe('when have an object', () => {
       describe('merge an object value into object', () => {
         beforeEach(() => {
-          result = immutable.merge(obj, 'b', { z: 3 });
+          result = immutable.merge_data(obj, 'b', { z: 3 });
         });
 
         test('should merge path', () => {
@@ -662,7 +650,7 @@ describe('Immutable', () => {
 
       describe('merge an array value into array', () => {
         beforeEach(() => {
-          result = immutable.merge(obj, 'c', [3, 4]);
+          result = immutable.merge_data(obj, 'c', [3, 4]);
         });
 
         test('should merge path', () => {
@@ -683,7 +671,7 @@ describe('Immutable', () => {
 
       describe('merge an object value into null', () => {
         beforeEach(() => {
-          result = immutable.merge(obj, 'd', { foo: 'bar' });
+          result = immutable.merge_data(obj, 'd', { foo: 'bar' });
         });
 
         test('should merge path', () => {
@@ -704,7 +692,7 @@ describe('Immutable', () => {
 
       describe('merge an object value into undefined', () => {
         beforeEach(() => {
-          result = immutable.merge(obj, 'z', { foo: 'bar' });
+          result = immutable.merge_data(obj, 'z', { foo: 'bar' });
         });
 
         test('should merge path', () => {

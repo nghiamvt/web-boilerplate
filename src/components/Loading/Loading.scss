@@ -1,0 +1,33 @@
+.Loading {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background-color: rgba($color: #2c2c2c, $alpha: 0.3);
+  display: block;
+
+  .LoadingIcon {
+    img {
+      display: block;
+      position: absolute;
+      width: 3.125rem;
+      height: 3.125rem;
+      background: #ffffff;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .LoadingText {
+    color: #ffffff;
+    top: 57%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    position: absolute;
+  }
+}

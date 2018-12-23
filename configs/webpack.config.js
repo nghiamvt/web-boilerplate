@@ -13,11 +13,7 @@ module.exports = ({ devMode } = {}) => {
   return {
     mode: devMode ? 'development' : 'production',
     devtool: devMode ? 'cheap-module-source-map' : 'source-map',
-    entry: [
-      'babel-polyfill',
-      'whatwg-fetch',
-      paths.mainEntry,
-    ],
+    entry: ['babel-polyfill', 'whatwg-fetch', paths.mainEntry],
     output: {
       filename: paths.appBundle,
       // There are also additional JS chunk files if you use code splitting.
@@ -47,7 +43,7 @@ module.exports = ({ devMode } = {}) => {
               options: {
                 formatter: 'react-dev-utils/eslintFormatter',
                 eslintPath: 'eslint',
-
+                emitWarning: true,
               },
               loader: 'eslint-loader',
             },
@@ -79,14 +75,17 @@ module.exports = ({ devMode } = {}) => {
               test: /\.(sa|sc|c)ss$/,
               use: [
                 devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-                { loader: 'css-loader', options: { importLoaders: 1, sourceMap: devMode } },
+                {
+                  loader: 'css-loader',
+                  options: { importLoaders: 1, sourceMap: devMode },
+                },
                 {
                   loader: 'postcss-loader',
                   options: {
                     ident: 'postcss',
                     plugins: () => [
-                      require('postcss-flexbugs-fixes'), // eslint-disable-line
-                      require('postcss-preset-env')({    // eslint-disable-line
+                      require('postcss-flexbugs-fixes'),
+                      require('postcss-preset-env')({
                         autoprefixer: {
                           flexbox: 'no-2009',
                         },
@@ -95,6 +94,9 @@ module.exports = ({ devMode } = {}) => {
                     ],
                     sourceMap: devMode,
                   },
+                },
+                {
+                  loader: 'resolve-url-loader',
                 },
                 { loader: 'sass-loader', options: { sourceMap: devMode } },
               ],
@@ -112,8 +114,11 @@ module.exports = ({ devMode } = {}) => {
     },
     plugins: [
       new webpack.EnvironmentPlugin(envConfig),
-      ...Object.keys(webpackVendorCfg.entry).map((e) => {
-        const manifestFile = path.join(paths.appDist, paths.DLL_MANIFEST_FILENAME.replace(/\[name\]/g, e));
+      ...Object.keys(webpackVendorCfg.entry).map(e => {
+        const manifestFile = path.join(
+          paths.appDist,
+          paths.DLL_MANIFEST_FILENAME.replace(/\[name\]/g, e),
+        );
         return new webpack.DllReferencePlugin({
           // context: paths.appRoot,
           manifest: fs.existsSync(manifestFile) ? require(manifestFile) : '', // eslint-disable-line
@@ -125,15 +130,19 @@ module.exports = ({ devMode } = {}) => {
         favicon: paths.appFavicon,
         env: envConfig,
         dll: {
-          paths: Object.keys(webpackVendorCfg.entry).map((e) => {
-            return `${paths.publicPath}/${paths.DLL_FILENAME.replace(/\[name\]/g, e)}`.replace('/', '');
+          paths: Object.keys(webpackVendorCfg.entry).map(e => {
+            return `${paths.publicPath}/${paths.DLL_FILENAME.replace(
+              /\[name\]/g,
+              e,
+            )}`.replace('/', '');
           }),
         },
       }),
       devMode && new webpack.HotModuleReplacementPlugin(),
-      !devMode && new MiniCssExtractPlugin({
-        filename: paths.CSS_FILENAME_LOADER,
-      }),
+      !devMode &&
+        new MiniCssExtractPlugin({
+          filename: paths.CSS_FILENAME_LOADER,
+        }),
       // new BundleAnalyzerPlugin(),
     ].filter(Boolean),
   };

@@ -1,5 +1,4 @@
 const fs = require('fs');
-const path = require('path');
 const crypto = require('crypto');
 const webpack = require('webpack');
 const chalk = require('chalk');
@@ -8,8 +7,11 @@ const WebpackDevServer = require('webpack-dev-server');
 const clearConsole = require('react-dev-utils/clearConsole');
 const openBrowser = require('react-dev-utils/openBrowser');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
-const { checkBrowsers } = require('react-dev-utils/browsersHelper');
-const { choosePort, createCompiler, prepareProxy, prepareUrls } = require('react-dev-utils/WebpackDevServerUtils');
+const {
+  choosePort,
+  createCompiler,
+  prepareUrls,
+} = require('react-dev-utils/WebpackDevServerUtils');
 
 const paths = require('../configs/paths');
 const env = require('../configs/.env');
@@ -43,7 +45,9 @@ function prepareToBuild() {
 function buildVendors({ devMode }) {
   const jsonStr = JSON.stringify({
     dependencies: packageJSON.dependencies ? packageJSON.dependencies : null,
-    devDependencies: packageJSON.devDependencies ? packageJSON.devDependencies : null,
+    devDependencies: packageJSON.devDependencies
+      ? packageJSON.devDependencies
+      : null,
   });
   // create md5 hash from a string
   const currentHash = crypto
@@ -101,7 +105,13 @@ function startDevServer({ devMode }) {
         const devServerCfg = require(paths.DEV_SERVER_CONFIG);
         const webpackCfg = require(paths.WEBPACK_CONFIG)({ devMode });
         WebpackDevServer.addDevServerEntrypoints(webpackCfg, devServerCfg);
-        const compiler = createCompiler(webpack, webpackCfg, appName, urls, useYarn);
+        const compiler = createCompiler(
+          webpack,
+          webpackCfg,
+          appName,
+          urls,
+          useYarn,
+        );
         // Load proxy config
         // const proxySetting = require(paths.packageJSON).proxy;
         // const proxyConfig = prepareProxy(proxySetting, paths.appPublic);
@@ -137,35 +147,6 @@ function startDevServer({ devMode }) {
         }
         process.exit(1);
       });
-  });
-}
-
-function startDevServerBK({ devMode }) {
-  return new Promise((resolve, reject) => {
-    const protocol = env.HTTPS ? 'https' : 'http';
-    const urls = prepareUrls(protocol, env.HOST, env.PORT);
-
-    const devServerCfg = require(paths.DEV_SERVER_CONFIG);
-    const webpackCfg = require(paths.WEBPACK_CONFIG)({ devMode });
-    WebpackDevServer.addDevServerEntrypoints(webpackCfg, devServerCfg);
-    const compiler = webpack(webpackCfg);
-    const devServer = new WebpackDevServer(compiler, devServerCfg);
-    devServer.listen(env.PORT, env.HOST, err => {
-      if (err) {
-        console.info(chalk.red('[ERR] failed to start dev server.\n'));
-        reject(err);
-      }
-      console.info(chalk.cyan('Starting the development server...\n'));
-      openBrowser(urls.localUrlForBrowser);
-      resolve();
-    });
-
-    ['SIGINT', 'SIGTERM'].forEach(sig => {
-      process.on(sig, () => {
-        devServer.close();
-        process.exit();
-      });
-    });
   });
 }
 

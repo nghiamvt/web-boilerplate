@@ -1,0 +1,39 @@
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
+const port = 4000;
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+
+const randomId = () => Math.floor(new Date().valueOf() * Math.random());
+
+app.post('/repayment', (req, res) => {
+  setTimeout(() => {
+    res.json({
+      success: true,
+      data: {
+        id: randomId(),
+        paidDate: Date.now(),
+      },
+    });
+  }, 1000);
+});
+
+app.post('/loan', (req, res) => {
+  setTimeout(() => {
+    res.json({
+      success: true,
+      data: {
+        id: randomId(),
+        appliedDate: Date.now(),
+        ...req.body,
+      },
+    });
+  }, 1000);
+});
+
+app.listen(port, () => {
+  console.log(`Listening on port ${port}!`); // eslint-disable-line
+});

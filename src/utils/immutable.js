@@ -1,6 +1,13 @@
 /* eslint-disable camelcase */
 
-import { isArray, isFunction, isNumber, isObject, isEmpty, isUndefined } from './is';
+import {
+  isArray,
+  isFunction,
+  isNumber,
+  isObject,
+  isEmpty,
+  isUndefined,
+} from './is';
 import invariant from './invariant';
 import { removeItems } from './object';
 
@@ -25,7 +32,6 @@ function getArrayIndex(head) {
   return head;
 }
 
-
 /**
  * Set a value. Check merge for multiple values
  * @param src The object to evaluate.
@@ -37,11 +43,16 @@ export function set_data(src, path, value) {
   const pathArr = pathToArray(path);
 
   const setImmutable = (obj, pathList, val) => {
-    if (!pathList.length) return isFunction(value) ? val(obj, pathList[0]) : val;
+    if (!pathList.length)
+      return isFunction(value) ? val(obj, pathList[0]) : val;
     const isArr = isArray(obj);
     const clone = isArr ? obj.slice() : Object.assign({}, obj);
     const curPath = isArr ? getArrayIndex(pathList[0]) : pathList[0];
-    clone[curPath] = setImmutable(!isUndefined(obj[curPath]) ? obj[curPath] : {}, pathList.slice(1), val);
+    clone[curPath] = setImmutable(
+      !isUndefined(obj[curPath]) ? obj[curPath] : {},
+      pathList.slice(1),
+      val,
+    );
     return clone;
   };
 
@@ -72,7 +83,10 @@ export function get_data(src, path) {
  */
 export function remove_data(src, path, _ids) {
   invariant(arguments.length >= 3, 'src, path and _ids are required');
-  invariant(isArray(_ids), `Expected _ids to be an array but got ${typeof _ids}`);
+  invariant(
+    isArray(_ids),
+    `Expected _ids to be an array but got ${typeof _ids}`,
+  );
   if (isEmpty(path)) {
     if (isArray(src)) return src.filter((i, index) => !_ids.includes(index));
     if (isObject(src)) return removeItems(src, _ids);
@@ -81,11 +95,15 @@ export function remove_data(src, path, _ids) {
 
   if (isUndefined(get_data(src, path))) return src;
 
-  return set_data(src, path, (val) => {
+  return set_data(src, path, val => {
     if (isArray(val)) {
-      invariant(!(_ids.some((id) => !isNumber(id))), 'Array index has to be an integer');
+      invariant(
+        !_ids.some(id => !isNumber(id)),
+        'Array index has to be an integer',
+      );
       return val.filter((v, i) => !_ids.includes(i));
-    } if (isObject(val)) {
+    }
+    if (isObject(val)) {
       const idStrList = _ids.map(String);
       return Object.keys(val).reduce((result, k) => {
         return !idStrList.includes(k) ? { ...result, [k]: val[k] } : result;
@@ -105,14 +123,30 @@ export function remove_data(src, path, _ids) {
  * @param val The value to merge into the target value.
  */
 export function merge_data(src, path, val) {
-  return set_data(src, path, (curVal) => {
+  return set_data(src, path, curVal => {
     if (curVal === null || isUndefined(curVal)) {
       return val;
-    } if (isArray(curVal)) {
+    }
+    if (isArray(curVal)) {
       return curVal.concat(val);
-    } if (isObject(curVal)) {
+    }
+    if (isObject(curVal)) {
       return Object.assign({}, curVal, val);
     }
     return src;
   });
+}
+
+/**
+ * Toggles a value
+ * Be careful with strings as target value, as "true" and "false" will toggle to false,
+ *    but "0" will toggle to true.
+ * Here is what Javascript considers false:
+ *    0, -0, null, false, NaN, undefined, and the empty string ("")
+ * @param src The object to evaluate.
+ * @param path The path to the value.
+ */
+
+export function toggle_data(src, path) {
+  return set_data(src, path, val => !val);
 }

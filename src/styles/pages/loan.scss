@@ -1,0 +1,84 @@
+.LoanForm {
+  display: flex;
+
+  form {
+    margin: 0 auto;
+    .FormTitle {
+      text-align: center;
+      color: $primary-color;
+      margin: 50px 0;
+    }
+
+    .ApproveMsg {
+      text-align: center;
+    }
+  }
+
+  .FormField {
+    margin: 25px 0;
+
+    input {
+      margin-right: 20px;
+    }
+
+    .ErrMsg {
+      padding: 10px 0;
+    }
+  }
+
+  .FieldLabel {
+    min-width: 170px;
+    display: inline-flex;
+    padding: 10px 0;
+  }
+
+  .ReactSelect {
+    width: 320px;
+    display: inline-block;
+  }
+
+  .ButtonWrapper {
+    text-align: center;
+    margin: 20px 0 50px;
+
+    button[type='submit'] {
+      margin-right: 30px;
+    }
+  }
+
+  .AmountToBePaidWrapper {
+    text-align: center;
+
+    .AmountToBePaid {
+      font-weight: bold;
+      color: $primary-color;
+    }
+  }
+
+  @media only screen and (max-width: 767px) {
+    .FormField {
+      display: flex;
+      justify-content: center;
+      max-width: 320px;
+      margin: 0 0 15px;
+      .ErrMsg {
+        padding: 10px 0 0;
+      }
+    }
+    .FieldLabel {
+      display: block;
+      width: 100%;
+    }
+    .InputField {
+      input {
+        margin-right: 0;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 770px) {
+    form {
+      width: 300px;
+    }
+  }
+}
