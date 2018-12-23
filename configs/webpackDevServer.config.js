@@ -11,7 +11,7 @@ module.exports = {
   // HMR on console.
   // clientLogLevel: 'none',
   compress: true,
-  disableHostCheck: false,
+  disableHostCheck: true,
   historyApiFallback: {
     disableDotRule: true,
   },

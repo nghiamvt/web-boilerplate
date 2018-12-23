@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const safePostCssParser = require('postcss-safe-parser');
+const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const paths = require('./paths');
@@ -16,7 +17,7 @@ module.exports = ({ devMode } = {}) => {
   return {
     mode: devMode ? 'development' : 'production',
     devtool: devMode ? 'cheap-module-source-map' : 'source-map',
-    entry: ['babel-polyfill', 'whatwg-fetch', paths.mainEntry],
+    entry: ['babel-polyfill', paths.mainEntry],
     output: {
       filename: paths.appBundle,
       // There are also additional JS chunk files if you use code splitting.
@@ -29,6 +30,7 @@ module.exports = ({ devMode } = {}) => {
       alias: { '@': paths.appSrc },
       extensions: ['.js', '.json', '.jsx', '.scss'],
       modules: [paths.appSrc, 'node_modules'],
+      plugins: [new ModuleScopePlugin(paths.appSrc, [paths.packageJSON])],
     },
     module: {
       strictExportPresence: true,
@@ -162,7 +164,6 @@ module.exports = ({ devMode } = {}) => {
       devMode && new webpack.HotModuleReplacementPlugin(),
       !devMode &&
         new MiniCssExtractPlugin({
-          publicPath: '/src/images/',
           filename: paths.CSS_FILENAME_LOADER,
         }),
       // new BundleAnalyzerPlugin(),
