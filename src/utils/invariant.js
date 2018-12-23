@@ -10,7 +10,7 @@ const invariant = (condition, format, a, b, c, d, e, f) => {
     if (format === undefined) {
       error = new Error(
         'Minified exception occurred; use the non-minified dev environment ' +
-        'for the full error message and additional helpful warnings.',
+          'for the full error message and additional helpful warnings.',
       );
     } else {
       const args = [a, b, c, d, e, f];

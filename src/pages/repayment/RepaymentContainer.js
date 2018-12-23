@@ -65,7 +65,9 @@ export class RepaymentContainer extends Component {
           initialValues={intialValues}
           validationSchema={this.buildValidationSchema()}
           render={this.renderForm}
-          onSubmit={(values, actions) => this.handleOnSubmit(values, actions, props)}
+          onSubmit={(values, actions) =>
+            this.handleOnSubmit(values, actions, props)
+          }
         />
       </React.Fragment>
     );
@@ -79,7 +81,10 @@ export class RepaymentContainer extends Component {
           this.renderComponent(this.props, this.state)
         ) : (
           <div className="NoLoanRequested">
-            <p>You have not have any loan request yet, please submit a loan request first</p>
+            <p>
+              You have not have any loan request yet, please submit a loan
+              request first
+            </p>
             <Link to="/">Submit a loan request form</Link>
           </div>
         )}

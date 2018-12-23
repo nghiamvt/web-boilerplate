@@ -27,11 +27,11 @@ class LoanForm extends React.PureComponent {
     const frequency = values.repaymentFrequency.value;
     const prop = isValid
       ? {
-        amount: +values.amount,
-        interestRate: +values.interestRate / 100,
-        repaymentFrequency: frequency,
-        loanTerm: +values.loanTerm.value,
-      }
+          amount: +values.amount,
+          interestRate: +values.interestRate / 100,
+          repaymentFrequency: frequency,
+          loanTerm: +values.loanTerm.value,
+        }
       : {};
     return (
       <div className="AmountToBePaidWrapper">
@@ -48,8 +48,7 @@ class LoanForm extends React.PureComponent {
         <h1 className="FormTitle">Loan Request</h1>
         {requested && (
           <p className="ApproveMsg">
-            Your loan request has been approved,
-            {' '}
+            Your loan request has been approved,{' '}
             <Link to="/repayment">make a repayment</Link>
           </p>
         )}
@@ -85,15 +84,28 @@ class LoanForm extends React.PureComponent {
           options={loanTypeOptions}
           disabled={requested}
         />
-        <Field name="interestRate" label="Interest Rate (%)" component={FormField} disabled />
+        <Field
+          name="interestRate"
+          label="Interest Rate (%)"
+          component={FormField}
+          disabled
+        />
         {this.renderAmountTobePaid(values, errors)}
         <div className="ButtonWrapper">
           {requested ? (
-            <button className="Btn PrimaryBtn" type="button" onClick={this.handleResetForm}>
+            <button
+              className="Btn PrimaryBtn"
+              type="button"
+              onClick={this.handleResetForm}
+            >
               Reset
             </button>
           ) : (
-            <button className="Btn PrimaryBtn" type="submit" disabled={isSubmitting || !dirty}>
+            <button
+              className="Btn PrimaryBtn"
+              type="submit"
+              disabled={isSubmitting || !dirty}
+            >
               {isSubmitting ? 'Loading...' : 'Submit'}
             </button>
           )}

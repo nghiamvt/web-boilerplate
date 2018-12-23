@@ -18,14 +18,15 @@ const defaultParams = {
  * const VisibleOnlyAdmin = authWrapper(defaultParams)(ProtectedComponent);
  * <VisibleOnlyAdmin isAuthenticated={true} isAuthenticating={false} />
  */
-export default (args) => {
+export default args => {
   const { LoadingComponent, FailureComponent, wrapperDisplayName } = {
     ...defaultParams,
     ...args,
   };
 
-  return (DecoratedComponent) => {
-    const displayName = DecoratedComponent.displayName || DecoratedComponent.name || 'Component';
+  return DecoratedComponent => {
+    const displayName =
+      DecoratedComponent.displayName || DecoratedComponent.name || 'Component';
 
     class UserAuthWrapper extends Component {
       static displayName = `${wrapperDisplayName}(${displayName})`;
@@ -44,7 +45,8 @@ export default (args) => {
         const { isAuthenticated, isAuthenticating } = this.props;
         if (isAuthenticated) {
           return <DecoratedComponent {...this.props} />;
-        } if (isAuthenticating) {
+        }
+        if (isAuthenticating) {
           return <LoadingComponent {...this.props} />;
         }
         return <FailureComponent {...this.props} />;

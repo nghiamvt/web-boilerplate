@@ -29,9 +29,15 @@ class RepaymentForm extends React.PureComponent {
           component={FormField}
           options={paymentMethodOptions}
         />
-        {values.paymentMethods && <ImageUpload form={formProps} className="FormField" />}
+        {values.paymentMethods && (
+          <ImageUpload form={formProps} className="FormField" />
+        )}
         <div className="ButtonWrapper">
-          <button className="Btn PrimaryBtn" type="submit" disabled={isSubmitting || !dirty}>
+          <button
+            className="Btn PrimaryBtn"
+            type="submit"
+            disabled={isSubmitting || !dirty}
+          >
             {isSubmitting ? 'Loading...' : 'Submit'}
           </button>
         </div>

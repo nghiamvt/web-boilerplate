@@ -61,7 +61,9 @@ class LoanContainer extends Component {
   };
 
   renderForm = formProps => {
-    return <LoanForm formProps={formProps} requested={!!this.props.requestedLoan} />;
+    return (
+      <LoanForm formProps={formProps} requested={!!this.props.requestedLoan} />
+    );
   };
 
   renderComponent = props => {
@@ -70,13 +72,19 @@ class LoanContainer extends Component {
         initialValues={this.buildInitialValues(props)}
         validationSchema={this.buildValidationSchema()}
         render={this.renderForm}
-        onSubmit={(values, actions) => this.handleOnSubmit(values, actions, props)}
+        onSubmit={(values, actions) =>
+          this.handleOnSubmit(values, actions, props)
+        }
       />
     );
   };
 
   render() {
-    return <div className="LoanContainer">{this.renderComponent(this.props, this.state)}</div>;
+    return (
+      <div className="LoanContainer">
+        {this.renderComponent(this.props, this.state)}
+      </div>
+    );
   }
 }
 

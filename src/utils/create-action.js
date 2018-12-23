@@ -8,22 +8,30 @@ import { isFunction, isObject, isUndefined } from './is';
  * @param metaCreator
  * @returns {function(...[*])}
  */
-export default function createAction(_type, payloadCreator = v => v, metaCreator) {
+export default function createAction(
+  _type,
+  payloadCreator = v => v,
+  metaCreator,
+) {
   invariant(
     isFunction(payloadCreator) || isUndefined(payloadCreator),
     'Expected payloadCreator to be a function or undefined',
   );
 
   invariant(
-    isFunction(metaCreator) || isObject(metaCreator) || isUndefined(metaCreator),
+    isFunction(metaCreator) ||
+      isObject(metaCreator) ||
+      isUndefined(metaCreator),
     'Expected metaCreator to be a function or object or undefined',
   );
 
   const finalPayLoadCreator = (firstArgs, ...args) => {
-    return (firstArgs instanceof Error) ? firstArgs : payloadCreator(firstArgs, ...args);
+    return firstArgs instanceof Error
+      ? firstArgs
+      : payloadCreator(firstArgs, ...args);
   };
 
-  return (args) => {
+  return args => {
     const payload = finalPayLoadCreator(args);
     const action = { type: args.type ? `${_type}/${args.type}` : _type };
 

@@ -10,13 +10,24 @@ class RepaymentInfo extends React.PureComponent {
   };
 
   // The below magic comes from the internet, Not my own creativity
-  static calculateLoanBalance({ interestRate, amount, amountToBePaid, paidCount, frequency }) {
+  static calculateLoanBalance({
+    interestRate,
+    amount,
+    amountToBePaid,
+    paidCount,
+    frequency,
+  }) {
     if (!paidCount) return 0;
     const n = { Weekly: 48, Monthly: 12, Yearly: 1 }[frequency];
     return +amount + (+interestRate / n) * +amount - amountToBePaid * paidCount;
   }
 
-  getPropAmountToBePaid = ({ amount, interestRate, repaymentFrequency, loanTerm }) => {
+  getPropAmountToBePaid = ({
+    amount,
+    interestRate,
+    repaymentFrequency,
+    loanTerm,
+  }) => {
     return {
       amount: +amount,
       interestRate: +interestRate / 100,
@@ -25,8 +36,18 @@ class RepaymentInfo extends React.PureComponent {
     };
   };
 
-  calculateAmountToBePaid = ({ amount, interestRate, repaymentFrequency, loanTerm }) => {
-    const prop = this.getPropAmountToBePaid({ amount, interestRate, repaymentFrequency, loanTerm });
+  calculateAmountToBePaid = ({
+    amount,
+    interestRate,
+    repaymentFrequency,
+    loanTerm,
+  }) => {
+    const prop = this.getPropAmountToBePaid({
+      amount,
+      interestRate,
+      repaymentFrequency,
+      loanTerm,
+    });
     return AmountToBePaid.calculateAmountTobePaid({
       ...prop,
       periodMap: AmountToBePaid.frequencyPeriodMap,
@@ -48,10 +69,19 @@ class RepaymentInfo extends React.PureComponent {
   };
 
   renderComponent = props => {
-    const { appliedDate, loanTerm, amount, repaymentFrequency, interestRate, repayments } = props;
+    const {
+      appliedDate,
+      loanTerm,
+      amount,
+      repaymentFrequency,
+      interestRate,
+      repayments,
+    } = props;
     const dateFormat = 'DD MMMM, YYYY';
     // convert weekly to weeks, monthly to months, yearly to years
-    const nextDeadlineUnit = repaymentFrequency.value.replace('ly', 's').toLowerCase();
+    const nextDeadlineUnit = repaymentFrequency.value
+      .replace('ly', 's')
+      .toLowerCase();
     const amountToBePaid = this.calculateAmountToBePaid(props);
     const data = {
       appliedDate: moment(appliedDate).format(dateFormat),
@@ -68,7 +98,10 @@ class RepaymentInfo extends React.PureComponent {
           frequency: repaymentFrequency.value,
         }),
       ),
-      loanTerm: loanTerm.value > 1 ? `${loanTerm.value} months` : `${loanTerm.value} month`,
+      loanTerm:
+        loanTerm.value > 1
+          ? `${loanTerm.value} months`
+          : `${loanTerm.value} month`,
       repaymentFrequency: repaymentFrequency.value,
       nextDeadline: moment(appliedDate)
         .add(1, nextDeadlineUnit)
@@ -83,7 +116,12 @@ class RepaymentInfo extends React.PureComponent {
         {this.renderField('Loan Term', data.loanTerm)}
         {this.renderField('Repayment Frequency', data.repaymentFrequency)}
         {this.renderField('Next Deadline', data.nextDeadline)}
-        {this.renderAmountToBePaid({ amount, interestRate, repaymentFrequency, loanTerm })}
+        {this.renderAmountToBePaid({
+          amount,
+          interestRate,
+          repaymentFrequency,
+          loanTerm,
+        })}
       </div>
     );
   };

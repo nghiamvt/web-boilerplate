@@ -34,7 +34,12 @@ class AmountToBePaid extends React.PureComponent {
     return isNaN(result) ? 0 : result;
   }
 
-  renderComponent = ({ amount, interestRate, repaymentFrequency, loanTerm }) => {
+  renderComponent = ({
+    amount,
+    interestRate,
+    repaymentFrequency,
+    loanTerm,
+  }) => {
     return (
       <span className="AmountToBePaid">
         {formatCurrency(

@@ -6,7 +6,7 @@ const dataMetaCreator = data => {
   if (!data.type) throw Error('type is required in dataAction');
   return { _path: data._path };
 };
-const createDataAction = (type) => {
+const createDataAction = type => {
   return createAction(type, dataPayloadCreator, dataMetaCreator);
 };
 

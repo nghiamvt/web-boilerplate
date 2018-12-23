@@ -27,12 +27,12 @@ function isEmpty(value) {
 
   if (isArray(value) && value.length === 0) {
     return true;
-  } if (isObject(value)) {
+  }
+  if (isObject(value)) {
     return !Object.keys(value).length;
   }
   return false;
 }
-
 
 export {
   isNumber,

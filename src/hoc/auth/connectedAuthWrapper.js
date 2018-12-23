@@ -16,16 +16,15 @@ const defaultParams = {
  * const VisibleOnlyAdmin = connectedAuthWrapper(defaultParams)(ProtectedComponent);
  * <VisibleOnlyAdmin isAuthenticated={true} isAuthenticating={false} />
  */
-export default (args) => {
+export default args => {
   const { authenticatedSelector, authenticatingSelector } = {
     ...defaultParams,
     ...args,
   };
 
-  return (DecoratedComponent) => connect(
-    (state, ownProps) => ({
+  return DecoratedComponent =>
+    connect((state, ownProps) => ({
       isAuthenticated: authenticatedSelector(state, ownProps),
       isAuthenticating: authenticatingSelector(state, ownProps),
-    }),
-  )(authWrapper(args)(DecoratedComponent));
+    }))(authWrapper(args)(DecoratedComponent));
 };

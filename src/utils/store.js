@@ -4,7 +4,8 @@
  * make sure that the first reducer in the list defines the initial state
  */
 function reduceReducers(...reducers) {
-  return (store, action) => reducers.reduce((result, reducer) => reducer(result, action), store);
+  return (store, action) =>
+    reducers.reduce((result, reducer) => reducer(result, action), store);
 }
 
 function getValueByPath(obj, path) {
@@ -13,13 +14,15 @@ function getValueByPath(obj, path) {
 }
 
 function rebuildObjectByPath(location, newValue) {
-  return [].concat(location).reverse().reduce((result, pathFragment) => ({
-    [pathFragment]: result,
-  }), newValue);
+  return []
+    .concat(location)
+    .reverse()
+    .reduce(
+      (result, pathFragment) => ({
+        [pathFragment]: result,
+      }),
+      newValue,
+    );
 }
 
-export {
-  reduceReducers,
-  getValueByPath,
-  rebuildObjectByPath,
-};
+export { reduceReducers, getValueByPath, rebuildObjectByPath };
