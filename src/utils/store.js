@@ -8,6 +8,14 @@ function reduceReducers(...reducers) {
     reducers.reduce((result, reducer) => reducer(result, action), store);
 }
 
+export function createReducer(initialState, fnMap) {
+  return (state = initialState, { type, payload }) => {
+    const handler = fnMap[type];
+
+    return handler ? handler(state, payload) : state;
+  };
+}
+
 function getValueByPath(obj, path) {
   if (path.length === 0) return obj;
   return path.reduce((result, key) => (result ? result[key] : obj[key]), null);

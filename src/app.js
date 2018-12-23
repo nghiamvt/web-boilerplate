@@ -7,6 +7,7 @@ import './styles/index.scss';
 
 const Repayment = lazy(() => import('@/pages/repayment'));
 const Loan = lazy(() => import('@/pages/loan'));
+const Home = lazy(() => import('@/pages/home'));
 
 const App = ({ history }) => (
   <ConnectedRouter history={history}>
@@ -14,7 +15,8 @@ const App = ({ history }) => (
       <Suspense fallback={<Loading isLoading />}>
         <Switch>
           <Route exact path="/repayment" component={Repayment} />
-          <Route exact path="/" component={Loan} />
+          <Route exact path="/loan" component={Loan} />
+          <Route exact path="/" component={Home} />
           <Route component={() => <div>404 Not found</div>} />
         </Switch>
       </Suspense>
