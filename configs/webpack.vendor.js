@@ -18,9 +18,9 @@ module.exports = {
   plugins: [
     new webpack.DllPlugin({
       context: paths.appRoot,
-			// The name of the global variable which the library's
-			// require function has been assigned to.
-			// This must match the output.library option above.
+      // The name of the global variable which the library's
+      // require function has been assigned to.
+      // This must match the output.library option above.
       name: paths.DLL_LIB_NAME,
       path: path.join(paths.appDist, paths.DLL_MANIFEST_FILENAME),
     }),

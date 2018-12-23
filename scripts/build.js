@@ -14,7 +14,6 @@ const {
 } = require('react-dev-utils/WebpackDevServerUtils');
 
 const paths = require('../configs/paths');
-const env = require('../configs/.env');
 const { rmDir, isDirEmpty } = require('./common');
 
 const packageJSON = require(paths.packageJSON);
@@ -159,7 +158,10 @@ function buildClient({ devMode }) {
   return new Promise((resolve, reject) => {
     const webpackCfg = require(paths.WEBPACK_CONFIG)({ devMode });
     webpack(webpackCfg).run((err, stats) => {
-      if (err) return reject(err);
+      if (err) {
+        console.error('Failed to build client');
+        return reject(err);
+      }
 
       const messages = formatWebpackMessages(stats.toJson({}, true));
       if (messages.errors.length) {

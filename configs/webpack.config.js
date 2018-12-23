@@ -3,6 +3,9 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const safePostCssParser = require('postcss-safe-parser');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const paths = require('./paths');
@@ -101,6 +104,10 @@ module.exports = ({ devMode } = {}) => {
                 { loader: 'sass-loader', options: { sourceMap: devMode } },
               ],
             },
+            // {
+            //   test: /\.svg$/,
+            //   loader: '@svgr/webpack',
+            // },
             {
               exclude: [/\.(js|jsx|mjs)$/, /\.html$/, /\.json$/],
               loader: require.resolve('file-loader'),
@@ -137,6 +144,20 @@ module.exports = ({ devMode } = {}) => {
             )}`.replace('/', '');
           }),
         },
+        minify: devMode
+          ? {}
+          : {
+              removeComments: true,
+              collapseWhitespace: true,
+              removeRedundantAttributes: true,
+              useShortDoctype: true,
+              removeEmptyAttributes: true,
+              removeStyleLinkTypeAttributes: true,
+              keepClosingSlash: true,
+              minifyJS: true,
+              minifyCSS: true,
+              minifyURLs: true,
+            },
       }),
       devMode && new webpack.HotModuleReplacementPlugin(),
       !devMode &&
@@ -145,5 +166,56 @@ module.exports = ({ devMode } = {}) => {
         }),
       // new BundleAnalyzerPlugin(),
     ].filter(Boolean),
+    optimization: devMode
+      ? {}
+      : {
+          minimizer: [
+            new TerserPlugin({
+              terserOptions: {
+                parse: {
+                  ecma: 8,
+                },
+                compress: {
+                  ecma: 5,
+                  warnings: false,
+                  comparisons: false,
+                  inline: 2,
+                },
+                mangle: {
+                  safari10: true,
+                },
+                output: {
+                  ecma: 5,
+                  comments: false,
+                  ascii_only: true,
+                },
+              },
+              parallel: true,
+              cache: true,
+              sourceMap: devMode,
+            }),
+            new OptimizeCSSAssetsPlugin({
+              cssProcessorOptions: {
+                parser: safePostCssParser,
+                map: devMode
+                  ? {
+                      inline: false,
+                      annotation: true,
+                    }
+                  : false,
+              },
+            }),
+          ],
+          // Automatically split vendor and commons
+          // https://twitter.com/wSokra/status/969633336732905474
+          // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
+          splitChunks: {
+            chunks: 'all',
+            name: false,
+          },
+          // Keep the runtime chunk seperated to enable long term caching
+          // https://twitter.com/wSokra/status/969679223278505985
+          runtimeChunk: true,
+        },
   };
 };
