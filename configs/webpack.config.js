@@ -80,7 +80,7 @@ module.exports = ({ devMode } = {}) => {
                 devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
                 {
                   loader: 'css-loader',
-                  options: { importLoaders: 1, sourceMap: devMode },
+                  options: { importLoaders: 3, sourceMap: devMode },
                 },
                 {
                   loader: 'postcss-loader',
@@ -104,10 +104,10 @@ module.exports = ({ devMode } = {}) => {
                 { loader: 'sass-loader', options: { sourceMap: devMode } },
               ],
             },
-            // {
-            //   test: /\.svg$/,
-            //   loader: '@svgr/webpack',
-            // },
+            {
+              test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+              loader: '@svgr/webpack',
+            },
             {
               exclude: [/\.(js|jsx|mjs)$/, /\.html$/, /\.json$/],
               loader: require.resolve('file-loader'),
@@ -162,6 +162,7 @@ module.exports = ({ devMode } = {}) => {
       devMode && new webpack.HotModuleReplacementPlugin(),
       !devMode &&
         new MiniCssExtractPlugin({
+          publicPath: '/src/images/',
           filename: paths.CSS_FILENAME_LOADER,
         }),
       // new BundleAnalyzerPlugin(),
