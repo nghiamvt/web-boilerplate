@@ -3,7 +3,7 @@ import { connectRouter } from 'connected-react-router';
 
 import { reduceReducers } from '@/utils/store';
 import * as immutable from '@/utils/immutable';
-import { modalReducer } from '@/modules/Modal';
+import { modalReducer } from '@/modules/modal';
 
 import history from './history';
 import defaultState from './default-state';

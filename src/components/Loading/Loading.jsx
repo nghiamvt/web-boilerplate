@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import loadingSVG from '@/assets/images/loading.gif';
-import './Loading.scss';
+import './loading.scss';
 
 // @TODO: add timeout
 

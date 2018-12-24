@@ -1,31 +1,19 @@
-import React, { lazy, Suspense } from 'react';
-import PropTypes from 'prop-types';
-import { ConnectedRouter } from 'connected-react-router';
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
-import Loading from '@/components/Loading';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import Routers from '@/app/routers';
+import ModalManager from './modules/modal/ModalManager';
+
 import './styles/index.scss';
 
-const Repayment = lazy(() => import('@/pages/repayment'));
-const Loan = lazy(() => import('@/pages/loan'));
-const Home = lazy(() => import('@/pages/home'));
+export class app extends Component {
+  render() {
+    return (
+      <div className="App">
+        <Routers />
+        <ModalManager />
+      </div>
+    );
+  }
+}
 
-const App = ({ history }) => (
-  <ConnectedRouter history={history}>
-    <BrowserRouter>
-      <Suspense fallback={<Loading isLoading />}>
-        <Switch>
-          <Route exact path="/repayment" component={Repayment} />
-          <Route exact path="/loan" component={Loan} />
-          <Route exact path="/" component={Home} />
-          <Route component={() => <div>404 Not found</div>} />
-        </Switch>
-      </Suspense>
-    </BrowserRouter>
-  </ConnectedRouter>
-);
-
-App.propTypes = {
-  history: PropTypes.object.isRequired,
-};
-
-export default App;
+export default connect()(app);

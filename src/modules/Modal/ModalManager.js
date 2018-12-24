@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ModalComponent from './ModalComponent';
+import { openModal, closeModal } from './ducks';
 
-export class ModalManager extends Component {
+class ModalManager extends Component {
   renderComponent = props => {
-    if (props.modals.length) return null;
+    if (!props.modals.length) return null;
     return props.modals.map(modal => {
-      // TODO: modal.type
-      return <ModalComponent {...modal.props} id={modal.id} />;
+      return (
+        <ModalComponent
+          {...modal}
+          id={modal.id}
+          actions={{ openModal: props.openModal, closeModal: props.closeModal }}
+        />
+      );
     });
   };
 
@@ -16,6 +22,11 @@ export class ModalManager extends Component {
   }
 }
 
-export default connect(state => ({
-  modals: state.modals,
-}))(ModalManager);
+export default connect(
+  state => {
+    return {
+      modals: state.modals || [],
+    };
+  },
+  { openModal, closeModal },
+)(ModalManager);

@@ -1,23 +1,21 @@
 const MODAL_OPEN = 'MODAL_OPEN';
 const MODAL_CLOSE = 'MODAL_CLOSE';
 
-function openModal(payload) {
+export function openModal(payload) {
   return {
     type: MODAL_OPEN,
     payload,
   };
 }
 
-function closeModal() {
+export function closeModal({ id }) {
   return {
     type: MODAL_CLOSE,
+    payload: {
+      id,
+    },
   };
 }
-
-export const modalActions = {
-  openModal,
-  closeModal,
-};
 
 const initialState = [];
 export default function modalReducer(state = initialState, action) {

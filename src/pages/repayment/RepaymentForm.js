@@ -3,7 +3,7 @@ import { Prompt } from 'react-router';
 import PropTypes from 'prop-types';
 import { Form, Field } from 'formik';
 import { FormField, FormDebug } from '@/components/Form';
-import Loading from '@/components/Loading';
+import Loading from '@/components/loading';
 
 import ImageUpload from './ImageUpload';
 

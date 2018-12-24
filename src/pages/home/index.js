@@ -1,44 +1,26 @@
 import React from 'react';
-import ReactModal from 'react-modal';
-
-function getParent() {
-  return document.querySelector('#root');
-}
+import { connect } from 'react-redux';
+import { openModal } from '@/modules/modal';
 
 class Home extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      showModal: false,
-    };
-  }
-
   handleOpenModal = () => {
-    this.setState({ showModal: true });
-  };
-
-  handleCloseModal = () => {
-    this.setState({ showModal: false });
+    this.props.openModal({
+      id: 'test',
+      title: 'Basic Modal',
+      render: <span>Hello World</span>,
+    });
   };
 
   render() {
     return (
       <div>
         <button onClick={this.handleOpenModal}>Trigger Modal</button>
-        <ReactModal
-          isOpen={this.state.showModal}
-          contentLabel="Minimal Modal Example"
-          shouldCloseOnOverlayClick
-          parentSelector={getParent}
-          onRequestClose={this.handleCloseModal}
-          overlayClassName="Overlay"
-        >
-          Hello World
-          <button onClick={this.handleCloseModal}>Close Modal</button>
-        </ReactModal>
       </div>
     );
   }
 }
 
-export default Home;
+export default connect(
+  null,
+  { openModal },
+)(Home);

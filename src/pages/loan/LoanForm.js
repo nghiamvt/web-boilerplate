@@ -3,7 +3,7 @@ import { Form, Field } from 'formik';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FormField, FormDebug } from '@/components/Form';
-import Loading from '@/components/Loading';
+import Loading from '@/components/loading';
 import AmountToBePaid from '@/modules/AmountToBePaid/AmountToBePaid';
 import { loanTermOptions, frequencyOptions, loanTypeOptions } from '@/data';
 

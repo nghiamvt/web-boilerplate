@@ -1,3 +1,3 @@
-import modalReducer, { modalActions } from './ducks';
+import modalReducer, { openModal, closeModal } from './ducks';
 
-export { modalReducer, modalActions };
+export { modalReducer, openModal, closeModal };

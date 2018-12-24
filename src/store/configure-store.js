@@ -1,7 +1,6 @@
 import createSagaMiddleware from 'redux-saga';
 import { routerMiddleware } from 'connected-react-router';
 import { createStore, applyMiddleware, compose } from 'redux';
-import persistState from 'redux-localstorage';
 import thunk from 'redux-thunk';
 
 import history from './history';
@@ -18,10 +17,7 @@ export default function configureStore() {
   const store = createStore(
     rootReducer,
     defaultState,
-    composeEnhancers(
-      applyMiddleware(thunk, routeMiddleWare, sagaMiddleware),
-      persistState(),
-    ),
+    composeEnhancers(applyMiddleware(thunk, routeMiddleWare, sagaMiddleware)),
   );
   if (module.hot) {
     module.hot.accept('./root-reducer', () => {
