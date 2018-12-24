@@ -13,7 +13,7 @@
   "rules": {
     "prettier/prettier": "error",
     "no-tabs": 0,
-    "no-console": [1, { "allow": ["info", "warn", "error"] }],
+    "no-console": 0,
     "no-plusplus": 0,
     "no-underscore-dangle": 0,
     "no-restricted-globals": 0,
@@ -21,6 +21,7 @@
     "operator-linebreak": 0,
     "arrow-body-style": 0,
     "jsx-a11y/label-has-for": 0,
+    "jsx-a11y/click-events-have-key-events": 0,
     "object-curly-newline": 0,
     "global-require": 0,
     "import/prefer-default-export": 0,

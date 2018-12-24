@@ -4,10 +4,13 @@ import { openModal } from '@/modules/modal';
 
 class Home extends React.Component {
   handleOpenModal = () => {
+    // eslint-disable-next-line
     this.props.openModal({
       id: 'test',
       title: 'Basic Modal',
-      render: <span>Hello World</span>,
+      clickOverlayToClose: true,
+      onClose: () => console.log(11111),
+      // render: () => <span>Hello World</span>,
     });
   };
 
