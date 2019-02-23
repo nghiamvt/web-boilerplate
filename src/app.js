@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Routers from '@/app/routers';
-import ModalManager from './modules/modal/ModalManager';
 
 import './styles/index.scss';
 
@@ -10,7 +9,6 @@ export class app extends Component {
     return (
       <div className="App">
         <Routers />
-        <ModalManager />
       </div>
     );
   }

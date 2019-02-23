@@ -1,6 +1,1 @@
-export default {
-  loan: {
-    requests: [],
-    repayments: [],
-  },
-};
+export default {};
