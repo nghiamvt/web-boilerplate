@@ -1,10 +1,10 @@
+import { BASE_URL } from '@/data';
 import axios from 'axios';
 import {
+  apiActionFailed,
   apiActionRequest,
   apiActionSuccess,
-  apiActionFailed,
 } from './api-action';
-import { BASE_URL } from '@/data';
 
 const APICreator = ({
   type,

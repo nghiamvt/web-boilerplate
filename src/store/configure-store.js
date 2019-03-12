@@ -1,12 +1,11 @@
-import createSagaMiddleware from 'redux-saga';
 import { routerMiddleware } from 'connected-react-router';
-import { createStore, applyMiddleware, compose } from 'redux';
+import { applyMiddleware, compose, createStore } from 'redux';
+import createSagaMiddleware from 'redux-saga';
 import thunk from 'redux-thunk';
-
+import defaultState from './default-state';
 import history from './history';
 import rootReducer from './root-reducer';
 import rootSaga from './root-saga';
-import defaultState from './default-state';
 
 export default function configureStore() {
   const sagaMiddleware = createSagaMiddleware();

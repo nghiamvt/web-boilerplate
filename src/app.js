@@ -1,7 +1,6 @@
+import Routers from '@/app/routers';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Routers from '@/app/routers';
-
 import './styles/index.scss';
 
 export class app extends Component {

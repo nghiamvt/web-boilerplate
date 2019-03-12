@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import hoistStatics from 'hoist-non-react-statics';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 /**
  * Hiding or displaying different elements depending on the user's permissions.

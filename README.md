@@ -5,15 +5,13 @@
 Redux comes along with lots of boilerplace code which makes it really annoying.
 So, I implemented my own approach in order to have fun with it
 
-
 There are some recursions that I wrote to handle immutability of Redux Store. (/src/utils/immutable.js)
 Based on this code, I only need to write a reducer for all actions (/src/store/root-reducer.js)
 
-
 Here is how I use my action. Only need to point out a path, and it will automatically update at that place in store
 
-
 ## SET_DATA
+
 set a value (new or existing) to a particular path provided
 
 ```
@@ -27,8 +25,8 @@ export const updateNote = (id, text) => {
 };
 ```
 
-
 ## REMOVE_DATA
+
 Delete an item of an array or a field of an object (The recursion will detect itself)
 
 ```
@@ -43,6 +41,7 @@ export const deleteNote = (ids) => {
 ```
 
 ## REMOVE_DATA
+
 Insert, Update data into an existing path. If it is an array, it will use concat. If it is an object, it will use Object.assign()
 
 ```
@@ -59,6 +58,5 @@ export const addNote = (text) => {
   });
 };
 ```
-
 
 There are also a lots of interesting features that I implemented in this boilerplace. Feel free to check it out.

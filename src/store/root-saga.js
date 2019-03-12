@@ -1,7 +1,7 @@
 /* eslint-disable no-constant-condition,func-names */
-import { takeEvery, spawn, call } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
 import { apiGet } from '@/store/api-saga';
+import { delay } from 'redux-saga';
+import { call, spawn, takeEvery } from 'redux-saga/effects';
 
 function* testSaga() {
   yield takeEvery('INIT_SAGA', function*() {

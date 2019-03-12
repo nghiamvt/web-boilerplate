@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { call, put } from 'redux-saga/effects';
 import {
+  apiActionFailed,
   apiActionRequest,
   apiActionSuccess,
-  apiActionFailed,
 } from './api-action';
 
 /**

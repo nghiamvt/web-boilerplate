@@ -15,7 +15,7 @@ const webpackVendorCfg = require('./webpack.vendor');
 module.exports = ({ devMode } = {}) => {
   return {
     mode: devMode ? 'development' : 'production',
-    devtool: devMode ? 'cheap-module-source-map' : 'source-map',
+    devtool: 'source-map',
     entry: ['babel-polyfill', paths.mainEntry],
     output: {
       filename: paths.appBundle,

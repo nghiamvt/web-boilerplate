@@ -1,18 +1,13 @@
-import { combineReducers } from 'redux';
-import { connectRouter } from 'connected-react-router';
-
-import { reduceReducers } from '@/utils/store';
 import * as immutable from '@/utils/immutable';
-import { modalReducer } from '@/modules/modal';
-
-import history from './history';
-import defaultState from './default-state';
+import { reduceReducers } from '@/utils/store';
+import { connectRouter } from 'connected-react-router';
+import { combineReducers } from 'redux';
 import { dataActionConst } from './data-action';
+import defaultState from './default-state';
+import history from './history';
 
 // Put new reducers here
-const reducers = {
-  modals: modalReducer,
-};
+const reducers = {};
 const defaultReducer = (s = {}) => s;
 const combinedReducers = combineReducers(
   Object.keys(defaultState).reduce((result, key) => {
