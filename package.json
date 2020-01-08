@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "description": "A boilerplate to start building websites, which was written in ReactJS",
   "main": "index.js",
-  "author": "Nghia Mai <mvtnghia@gmail.com>",
+  "author": "Jack <jack@gmail.com>",
   "license": "MIT",
   "scripts": {
     "eslint": "eslint src",
