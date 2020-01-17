@@ -14,11 +14,11 @@
     "test": "jest --config ./configs/jest.json --no-cache --watch"
   },
   "keywords": [],
-  "repository": "git+https://github.com/mvtnghia/web-boilerplate.git",
+  "repository": "",
   "bugs": {
-    "url": "https://github.com/mvtnghia/web-boilerplate/issues"
+    "url": ""
   },
-  "homepage": "https://github.com/mvtnghia/web-boilerplate#readme",
+  "homepage": "",
   "dependencies": {
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
